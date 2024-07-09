@@ -3,3 +3,10 @@
 body{
     font-family: "Poppins", sans-serif;
 }
+
+.bg-base{
+    background-color: #38B6FF;
+}
+.bg-hover{
+    background-color: #FAAE1D;
+}

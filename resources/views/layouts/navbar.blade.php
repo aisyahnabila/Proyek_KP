@@ -36,11 +36,16 @@
                                 </p>
                             </div>
                             <ul class="py-1" role="none">
-                                <li>
-                                    <a href="#"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                                        role="menuitem">Sign out</a>
-                                </li>
+                                @auth
+                                    <li>
+                                        <form id="logoutForm" method="POST" action="{{ route('logout') }}">
+                                            @csrf
+                                            <a href="#" id="signOutLink"
+                                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                                                role="menuitem">Sign out</a>
+                                        </form>
+                                    </li>
+                                @endauth
                             </ul>
                         </div>
                     </div>
@@ -48,3 +53,9 @@
             </div>
         </div>
     </nav>
+    <script>
+        document.getElementById('signOutLink').addEventListener('click', function(event) {
+            event.preventDefault(); // Mencegah navigasi ke halaman lain
+            document.getElementById('logoutForm').submit(); // Submit form untuk logout
+        });
+    </script>

@@ -78,12 +78,6 @@
                     </div>
                 </div>
                 <label for="table-search" class="sr-only">Search</label>
-                @auth
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit">Logout</button>
-                    </form>
-                @endauth
                 <div class="relative">
                     <div
                         class="absolute inset-y-0 left-0 rtl:inset-r-0 rtl:right-0 flex items-center ps-3 pointer-events-none">
@@ -285,5 +279,4 @@
                 </tbody>
             </table>
         </div>
-
-@endsection
+    @endsection

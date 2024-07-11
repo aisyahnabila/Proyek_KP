@@ -47,14 +47,12 @@
             </div>
             <div class="flex justify-end">
                 <button type="submit"
-                    class="text-white bg-yellow-pv hover:bg-[#c89414] focus:ring-4 focus:outline-none focus:ring-yellow-500 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
-                    style="background-color: #FAAE1D; hover:bg-[#c89414]; focus:ring-color: #FFD700; color:#274782">
+                    class="text-white bg-yellow-300 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring-yellow-800">
                     Log In
                 </button>
             </div>
         </form>
     </div>
-
 </body>
 
 </html>

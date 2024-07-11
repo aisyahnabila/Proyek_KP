@@ -8,24 +8,3 @@ body {
 .bg-blue-pv {
     background-color: #38B6FF;
 }
-
-button .bg-yellow-pv {
-    background-color: #FAAE1D;
-}
-
-.btn-custom {
-    background-color: #FAAE1D;
-    transition: background-color 0.3s ease;
-}
-
-.btn-custom:hover {
-    background-color: #C89414;
-    /* Warna saat hover */
-}
-
-.btn-custom:focus {
-    outline: none;
-    /* Menghilangkan outline default */
-    box-shadow: 0 0 0 4px rgba(250, 174, 29, 0.5);
-    /* Fokus efek dengan warna setengah transparan */
-}

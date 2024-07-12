@@ -1,9 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KelolaController;
+use App\Http\Controllers\CobaController;
+use App\Http\Controllers\PermintaanController;
+use App\Http\Controllers\HistoryPermintaanController;
+use App\Http\Controllers\HistoryBulanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,7 +32,12 @@ Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logou
 // akun ada di seeder
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    // tambahin masukin routenya sendiri yo
-});
+    Route::resource('/kelola', KelolaController::class);
+    Route::resource('/permintaan', PermintaanController::class);
+    Route::get('/history', [HistoryPermintaanController::class, 'index'])->name('historypermintaan');
+    Route::get('/bulanan', [HistoryBulanController::class, 'index'])->name('historybulan');
 
-Route::resource('/kelola', KelolaController::class);
+    // mencoba fitur edit dan detail di kelola controller tapi tidak bisa akhirnya aku buat controller baru nanti bisa dihapus
+    Route::get('/editcoba', [CobaController::class, 'index'])->name('editcoba');
+    Route::get('/detailcoba', [CobaController::class, 'detail'])->name('detailcoba');
+});

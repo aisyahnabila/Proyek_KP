@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KelolaController;
 use App\Http\Controllers\CobaController;
@@ -23,13 +24,21 @@ Route::get('/', function () {
     return view('auth/login');
 });
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-Route::resource('/kelola', KelolaController::class);
-Route::resource('/permintaan', PermintaanController::class);
-Route::get('/history', [HistoryPermintaanController::class, 'index'])->name('historypermintaan');
-Route::get('/bulanan', [HistoryBulanController::class, 'index'])->name('historybulan');
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login']);
+Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
 
-// mencoba fitur edit dan detail di kelola controller tapi tidak bisa akhirnya aku buat controller baru nanti bisa dihapus
-Route::get('/editcoba', [CobaController::class, 'index'])->name('editcoba');
-Route::get('/detailcoba', [CobaController::class, 'detail'])->name('detailcoba');
+// akses setelah user berhasil login
+// akun ada di seeder
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::resource('/kelola', KelolaController::class);
+    Route::resource('/permintaan', PermintaanController::class);
+    Route::get('/history', [HistoryPermintaanController::class, 'index'])->name('historypermintaan');
+    Route::get('/bulanan', [HistoryBulanController::class, 'index'])->name('historybulan');
+
+    // mencoba fitur edit dan detail di kelola controller tapi tidak bisa akhirnya aku buat controller baru nanti bisa dihapus
+    Route::get('/editcoba', [CobaController::class, 'index'])->name('editcoba');
+    Route::get('/detailcoba', [CobaController::class, 'detail'])->name('detailcoba');
+});
 

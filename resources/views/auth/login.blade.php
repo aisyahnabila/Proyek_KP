@@ -21,8 +21,8 @@
         @if (session('status'))
             <div id="flash-message"
                 class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
-                <span class="block sm:inline">{{ session('status') }}</span>
-                <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+                <span class="block sm:inline pr-10">{{ session('status') }}</span>
+                <span class="absolute top-0 right-0 px-4 py-3">
                     <svg id="close-flash-message" class="fill-current h-6 w-6 text-green-500 cursor-pointer"
                         role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                         <title>Close</title>

@@ -17,6 +17,23 @@
 
 <body class=" flex items-center justify-center min-h-screen">
     <div class="w-full max-w-md p-8 bg-blue-pv rounded-lg shadow-lg mt-14">
+        {{-- message status log out --}}
+        @if (session('status'))
+            <div id="flash-message"
+                class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                <span class="block sm:inline">{{ session('status') }}</span>
+                <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+                    <svg id="close-flash-message" class="fill-current h-6 w-6 text-green-500 cursor-pointer"
+                        role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                        <title>Close</title>
+                        <path
+                            d="M14.348 5.652a.5.5 0 00-.707 0L10 9.293 6.36 5.652a.5.5 0 10-.707.707L9.293 10l-3.64 3.64a.5.5 0 00.707.707L10 10.707l3.64 3.64a.5.5 0 00.707-.707L10.707 10l3.64-3.64a.5.5 0 000-.707z" />
+                    </svg>
+                </span>
+            </div>
+        @endif
+        {{-- message status log out End --}}
+
         <div class="flex justify-center mb-4">
             <img src="../img/logo-provinsi.png" alt="Logo 1" class="h-16 w-12 mr-4">
             <img src='../img/logo-dinsos.png' alt="Logo 2" class="ml-3 h-14 w-14">
@@ -77,6 +94,12 @@
         </form>
 
     </div>
+
+    <script>
+        document.getElementById('close-flash-message').addEventListener('click', function() {
+            document.getElementById('flash-message').style.display = 'none';
+        });
+    </script>
 </body>
 
 </html>

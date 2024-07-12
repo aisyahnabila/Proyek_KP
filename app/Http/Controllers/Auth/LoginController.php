@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Auth\Authenticatable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
+    use Authenticatable;
+
     public function showLoginForm()
     {
         return view('auth.login');
@@ -46,7 +49,7 @@ class LoginController extends Controller
         Auth::logout(); // Logout user
         $request->session()->invalidate(); // Invalidate session
         $request->session()->regenerateToken(); // Regenerate CSRF token
-
+        $request->session()->flash('status', 'Anda berhasil keluar dari Halaman Website Careventory');
         return redirect('/login'); // Redirect ke halaman login setelah logout
     }
 }

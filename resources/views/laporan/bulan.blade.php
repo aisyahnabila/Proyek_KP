@@ -24,15 +24,15 @@
                                 <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Sub Bag Umum dan Kepegawaian</a>
                             </li>
                             <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Promote</a>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Sub.Bag. Keuangan</a>
                             </li>
                             <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Activate account</a>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Bidang Rehabilitas Sosial</a>
                             </li>
                         </ul>
                     </div>
                 </div>
-                <!-- Filter unit kerja -->
+                <!-- Filter Bulan -->
                 <div>
                     <button id="dropdownActionButton2" data-dropdown-toggle="dropdownAction2" class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" type="button">
                         <span class="sr-only">Bulan</span>
@@ -45,18 +45,15 @@
                     <div id="dropdownAction2" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600">
                         <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownActionButton2">
                             <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Reward</a>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Januari</a>
                             </li>
                             <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Promote</a>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Februari</a>
                             </li>
                             <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Activate account</a>
+                                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Maret</a>
                             </li>
                         </ul>
-                        <div class="py-1">
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Delete User</a>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -71,41 +68,28 @@
             <table class="w-full text-sm text-left rtl:text-right text-gray-900 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-300 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
-                        <th scope="col" class="px-6 py-3">
-                            Tanggal Permintaan
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Kode Permintaan
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Unit Kerja
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Nama Pemohon
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Action
-                        </th>
+                        <th scope="col" class="px-5 py-3">Tanggal Permintaan</th>
+                        <th scope="col" class="px-5 py-3">Unit Kerja</th>
+                        <th scope="col" class="px-5 py-3">Kode Permintaan</th>
+                        <th scope="col" class="px-5 py-3">Nama Barang</th>
+                        <th scope="col" class="px-5 py-3">Spesifikasi Nama Barang</th>
+                        <th scope="col" class="px-5 py-3">Pengajuan Permintaan</th>
+                        <th scope="col" class="px-5 py-3">Informasi Sisa</th>
+                        <th scope="col" class="px-5 py-3">Satuan</th>
+                        <th scope="col" class="px-5 py-3">Keperluan</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr
-                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <td class="px-6 py-4">
-                            01 Juli 2024
-                        </td>
-                        <td class="px-6 py-4">
-                            A-001
-                        </td>
-                        <td class="px-6 py-4">
-                            Sub Bag Umum dan Kepegawaian
-                        </td>
-                        <td class="px-6 py-4">
-                            Bu Vedra
-                        </td>
-                        <td class="px-6 py-4">
-                            <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Detail</a>
-                        </td>
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                        <td class="px-5 py-4">01 Juli 2024</td>
+                        <td class="px-5 py-4">Sub Bag Umum dan Kepegawaian</td>
+                        <td class="px-5 py-4">A-001</td>
+                        <td class="px-5 py-4">Cutter Kecil</td>
+                        <td class="px-5 py-4">A-300, Joyko</td>
+                        <td class="px-5 py-4">1</td>
+                        <td class="px-5 py-4">1</td>
+                        <td class="px-5 py-4">Buah</td>
+                        <td class="px-5 py-4">Dinas</td>
                     </tr>
                 </tbody>
             </table>

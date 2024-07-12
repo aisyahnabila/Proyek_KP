@@ -26,6 +26,7 @@ class LoginController extends Controller
         $remember = $request->has('remember');
 
         if (Auth::attempt($credentials, $remember)) {
+            session(['username' => Auth::user()->username]);
             return redirect()->intended('/dashboard');
         }
 
@@ -46,7 +47,7 @@ class LoginController extends Controller
         Auth::logout(); // Logout user
         $request->session()->invalidate(); // Invalidate session
         $request->session()->regenerateToken(); // Regenerate CSRF token
-
+        $request->session()->flash('status', 'Anda berhasil keluar dari Halaman Website Careventory');
         return redirect('/login'); // Redirect ke halaman login setelah logout
     }
 }

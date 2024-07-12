@@ -75,9 +75,9 @@
                             Meter
                         </td>
                         <td class="px-6 py-4">
-                            <a href="/editcoba" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                            <a href="/editcoba" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Tambah Stok</a>
                             <a href="/detailcoba"
-                                class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Detail</a>
+                                class="border border-gray-800 font-medium text-blue-600 dark:text-blue-500 hover:underline">Detail</a>
                         </td>
                     </tr>
                 </tbody>

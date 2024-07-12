@@ -3,13 +3,25 @@
 body {
     font-family: "Poppins", sans-serif;
 }
-.bg-base{
+
+.bg-base {
     background-color: #38B6FF;
 }
-.bg-hover{
+
+.bg-hover {
     background-color: #FAAE1D;
 }
+
 /* login styling */
 .bg-blue-pv {
     background-color: #38B6FF;
+}
+
+#flash-message {
+    margin-bottom: 20px;
+    /* Memberikan jarak di bawah pesan flash */
+}
+
+.close-flash-message {
+    cursor: pointer;
 }

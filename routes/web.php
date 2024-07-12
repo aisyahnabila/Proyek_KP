@@ -41,4 +41,3 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/editcoba', [CobaController::class, 'index'])->name('editcoba');
     Route::get('/detailcoba', [CobaController::class, 'detail'])->name('detailcoba');
 });
-

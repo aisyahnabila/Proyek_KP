@@ -43,4 +43,3 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/detailcoba', [CobaController::class, 'detail'])->name('detailcoba');
     Route::get('/riwayatlogin', [RiwayatController::class, 'index'])->name('riwayatlogin');
 });
-

@@ -3,11 +3,11 @@
 @section('content')
     {{-- content --}}
     <div class="p-6 mt-2 sm:ml-64">
-        <div class="text-2xl my-4">Kelola Barang</div>
+        <div class="text-2xl my-4">Laporan Per Permintaan</div>
 
-        <div class="p-4 overflow-x-auto flex justify-end items-center pb-4 bg-white dark:bg-gray-900 space-x-4">
+        <div class="p-3 overflow-x-auto flex justify-end items-center pb-4 bg-white dark:bg-gray-900 space-x-4">
             <!-- Search Feature -->
-            <div class="relative w-full lg:w-auto lg:px-0 mt-5 lg:mt-0 lg:ml-4">
+            <div class="relative w-full lg:w-auto lg:px-0 mt-5 lg:mt-0 lg:ml-4 lg:mt-3">
                 <div class="relative">
                     <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                         <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -17,12 +17,6 @@
                     <input type="text" id="table-search-users" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-800 rounded-lg bg-white focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Cari">
                 </div>
             </div>
-
-            <!-- Button Tambah Data -->
-            <div>
-                <a href="{{ route('kelola.create') }}"
-                    class="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-yellow-900">Tambah</a>
-            </div>
         </div>
 
         {{-- Content --}}
@@ -31,22 +25,16 @@
                 <thead class="text-xs text-gray-700 uppercase bg-gray-300 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         <th scope="col" class="px-6 py-3">
-                            Kode Barang
+                            Tanggal Permintaan
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Kategori Barang
+                            Kode Permintaan
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Nama Barang
+                            Unit Kerja
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Spesifikasi Barang
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Jumlah
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Satuan
+                            Nama Pemohon
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Action
@@ -57,27 +45,19 @@
                     <tr
                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                         <td class="px-6 py-4">
-                            3101
+                            01 Juli 2024
                         </td>
                         <td class="px-6 py-4">
-                            Alat Tulis dan Kantor
+                            A-001
                         </td>
                         <td class="px-6 py-4">
-                            Cutter Kecil
+                            Sub Bag Umum dan Kepegawaian
                         </td>
                         <td class="px-6 py-4">
-                            A-300, Joyko
+                            Bu Vedra
                         </td>
                         <td class="px-6 py-4">
-                            10
-                        </td>
-                        <td class="px-6 py-4">
-                            Meter
-                        </td>
-                        <td class="px-6 py-4">
-                            <a href="/editcoba" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                            <a href="/detailcoba"
-                                class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Detail</a>
+                            <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Detail</a>
                         </td>
                     </tr>
                 </tbody>

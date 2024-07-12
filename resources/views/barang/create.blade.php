@@ -49,7 +49,7 @@
             </div>
 
             <!-- Third Row -->
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <!-- Nama Barang -->
                 <div>
                     <label for="nama-barang" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama
@@ -60,7 +60,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <!-- Spesifikasi Barang -->
                 <div>
                     <label for="spesifikasi-barang"

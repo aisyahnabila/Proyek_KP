@@ -16,7 +16,6 @@ body {
     background: rgb(255,255,255);
     background: linear-gradient(45deg, rgba(255,255,255,1) 0%, rgba(56,182,255,1) 75%);
 }
-
 /* login styling */
 .bg-blue-pv {
     background-color: #38B6FF;

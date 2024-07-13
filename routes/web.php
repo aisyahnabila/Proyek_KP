@@ -25,8 +25,11 @@ Route::get('/', function () {
     return view('auth/login');
 });
 
+// routing login
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
+
+// routing sign out
 Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
 
 // akses setelah user berhasil login

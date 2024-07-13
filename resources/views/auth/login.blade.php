@@ -16,12 +16,42 @@
 </head>
 
 <body class="flex items-center justify-center min-h-screen bg-white">
-    <div class="w-full max-w-4xl p-8 mt-14 bg-gradient rounded-lg shadow-lg flex flex-col lg:flex-row">
-        <!-- Left Content -->
-        <div class="flex flex-col items-center justify-center w-full lg:w-1/2 p-4 border-r">
-            <div class="flex justify-center mb-6">
-                <img src="../img/logo-provinsi.png" alt="Logo 1" class="h-34 w-32">
-                <img src='../img/logo-dinsos.png' alt="Logo 2" class="h-32 w-36">
+    <div class="w-full max-w-md p-8 bg-blue-pv rounded-lg shadow-lg mt-14">
+        {{-- message status log out --}}
+        @if (session('status'))
+            <div id="flash-message"
+                class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                <span class="block sm:inline pr-10">{{ session('status') }}</span>
+                <span class="absolute top-0 right-0 px-4 py-3">
+                    <svg id="close-flash-message" class="fill-current h-6 w-6 text-green-500 cursor-pointer"
+                        role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                        <title>Close</title>
+                        <path
+                            d="M14.348 5.652a.5.5 0 00-.707 0L10 9.293 6.36 5.652a.5.5 0 10-.707.707L9.293 10l-3.64 3.64a.5.5 0 00.707.707L10 10.707l3.64 3.64a.5.5 0 00.707-.707L10.707 10l3.64-3.64a.5.5 0 000-.707z" />
+                    </svg>
+                </span>
+            </div>
+        @endif
+        {{-- message status log out End --}}
+
+        <div class="flex justify-center mb-4">
+            <img src="../img/logo-provinsi.png" alt="Logo 1" class="h-16 w-12 mr-4">
+            <img src='../img/logo-dinsos.png' alt="Logo 2" class="ml-3 h-14 w-14">
+        </div>
+        <form method="POST" action="{{ route('login') }}">
+            @csrf
+            {{-- field username --}}
+            <div class="mb-5">
+                <label for="username"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
+                @if ($errors->has('username'))
+                    <div class="text-red-500 text-sm mb-1">
+                        {{ $errors->first('username') }}
+                    </div>
+                @endif
+                <input type="text" id="username" name="username"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Masukkan Username" value="{{ old('username') }}" required />
             </div>
             <img src="../img/Careventory.png" alt="Tulisan" class="w-60 mb-6">
             <p class="text-black mb-4 text-center">Selamat datang di Careventory, Sistem Informasi Inventori untuk Asset

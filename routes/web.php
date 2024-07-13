@@ -8,6 +8,7 @@ use App\Http\Controllers\CobaController;
 use App\Http\Controllers\PermintaanController;
 use App\Http\Controllers\HistoryPermintaanController;
 use App\Http\Controllers\HistoryBulanController;
+use App\Http\Controllers\RiwayatController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,4 +44,5 @@ Route::middleware(['auth'])->group(function () {
     // mencoba fitur edit dan detail di kelola controller tapi tidak bisa akhirnya aku buat controller baru nanti bisa dihapus
     Route::get('/editcoba', [CobaController::class, 'index'])->name('editcoba');
     Route::get('/detailcoba', [CobaController::class, 'detail'])->name('detailcoba');
+    Route::get('/riwayatlogin', [RiwayatController::class, 'index'])->name('riwayatlogin');
 });

@@ -24,7 +24,7 @@
                         <span class="sr-only">Open user menu</span>
                         <img class="w-8 h-8 rounded-full"
                             src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
-                        <span class="mx-2">Halo, Admin!</span>
+                        <span class="mx-2">Halo, {{ session('username') }} ! </span>
                         <svg class="mx-2 w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                             fill="none" viewBox="0 0 10 6">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -33,7 +33,7 @@
                     </button>
                     <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600"
                         id="dropdown-user">
-                        <a href="#"
+                        <a href="{{ route('riwayatlogin') }}"
                             class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                             role="menuitem">
                             Riwayat Login

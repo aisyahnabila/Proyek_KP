@@ -29,6 +29,7 @@ class LoginController extends Controller
         $remember = $request->has('remember');
 
         if (Auth::attempt($credentials, $remember)) {
+            session(['username' => Auth::user()->username]);
             return redirect()->intended('/dashboard');
         }
 

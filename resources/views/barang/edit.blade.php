@@ -27,31 +27,11 @@
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jumlah</label>
                     <input type="text" id="jumlah"
                         class="block w-full md:w-72 p-2 border border-gray-800 text-sm rounded bg-white focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Edit Stok Barang">
+                        placeholder="Masukkan Tambah Stok Barang">
                 </div>
             </div>
 
             <!-- Second Row -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <!-- Kategori Barang -->
-                <div>
-                    <label for="kategori-barang"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kategori Barang</label>
-                    <input type="text" id="kategori-barang disabled-input" aria-label="disabled input"
-                        class="text-sm block w-full md:w-72 p-2 bg-gray-100 border border-gray-800 rounded text-gray-900 cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        disabled placeholder="ATK">
-                </div>
-                <!-- Satuan -->
-                <div>
-                    <label for="satuan"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Satuan</label>
-                    <input type="text" id="satuan disabled-input" aria-label="disabled input"
-                        class="text-sm block w-full md:w-72 p-2 bg-gray-100 border border-gray-800 rounded text-gray-900 cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        disabled placeholder="Meter">
-                </div>
-            </div>
-
-            <!-- Third Row -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <!-- Nama Barang -->
                 <div>
@@ -60,6 +40,15 @@
                     <input type="text" id="nama-barang disabled-input" aria-label="disabled input"
                         class="text-sm block w-full md:w-72 p-2 bg-gray-100 border border-gray-800 rounded text-gray-900 cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         disabled placeholder="Cutter Kecil">
+                </div>
+
+                <!-- Satuan -->
+                <div>
+                    <label for="satuan"
+                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Satuan</label>
+                    <input type="text" id="satuan disabled-input" aria-label="disabled input"
+                        class="text-sm block w-full md:w-72 p-2 bg-gray-100 border border-gray-800 rounded text-gray-900 cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        disabled placeholder="Meter">
                 </div>
             </div>
 

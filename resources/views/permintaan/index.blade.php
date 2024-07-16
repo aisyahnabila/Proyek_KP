@@ -16,7 +16,7 @@
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                                 </svg>
                             </div>
-                            <input type="text" id="table-search-users" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Cari Barang">
+                            <input type="text" id="table-search-users" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Cari">
                         </div>
                     </div>
                 </div>
@@ -53,7 +53,7 @@
             <div class="flex-1 border overflow-x-auto shadow-xl sm:rounded p-4 bg-white dark:bg-gray-800">
                 <div class="text-lg mb-4">Detail Barang</div>
                 <div class="flex justify-end">
-                    <a href="{{route('permintaan.create')}}" class="px-4 py-2 bg-yellow-400 text-black rounded-lg font-medium text-sm">Buat Permintaan</a>
+                    <a href="{{route('permintaan.create')}}" class="font-semibold px-4 py-2 bg-yellow-400 text-black rounded-lg font-medium text-sm">Buat Permintaan</a>
                 </div>
             </div>
         </div>

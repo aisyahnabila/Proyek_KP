@@ -35,16 +35,30 @@ class KelolaController extends Controller
     // simpan barang baru
     public function store(Request $request)
     {
-        $request->validate([
-            'nama_barang' => 'required',
-            'spesifikasi_nama_barang' => 'required',
-            'jumlah' => 'required|integer',
-            'satuan' => 'required',
-            'id_kategori' => 'required|exists:kategori,id_kategori',
-        ]);
+        // $messages = [
+        //     'required' => ':Attribute harus diisi.',
+        //     'integer' => ':Attribute harus berupa angka.',
+        //     'exists' => ':Attribute tidak valid.',
+        // ];
 
-        Barang::create($request->all());
-        return redirect()->route('barang.index')->with('success', 'Barang berhasil ditambahkan');
+        // $request->validate([
+        //     'nama_barang' => 'required',
+        //     'spesifikasi_nama_barang' => 'required',
+        //     'jumlah' => 'required|integer',
+        //     'satuan' => 'required',
+        //     'id_kategori' => 'required|exists:kategori,id_kategori',
+        // ]);
+
+        // Create new Barang entry
+        Barang::create([
+            'nama_barang' => $request->nama_barang,
+            'spesifikasi_nama_barang' => $request->spesifikasi_nama_barang,
+            'jumlah' => $request->jumlah,
+            'satuan' => $request->satuan,
+            'id_kategori' => $request->id_kategori,
+        ]);
+        // Redirect back to dashboard with success message
+        return redirect()->route('dashboard')->with('success', 'Barang berhasil ditambahkan');
     }
 
     /**

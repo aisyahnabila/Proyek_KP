@@ -35,38 +35,27 @@ class KelolaController extends Controller
     // simpan barang baru
     public function store(Request $request)
     {
-        // $messages = [
-        //     'required' => ':Attribute harus diisi.',
-        //     'integer' => ':Attribute harus berupa angka.',
-        //     'exists' => ':Attribute tidak valid.',
-        // ];
-
-        // $request->validate([
-        //     'nama_barang' => 'required',
-        //     'spesifikasi_nama_barang' => 'required',
-        //     'jumlah' => 'required|integer',
-        //     'satuan' => 'required',
-        //     'id_kategori' => 'required|exists:kategori,id_kategori',
-        // ]);
-
-        // Create new Barang entry
-        Barang::create([
-            'nama_barang' => $request->nama_barang,
-            'spesifikasi_nama_barang' => $request->spesifikasi_nama_barang,
-            'jumlah' => $request->jumlah,
-            'satuan' => $request->satuan,
-            'id_kategori' => $request->id_kategori,
+        $request->validate([
+            'id_kategori' => 'required|exists:kategori,id_kategori',
+            'nama_barang' => 'required',
+            'spesifikasi_nama_barang' => 'required',
+            'jumlah' => 'required|integer',
+            'satuan' => 'required',
         ]);
-        // Redirect back to dashboard with success message
-        return redirect()->route('dashboard')->with('success', 'Barang berhasil ditambahkan');
+
+        Barang::create($request->all());
+
+        // Set flash message
+        return redirect()->route('barang.index')->with('success', 'Added Data Successfully!');
     }
 
     /**
      * Display the specified resource.
      */
     // manampilkan detail barang
-    public function show(Barang $barang)
+    public function show($id_barang)
     {
+        $barang = Barang::findOrFail($id_barang);
         return view('barang.show', compact('barang'));
     }
 

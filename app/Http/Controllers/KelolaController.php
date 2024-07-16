@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Barang;
+use App\Models\Kategori;
 use Illuminate\Http\Request;
 
 class KelolaController extends Controller
@@ -23,7 +24,9 @@ class KelolaController extends Controller
     // tampilkan form untuk menambah barang
     public function create()
     {
-        return view('barang.create');
+
+        $kategori = Kategori::all();
+        return view('barang.create', compact('kategori'));
     }
 
     /**
@@ -91,5 +94,11 @@ class KelolaController extends Controller
     {
         $barang->delete();
         return redirect()->route('barang.index')->with('success', 'Barang berhasil dihapus');
+    }
+
+    public function showForm()
+    {
+        $kategori = Kategori::all();
+        return view('barang.create', compact('kategori'));
     }
 }

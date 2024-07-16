@@ -12,6 +12,10 @@ body {
     background-color: #FAAE1D;
 }
 
+.black-800{
+    background-color: #212529;
+}
+
 .bg-gradient {
     background: rgb(255,255,255);
     background: linear-gradient(45deg, rgba(255,255,255,1) 0%, rgba(56,182,255,1) 75%);

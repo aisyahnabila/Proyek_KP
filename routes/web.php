@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Kategori;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
@@ -36,7 +37,8 @@ Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logou
 // akun ada di seeder
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::resource('/kelola', KelolaController::class);
+    Route::get('/kelola/create', [KelolaController::class, 'showForm'])->name('kelola.create');
+    Route::resource('/kelola', KelolaController::class)->except(['create']);
     Route::resource('/permintaan', PermintaanController::class);
     Route::get('/history', [HistoryPermintaanController::class, 'index'])->name('historypermintaan');
     Route::get('/bulanan', [HistoryBulanController::class, 'index'])->name('historybulan');

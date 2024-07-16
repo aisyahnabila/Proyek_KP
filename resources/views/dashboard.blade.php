@@ -78,6 +78,7 @@
                     </div>
                 </div>
                 <label for="table-search" class="sr-only">Search</label>
+                
                 <div class="relative">
                     <div
                         class="absolute inset-y-0 left-0 rtl:inset-r-0 rtl:right-0 flex items-center ps-3 pointer-events-none">

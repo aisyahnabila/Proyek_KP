@@ -22,8 +22,9 @@
                         class="mr-5 flex items-center text-sm rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
                         aria-expanded="false" data-dropdown-toggle="dropdown-user">
                         <span class="sr-only">Open user menu</span>
-                        <img class="w-8 h-8 rounded-full"
-                            src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
+                        {{-- image profile --}}
+                        {{-- <img class="w-8 h-8 rounded-full"
+                            src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo"> --}}
                         <span class="mx-2">Halo, {{ session('username') }} ! </span>
                         <svg class="mx-2 w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                             fill="none" viewBox="0 0 10 6">
@@ -63,4 +64,3 @@
         document.getElementById('logoutForm').submit(); // Submit form untuk logout
     });
 </script>
-

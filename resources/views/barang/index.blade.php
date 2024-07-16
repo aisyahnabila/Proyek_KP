@@ -5,7 +5,6 @@
     <div class="p-6 mt-2 sm:ml-64">
         <div class="text-2xl my-4">Kelola Barang</div>
 
-
         <div class="p-4 overflow-x-auto flex justify-end items-center pb-4 bg-white dark:bg-gray-900 space-x-4">
             <!-- Search Feature -->
             <div class="relative w-full lg:w-auto lg:px-0 mt-5 lg:mt-0 lg:ml-4">
@@ -49,7 +48,7 @@
 
         {{-- Content --}}
         <div class="border relative overflow-x-auto shadow-xl sm:rounded">
-            <table class="w-full text-sm text-left rtl:text-right text-gray-900 dark:text-gray-400">
+            <table id="barang-table" class="w-full text-sm text-left rtl:text-right text-gray-900 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-300 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         <th scope="col" class="px-6 py-3">No</th>
@@ -62,25 +61,25 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($barangs as $index => $barang)
-                        <tr
-                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                            <td class="px-6 py-3">{{ $index + 1 }}</td>
-                            <td class="px-6 py-4">{{ $barang->kategori->kode_barang }}</td>
-                            <td class="px-6 py-4">{{ $barang->nama_barang }}</td>
-                            <td class="px-6 py-4">{{ $barang->spesifikasi_nama_barang }}</td>
-                            <td class="px-6 py-4">{{ $barang->jumlah }}</td>
-                            <td class="px-6 py-4">{{ $barang->satuan }}</td>
-                            <td class="px-6 py-4">
-                                <a href="{{ route('barang.edit', $barang->id_barang) }}"
-                                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Tambah Jumlah</a> |
-                                <a href="{{ route('barang.show', $barang->id_barang) }}"
-                                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Detail</a>
-                            </td>
-                        </tr>
-                    @endforeach
+                    @include('barang.partials.barang_table')
                 </tbody>
             </table>
         </div>
     </div>
+
+    <script>
+        document.getElementById('table-search-users').addEventListener('keyup', function() {
+            let searchQuery = this.value.toLowerCase();
+            let allRows = document.querySelectorAll('#barang-table tbody tr');
+
+            allRows.forEach(row => {
+                let rowText = row.innerText.toLowerCase();
+                if (rowText.includes(searchQuery)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    </script>
 @endsection

@@ -18,6 +18,20 @@ class KelolaController extends Controller
         return view('barang.index', compact('barangs'));
     }
 
+
+    public function search(Request $request)
+    {
+        $search = $request->input('search');
+
+        $barangs = Barang::where('nama_barang', 'like', "%{$search}%")
+            ->orWhere('kode_barang', 'like', "%{$search}%")
+            ->orWhere('spesifikasi_nama_barang', 'like', "%{$search}%")
+            ->get();
+
+        return view('kelola.partials.barang_table', compact('barangs'));
+    }
+
+
     /**
      * Show the form for creating a new resource.
      */
@@ -104,4 +118,5 @@ class KelolaController extends Controller
         $kategori = Kategori::all();
         return view('barang.create', compact('kategori'));
     }
+
 }

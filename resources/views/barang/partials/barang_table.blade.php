@@ -1,4 +1,3 @@
-{{-- resources/views/kelola/partials/barang_table.blade.php --}}
 @foreach ($barangs as $index => $barang)
     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
         <td class="px-6 py-3">{{ $index + 1 }}</td>

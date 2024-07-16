@@ -46,7 +46,7 @@ class KelolaController extends Controller
         Barang::create($request->all());
 
         // Set flash message
-        return redirect()->route('barang.index')->with('success', 'Added Data Successfully!');
+        return redirect()->route('barang.index')->with('Berhasil', 'Data Berhasil Ditambahkan!');
     }
 
     /**

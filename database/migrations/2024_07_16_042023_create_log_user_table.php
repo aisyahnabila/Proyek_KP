@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('id_user')
-            ->references('id')->on('users') // Pastikan kolom yang dirujuk sesuai
+            ->references('id')->on('users')
             ->onDelete('cascade');
         });
     }

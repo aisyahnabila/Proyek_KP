@@ -53,7 +53,7 @@
             <div class="flex-1 border overflow-x-auto shadow-xl sm:rounded p-4 bg-white dark:bg-gray-800">
                 <div class="text-lg mb-4">Detail Barang</div>
                 <div class="flex justify-end">
-                    <a href="{{route('permintaan.create')}}" class="px-4 py-2 bg-yellow-400 text-black rounded-lg font-medium text-sm">Buat Permintaan</a>
+                    <a href="{{route('permintaan.create')}}" class="font-semibold px-4 py-2 bg-yellow-400 text-black rounded-lg font-medium text-sm">Buat Permintaan</a>
                 </div>
             </div>
         </div>

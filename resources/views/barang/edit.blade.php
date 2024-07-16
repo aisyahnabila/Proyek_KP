@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="p-6 mt-2 sm:ml-64">
-        <div class="text-2xl my-4">Form Edit Stok</div>
+        <div class="text-2xl my-4">Form Edit Jumlah Barang</div>
 
         {{-- Content --}}
         <form class="mx-auto p-5 border bg-white shadow-xl rounded space-y-4">
@@ -67,9 +67,9 @@
             <!-- Buttons -->
             <div class="flex justify-end space-x-4">
                 <a href="{{ route('kelola.index') }}"
-                    class="text-black bg-white border border-black hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5">Kembali</a>
+                    class="font-semibold text-black bg-white border border-gray-900 hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5">Kembali</a>
                 <button type="submit"
-                    class="text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-600 font-medium rounded-lg text-sm px-5 py-2.5">Simpan
+                    class="font-semibold text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-600 font-medium rounded-lg text-sm px-5 py-2.5">Simpan
                     Data</button>
             </div>
 

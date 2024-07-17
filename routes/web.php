@@ -26,25 +26,49 @@ Route::get('/', function () {
     return view('auth/login');
 });
 
-// routing login
+// Routing login
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 
-// routing sign out
-Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
+// Routing sign out
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-// akses setelah user berhasil login
-// akun ada di seeder
+// Akses setelah user berhasil login
+// Akun ada di seeder
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Routes untuk Kelola
+    Route::get('/kelola/index', [KelolaController::class, 'index'])->name('kelola.index');
     Route::get('/kelola/create', [KelolaController::class, 'showForm'])->name('kelola.create');
-    Route::resource('/kelola', KelolaController::class)->except(['create']);
+    Route::get('/barang/search', [KelolaController::class, 'search'])->name('barang.search');
+
+
+    // Routes untuk CRUD form tambah barang
+    Route::prefix('barang')->group(function () {
+        Route::get('/', [KelolaController::class, 'index'])->name('barang.index');
+        Route::get('/create', [KelolaController::class, 'create'])->name('barang.create');
+        Route::post('/', [KelolaController::class, 'store'])->name('barang.store');
+        Route::get('/{barang}', [KelolaController::class, 'show'])->name('barang.show');
+        Route::get('/{barang}/edit', [KelolaController::class, 'edit'])->name('barang.edit');
+        Route::put('/{barang}', [KelolaController::class, 'update'])->name('barang.update');
+    });
+
+    // Routes untuk Permintaan
     Route::resource('/permintaan', PermintaanController::class);
+
+    // Routes untuk History
     Route::get('/history', [HistoryPermintaanController::class, 'index'])->name('historypermintaan');
     Route::get('/bulanan', [HistoryBulanController::class, 'index'])->name('historybulan');
 
-    // mencoba fitur edit dan detail di kelola controller tapi tidak bisa akhirnya aku buat controller baru nanti bisa dihapus
-    Route::get('/editcoba', [CobaController::class, 'index'])->name('editcoba');
-    Route::get('/detailcoba', [CobaController::class, 'detail'])->name('detailcoba');
+    // Input form tambah barang (duplikat, bisa dihapus jika tidak diperlukan)
+    // Route::get('/barangs/create', [KelolaController::class, 'create'])->name('barangs.create');
+    // Route::post('/barangs', [KelolaController::class, 'store'])->name('barangs.store');
+
+    // Routes untuk CobaController (untuk fitur edit dan detail coba)
+    // Route::get('/editcoba', [CobaController::class, 'index'])->name('editcoba');
+    // Route::get('/detailcoba', [CobaController::class, 'detail'])->name('detailcoba');
+
+    // Routes untuk Riwayat Login
     Route::get('/riwayatlogin', [RiwayatController::class, 'index'])->name('riwayatlogin');
 });

@@ -17,7 +17,7 @@
                             Tanggal Login
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Role
+                            Username
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Status
@@ -25,21 +25,23 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr
-                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <td class="px-6 py-4">
-                            01
-                        </td>
-                        <td class="px-6 py-4">
-                            02/07/2024  08:15:05
-                        </td>
-                        <td class="px-6 py-4">
-                            admin
-                        </td>
-                        <td class="px-6 py-4">
-                            SUCCESS
-                        </td>
-                    </tr>
+                    @foreach ($logUsers as $logUser)
+                        <tr
+                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                            <td class="px-6 py-4">
+                                {{ $loop->iteration }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ $logUser->created_at->format('Y-m-d H:i:s') }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ $logUser->user->username }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ $logUser->status }}
+                            </td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>

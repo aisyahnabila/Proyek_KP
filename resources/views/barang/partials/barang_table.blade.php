@@ -7,7 +7,7 @@
         <td class="px-6 py-4">{{ $barang->jumlah }}</td>
         <td class="px-6 py-4">{{ $barang->satuan }}</td>
         <td class="px-6 py-4">
-            <a href="{{ route('barang.edit', $barang->id_barang) }}"
+            <a href="{{ route('barang.tambahJumlahForm', $barang->id_barang) }}"
                 class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Tambah Jumlah</a> |
             <a href="{{ route('barang.show', $barang->id_barang) }}"
                 class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Detail</a>

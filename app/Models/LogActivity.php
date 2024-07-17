@@ -10,13 +10,14 @@ class LogActivity extends Model
     use HasFactory;
 
     protected $table = 'log_activity';
-    protected $primaryKey = 'id_log_barang';
+    protected $primaryKey = 'id_log';
 
     protected $fillable = [
         'id_barang',
         'timestamp',
+        'jumlah_masuk',
+        'jumlah_keluar',
         'sisa',
-        'status',
         'permintaan_ID',
     ];
 

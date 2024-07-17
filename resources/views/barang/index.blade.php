@@ -1,12 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-    {{-- content --}}
     <div class="p-6 mt-2 sm:ml-64">
         <div class="text-2xl my-4">Kelola Barang</div>
 
         <div class="p-4 overflow-x-auto flex justify-end items-center pb-4 bg-white dark:bg-gray-900 space-x-4">
-            <!-- Search Feature -->
             <div class="relative w-full lg:w-auto lg:px-0 mt-5 lg:mt-0 lg:ml-4">
                 <div class="relative">
                     <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -22,14 +20,12 @@
                 </div>
             </div>
 
-            <!-- Button Tambah Data -->
             <div>
                 <a href="{{ route('kelola.create') }}"
                     class="focus:outline-none text-black font-semibold bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-yellow-900">Tambah</a>
             </div>
         </div>
 
-        {{-- Flash Message --}}
         @if (session('success'))
             <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-3" role="alert">
                 <strong class="font-bold">Success!</strong>
@@ -44,9 +40,7 @@
                 </span>
             </div>
         @endif
-        {{-- Flash Message End --}}
 
-        {{-- Content --}}
         <div class="border relative overflow-x-auto shadow-xl sm:rounded">
             <table id="barang-table" class="w-full text-sm text-left rtl:text-right text-gray-900 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-300 dark:bg-gray-700 dark:text-gray-400">

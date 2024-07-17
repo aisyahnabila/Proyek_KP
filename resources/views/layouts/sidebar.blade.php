@@ -81,5 +81,9 @@
                 </a>
             </li>
         </ul>
+
+        <div class="mt-16 text-sm text-gray-300 text-center">
+            &copy; 2024 Tim Tel-U. All rights reserved.
+        </div>
     </div>
 </aside>

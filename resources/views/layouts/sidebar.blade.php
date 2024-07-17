@@ -4,7 +4,7 @@
 <aside id="logo-sidebar"
     class="fixed top-0 left-0 z-40 w-64 h-screen pt-10 transition-transform -translate-x-full bg-base border-r border-gray-300 sm:translate-x-0 shadow-xl"
     aria-label="Sidebar">
-    <a href="/dashboard" class="flex ms-8 mb-3">
+    <a href="/dashboard" class="flex ms-8 mb-4">
         <img src="{{ asset('img/logo-provinsi.png') }}" class="h-14 me-3" alt="Logo Provinsi" />
         <img src="{{ asset('img/logo-dinsos.png') }}" class="h-14 me-3" alt="Logo Dinsos" />
     </a>
@@ -23,7 +23,7 @@
                         <path
                             d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
                     </svg>
-                    <span class="ms-3">Dashboard</span>
+                    <span class="flex-1 ms-3 whitespace-nowrap">Dashboard</span>
                 </a>
             </li>
 
@@ -43,7 +43,7 @@
             {{-- permintaan barang --}}
             <li>
                 <a href="{{ route('permintaan.index') }}"
-                    class="text-sm flex items-center p-2 text-white rounded-lg dark:text-white hover:bg-yellow-500 dark:hover:bg-gray-700 group">
+                    class="mb-3 text-sm flex items-center p-2 text-white rounded-lg dark:text-white hover:bg-yellow-500 dark:hover:bg-gray-700 group">
 
                     <svg class="flex-shrink-0 w-5 h-5 text-white transition duration-75 dark:text-gray-400 group-hover:text-blue-700 dark:group-hover:text-white"
                         aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">

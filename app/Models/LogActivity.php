@@ -18,7 +18,7 @@ class LogActivity extends Model
         'jumlah_masuk',
         'jumlah_keluar',
         'sisa',
-        'permintaan_ID',
+        'id_permintaan'
     ];
 
     // Relasi dengan Barang

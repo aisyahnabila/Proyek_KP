@@ -19,7 +19,7 @@
             <div class="flex items-center">
                 <div class="flex items-center ms-3">
                     <button type="button"
-                        class="mr-5 flex items-center text-sm rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+                        class="mr-5 my-2 flex items-center text-sm rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
                         aria-expanded="false" data-dropdown-toggle="dropdown-user">
                         <span class="sr-only">Open user menu</span>
                         {{-- image profile --}}

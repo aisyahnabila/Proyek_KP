@@ -71,15 +71,37 @@
         document.getElementById('table-search-users').addEventListener('keyup', function() {
             let searchQuery = this.value.toLowerCase();
             let allRows = document.querySelectorAll('#barang-table tbody tr');
+            let noResultsRow = document.getElementById('no-results-row');
+            let noDataRow = document.getElementById('no-data-row');
+            let rowFound = false;
 
             allRows.forEach(row => {
-                let rowText = row.innerText.toLowerCase();
-                if (rowText.includes(searchQuery)) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
+                if (row !== noResultsRow && row !== noDataRow) {
+                    let rowText = row.innerText.toLowerCase();
+                    if (rowText.includes(searchQuery)) {
+                        row.style.display = '';
+                        rowFound = true;
+                    } else {
+                        row.style.display = 'none';
+                    }
                 }
             });
+
+            if (!rowFound && searchQuery !== '') {
+                noResultsRow.style.display = '';
+            } else {
+                noResultsRow.style.display = 'none';
+            }
+
+            // Hide "no data" row if there's a search query
+            if (searchQuery !== '') {
+                noDataRow.style.display = 'none';
+            } else {
+                // Show "no data" row if there are no rows and no search query
+                if (!rowFound && !searchQuery) {
+                    noDataRow.style.display = '';
+                }
+            }
         });
     </script>
 @endsection

@@ -18,6 +18,20 @@ class KelolaController extends Controller
         return view('barang.index', compact('barangs'));
     }
 
+
+    public function search(Request $request)
+    {
+        $search = $request->input('search');
+
+        $barangs = Barang::where('nama_barang', 'like', "%{$search}%")
+            ->orWhere('kode_barang', 'like', "%{$search}%")
+            ->orWhere('spesifikasi_nama_barang', 'like', "%{$search}%")
+            ->get();
+
+        return view('kelola.partials.barang_table', compact('barangs'));
+    }
+
+
     /**
      * Show the form for creating a new resource.
      */
@@ -36,23 +50,26 @@ class KelolaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'id_kategori' => 'required|exists:kategori,id_kategori',
             'nama_barang' => 'required',
             'spesifikasi_nama_barang' => 'required',
             'jumlah' => 'required|integer',
             'satuan' => 'required',
-            'id_kategori' => 'required|exists:kategori,id_kategori',
         ]);
 
         Barang::create($request->all());
-        return redirect()->route('barang.index')->with('success', 'Barang berhasil ditambahkan');
+
+        // Set flash message
+        return redirect()->route('barang.index')->with('Berhasil', 'Data Berhasil Ditambahkan!');
     }
 
     /**
      * Display the specified resource.
      */
     // manampilkan detail barang
-    public function show(Barang $barang)
+    public function show($id_barang)
     {
+        $barang = Barang::findOrFail($id_barang);
         return view('barang.show', compact('barang'));
     }
 
@@ -101,4 +118,5 @@ class KelolaController extends Controller
         $kategori = Kategori::all();
         return view('barang.create', compact('kategori'));
     }
+
 }

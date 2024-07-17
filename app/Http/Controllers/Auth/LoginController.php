@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\LogUser;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -29,6 +30,10 @@ class LoginController extends Controller
         $remember = $request->has('remember');
 
         if (Auth::attempt($credentials, $remember)) {
+            LogUser::create([
+                'id_user' => Auth::id(),
+                'status' => 'login',
+            ]);
             session(['username' => Auth::user()->username]);
             return redirect()->intended('/dashboard');
         }
@@ -47,7 +52,15 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
+        // Capture the user ID before logging out
+        $userId = Auth::id();
+
+        LogUser::create([
+            'id_user' => $userId,
+            'status' => 'logout',
+        ]);
         Auth::logout(); // Logout user
+
         $request->session()->invalidate(); // Invalidate session
         $request->session()->regenerateToken(); // Regenerate CSRF token
         $request->session()->flash('status', 'Anda berhasil keluar dari Halaman Website Careventory');

@@ -10,11 +10,15 @@
             <div class="relative w-full lg:w-auto lg:px-0 mt-5 lg:mt-0 lg:ml-4">
                 <div class="relative">
                     <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                         </svg>
                     </div>
-                    <input type="text" id="table-search-users" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-800 rounded-lg bg-white focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Cari">
+                    <input type="text" id="table-search-users"
+                        class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-800 rounded-lg bg-white focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="Cari">
                 </div>
             </div>
 
@@ -25,9 +29,26 @@
             </div>
         </div>
 
+        {{-- Flash Message --}}
+        @if (session('success'))
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-3" role="alert">
+                <strong class="font-bold">Success!</strong>
+                <span class="block sm:inline">{{ session('success') }}</span>
+                <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+                    <svg class="fill-current h-6 w-6 text-green-500" role="button" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20">
+                        <title>Close</title>
+                        <path
+                            d="M14.348 5.652a.5.5 0 010 .707L10.707 10l3.641 3.641a.5.5 0 11-.707.707L10 10.707l-3.641 3.641a.5.5 0 11-.707-.707L9.293 10 5.652 6.359a.5.5 0 01.707-.707L10 9.293l3.641-3.641a.5.5 0 01.707 0z" />
+                    </svg>
+                </span>
+            </div>
+        @endif
+        {{-- Flash Message End --}}
+
         {{-- Content --}}
         <div class="border relative overflow-x-auto shadow-xl sm:rounded">
-            <table class="w-full text-sm text-left rtl:text-right text-gray-900 dark:text-gray-400">
+            <table id="barang-table" class="w-full text-sm text-left rtl:text-right text-gray-900 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-300 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         <th scope="col" class="px-6 py-3">No</th>
@@ -40,21 +61,25 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <td class="px-6 py-3">1</td>
-                        <td class="px-6 py-4">3101</td>
-                        <td class="px-6 py-4">Cutter Kecil</td>
-                        <td class="px-6 py-4">A-300, Joyko</td>
-                        <td class="px-6 py-4">10</td>
-                        <td class="px-6 py-4">Meter</td>
-                        <td class="px-6 py-4">
-                            <a href="/editcoba" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Tambah Jumlah</a>
-                            <a href="/detailcoba"
-                                class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Detail</a>
-                        </td>
-                    </tr>
+                    @include('barang.partials.barang_table')
                 </tbody>
             </table>
         </div>
     </div>
+
+    <script>
+        document.getElementById('table-search-users').addEventListener('keyup', function() {
+            let searchQuery = this.value.toLowerCase();
+            let allRows = document.querySelectorAll('#barang-table tbody tr');
+
+            allRows.forEach(row => {
+                let rowText = row.innerText.toLowerCase();
+                if (rowText.includes(searchQuery)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    </script>
 @endsection

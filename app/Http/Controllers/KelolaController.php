@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Barang;
 use App\Models\Kategori;
+use App\Models\LogActivity;
 use Illuminate\Http\Request;
 
 class KelolaController extends Controller
@@ -70,7 +71,9 @@ class KelolaController extends Controller
     public function show($id_barang)
     {
         $barang = Barang::findOrFail($id_barang);
-        return view('barang.show', compact('barang'));
+        $log_activities = LogActivity::where('id_barang', $id_barang)->get();
+
+        return view('barang.history', compact('barang', 'log_activities'));
     }
 
     /**
@@ -119,4 +122,70 @@ class KelolaController extends Controller
         return view('barang.create', compact('kategori'));
     }
 
+    public function showTambahJumlahForm($id)
+    {
+        $barang = Barang::findOrFail($id);
+        return view('barang.edit', compact('barang'));
+    }
+
+    public function tambahJumlah(Request $request, $id)
+    {
+        $request->validate([
+            'jumlah' => 'required|integer|min:1',
+        ]);
+
+        $barang = Barang::findOrFail($id);
+        $barang->jumlah += $request->jumlah;
+        $barang->save();
+
+        return redirect()->route('kelola.index')->with('success', 'Jumlah barang berhasil ditambahkan');
+    }
+
+    public function logBarangMasuk(Request $request, $id_barang)
+    {
+        $barang = Barang::findOrFail($id_barang);
+
+        $request->validate([
+            'jumlah_masuk' => 'required|integer|min:1',
+        ]);
+
+        $barang->jumlah += $request->jumlah_masuk;
+        $barang->save();
+
+        LogActivity::create([
+            'id_barang' => $barang->id_barang,
+            'timestamp' => now(),
+            'jumlah_masuk' => $request->jumlah_masuk,
+            'jumlah_keluar' => 0,
+            'sisa' => $barang->jumlah,
+        ]);
+
+        return redirect()->route('barang.show', $barang->id_barang)->with('success', 'Jumlah barang berhasil ditambahkan');
+    }
+
+    public function logBarangKeluar(Request $request, $id_barang)
+    {
+        $barang = Barang::findOrFail($id_barang);
+
+        $request->validate([
+            'jumlah_keluar' => 'required|integer|min:1',
+        ]);
+
+        if ($barang->jumlah < $request->jumlah_keluar) {
+            return redirect()->route('barang.show', $barang->id_barang)->with('error', 'Jumlah barang tidak mencukupi');
+        }
+
+        $barang->jumlah -= $request->jumlah_keluar;
+        $barang->save();
+
+        LogActivity::create([
+            'id_barang' => $barang->id_barang,
+            'timestamp' => now(),
+            'jumlah_masuk' => 0,
+            'jumlah_keluar' => $request->jumlah_keluar,
+            'sisa' => $barang->jumlah,
+        ]);
+
+        return redirect()->route('barang.show', $barang->id_barang)->with('success', 'Jumlah barang berhasil dikurangi');
+    }
 }

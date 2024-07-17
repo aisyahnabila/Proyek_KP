@@ -52,7 +52,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/{barang}', [KelolaController::class, 'show'])->name('barang.show');
         Route::get('/{barang}/edit', [KelolaController::class, 'edit'])->name('barang.edit');
         Route::put('/{barang}', [KelolaController::class, 'update'])->name('barang.update');
-        // jumlah barang
+        Route::delete('/{barang}', [KelolaController::class, 'destroy'])->name('barang.destroy');
+
         Route::get('/tambah-jumlah/{id}', [KelolaController::class, 'showTambahJumlahForm'])->name('barang.tambahJumlahForm');
         Route::post('/tambah-jumlah/{id}', [KelolaController::class, 'tambahJumlah'])->name('barang.tambahJumlah');
 

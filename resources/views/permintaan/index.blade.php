@@ -37,46 +37,14 @@
                     </div>
                     <!-- Modal body -->
                     <div class="p-4 md:p-5 space-y-4">
-                        {{-- Content --}}
-                        <div class="space-y-4">
-                            <div class="flex items-center justify-between h-12 rounded bg-white dark:bg-gray-800 p-2">
-                                <span class="text-black dark:text-gray-500">Cutter Kecil</span>
-                                <div class="flex items-center space-x-2">
-                                    <button class="text-black border border-gray-700 px-3 py-1 rounded">+</button>
-                                    <span class="text-black text-xl p-2">2</span>
-                                    <button class="text-black border border-gray-700 px-3 py-1 rounded">-</button>
-                                    <button class="text-black p-2 bg-gray-300 rounded">
-                                        <i class="fa-solid fa-trash-can"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="flex items-center justify-between h-12 rounded bg-white dark:bg-gray-800 p-2">
-                                <span class="text-black dark:text-gray-500">Tipex / tape</span>
-                                <div class="flex items-center space-x-2">
-                                    <button class="text-black border border-gray-700 px-3 py-1 rounded">+</button>
-                                    <span class="text-black text-xl p-2">6</span>
-                                    <button class="text-black border border-gray-700 px-3 py-1 rounded">-</button>
-                                    <button class="text-black p-2 bg-gray-300 rounded">
-                                        <i class="fa-solid fa-trash-can"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="flex items-center justify-between h-12 rounded bg-white dark:bg-gray-800 p-2">
-                                <span class="text-black dark:text-gray-500">Tisu Kamar Mandi</span>
-                                <div class="flex items-center space-x-2">
-                                    <button class="text-black border border-gray-700 px-3 py-1 rounded">+</button>
-                                    <span class="text-black text-xl p-2">4</span>
-                                    <button class="text-black border border-gray-700 px-3 py-1 rounded">-</button>
-                                    <button class="text-black p-2 bg-gray-300 rounded">
-                                        <i class="fa-solid fa-trash-can"></i>
-                                    </button>
-                                </div>
-                            </div>
+                        <div id="cart-items" class="space-y-4">
+                            <!-- Cart items will be dynamically added here -->
                         </div>
                     </div>
                     <!-- Modal footer -->
                     <div class="flex items-center p-3 md:p-3 border-t border-gray-200 rounded-b dark:border-gray-600">
-                        <a href="#" class="font-semibold text-black bg-white border border-gray-900 hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5">Kembali</a>
+                        <a href="#"
+                            class="font-semibold text-black bg-white border border-gray-900 hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5">Kembali</a>
                         <a href="{{ route('permintaan.create') }}" data-modal-hide="default-modal" type="button"
                             class="flex text-black bg-yellow-400 ml-3 hover:bg-yellow-700 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                             Buat Permintaan
@@ -117,37 +85,22 @@
                         </tr>
                     </thead>
                     <tbody id="item-table-body">
-                        <tr
-                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                            <td class="px-6 py-4">Cutter Kecil</td>
-                            <td class="px-6 py-4">apaya</td>
-                            <td class="px-6 py-4">10</td>
-                            <td class="px-6 py-4">
-                                <a href="#"
-                                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Tambah</a>
-                            </td>
-                        </tr>
-                        <!-- Add more rows here -->
-                        <tr
-                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                            <td class="px-6 py-4">Paper clip k, no. 1</td>
-                            <td class="px-6 py-4">apaya</td>
-                            <td class="px-6 py-4">5</td>
-                            <td class="px-6 py-4">
-                                <a href="#"
-                                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Tambah</a>
-                            </td>
-                        </tr>
-                        <tr
-                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                            <td class="px-6 py-4">Pulpen</td>
-                            <td class="px-6 py-4">apaya</td>
-                            <td class="px-6 py-4">15</td>
-                            <td class="px-6 py-4">
-                                <a href="#"
-                                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Tambah</a>
-                            </td>
-                        </tr>
+                        @foreach ($items as $item)
+                            <tr
+                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <td class="px-6 py-4">{{ $item->nama_barang }}</td>
+                                <td class="px-6 py-4">{{ $item->spesifikasi_nama_barang }}</td>
+                                <td class="px-6 py-4">{{ $item->jumlah }}</td>
+                                <td class="px-6 py-4">
+                                    <a href="#"
+                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline add-to-cart"
+                                        data-id="{{ $item->id_barang }}" data-nama="{{ $item->nama_barang }}"
+                                        data-spesifikasi="{{ $item->spesifikasi_nama_barang }}"
+                                        data-jumlah="{{ $item->jumlah }}">Tambah</a>
+                                </td>
+                            </tr>
+                        @endforeach
+
                     </tbody>
                 </table>
 
@@ -182,6 +135,151 @@
             } else {
                 noDataMessage.classList.add('hidden');
             }
+        });
+        document.addEventListener("DOMContentLoaded", function() {
+            const addToCartButtons = document.querySelectorAll('.add-to-cart');
+            const modalCartItems = document.getElementById('cart-items');
+
+            // Fungsi untuk menampilkan barang yang ada di keranjang
+            function displayCartItems() {
+                // Ambil data barang dari localStorage
+                let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+
+                // Kosongkan konten sebelum menambahkan kembali
+                modalCartItems.innerHTML = '';
+
+                // Loop untuk setiap barang dalam keranjang
+                cartItems.forEach(item => {
+                    const cartItemElement = document.createElement('div');
+                    cartItemElement.classList.add('flex', 'items-center', 'justify-between', 'h-12',
+                        'rounded', 'bg-white', 'dark:bg-gray-800', 'p-2');
+
+                    cartItemElement.innerHTML = `
+                <span class="text-black dark:text-gray-500">${item.nama}</span>
+                <div class="flex items-center space-x-2">
+                    <button class="text-black border border-gray-700 px-3 py-1 rounded addToCart">+</button>
+                    <span class="text-black text-xl p-2">${item.jumlah}</span>
+                    <button class="text-black border border-gray-700 px-3 py-1 rounded removeFromCart">-</button>
+                    <button class="text-black p-2 bg-gray-300 rounded deleteCartItem">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </div>
+            `;
+
+                    // Tambahkan event listener untuk tombol tambah barang
+                    const addButton = cartItemElement.querySelector('.addToCart');
+                    addButton.addEventListener('click', function() {
+                        addToCart(item);
+                    });
+
+                    // Tambahkan event listener untuk tombol kurang barang
+                    const removeButton = cartItemElement.querySelector('.removeFromCart');
+                    removeButton.addEventListener('click', function() {
+                        removeFromCart(item);
+                    });
+
+                    // Tambahkan event listener untuk tombol hapus barang
+                    const deleteButton = cartItemElement.querySelector('.deleteCartItem');
+                    deleteButton.addEventListener('click', function() {
+                        deleteCartItem(item.id);
+                    });
+
+                    modalCartItems.appendChild(cartItemElement);
+                });
+            }
+
+            // Fungsi untuk menambah barang ke dalam keranjang
+            function addToCart(item) {
+                // Ambil data barang dari localStorage
+                let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+
+                // Cek apakah barang sudah ada di keranjang berdasarkan id
+                const existingItem = cartItems.find(i => i.id === item.id);
+                if (existingItem) {
+                    // Jika barang sudah ada, tambahkan jumlahnya
+                    existingItem.jumlah++;
+                    // Validasi jumlah agar tidak melebihi stok
+                    if (existingItem.jumlah > parseInt(item.jumlah)) {
+                        alert(`Jumlah ${item.nama} melebihi stok yang tersedia (${item.jumlah}).`);
+                        existingItem.jumlah--; // Kurangi jumlah kembali karena melebihi stok
+                        return;
+                    }
+                } else {
+                    // Jika barang belum ada, tambahkan ke keranjang
+                    item.jumlah = 1;
+                    cartItems.push(item);
+                }
+
+                // Simpan kembali ke localStorage
+                localStorage.setItem('cartItems', JSON.stringify(cartItems));
+
+                // Tampilkan pesan sukses atau perubahan yang sesuai di UI jika diperlukan
+                alert(`Barang ${item.nama} telah ditambahkan ke keranjang`);
+
+                // Update tampilan UI seperti jumlah barang di keranjang di modal
+                displayCartItems();
+            }
+
+            // Fungsi untuk mengurangi jumlah barang di keranjang
+            function removeFromCart(item) {
+                // Ambil data barang dari localStorage
+                let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+
+                // Cari barang yang sesuai berdasarkan id
+                const existingItem = cartItems.find(i => i.id === item.id);
+                if (existingItem) {
+                    // Kurangi jumlah barang jika lebih dari 1
+                    if (existingItem.jumlah > 1) {
+                        existingItem.jumlah--;
+
+                        // Simpan kembali ke localStorage
+                        localStorage.setItem('cartItems', JSON.stringify(cartItems));
+
+                        // Update tampilan UI seperti jumlah barang di keranjang di modal
+                        displayCartItems();
+                    }
+                }
+            }
+
+            // Fungsi untuk menghapus barang dari keranjang berdasarkan id
+            function deleteCartItem(itemId) {
+                // Ambil data barang dari localStorage
+                let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+
+                // Filter barang berdasarkan id yang akan dihapus
+                cartItems = cartItems.filter(item => item.id !== itemId);
+
+                // Simpan kembali ke localStorage
+                localStorage.setItem('cartItems', JSON.stringify(cartItems));
+
+                // Tampilkan kembali daftar barang yang tersisa di keranjang
+                displayCartItems();
+            }
+
+            // Event listener untuk tombol "Tambah ke Keranjang"
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    const id = this.getAttribute('data-id');
+                    const nama = this.getAttribute('data-nama');
+                    const spesifikasi = this.getAttribute('data-spesifikasi');
+                    const jumlah = this.getAttribute('data-jumlah');
+
+                    // Buat objek untuk barang yang akan ditambahkan ke keranjang
+                    const item = {
+                        id: id,
+                        nama: nama,
+                        spesifikasi: spesifikasi,
+                        jumlah: parseInt(jumlah) // Pastikan jumlah di-parse ke integer
+                    };
+
+                    // Panggil fungsi untuk menambah barang ke keranjang
+                    addToCart(item);
+                });
+            });
+
+            // Panggil fungsi displayCartItems saat halaman dimuat untuk pertama kali
+            displayCartItems();
         });
     </script>
 @endsection

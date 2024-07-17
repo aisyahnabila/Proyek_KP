@@ -19,7 +19,7 @@
                 <span class="text-gray-900 dark:text-white">{{ $barang->nama_barang }}</span>
             </div>
         </div>
-
+        
         <div class="border relative overflow-x-auto shadow-xl sm:rounded">
             <table class="w-full text-sm text-left rtl:text-right text-gray-900 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-300 dark:bg-gray-700 dark:text-gray-400">

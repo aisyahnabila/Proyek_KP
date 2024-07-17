@@ -14,9 +14,10 @@ return new class extends Migration {
             $table->id('id_log'); // Primary key
             $table->unsignedBigInteger('id_barang'); // Foreign key referencing barang table
             $table->timestamp('timestamp');
-            $table->string('status');
+            $table->integer('jumlah_masuk')->default(0);
+            $table->integer('jumlah_keluar')->default(0);
             $table->integer('sisa');
-            $table->unsignedBigInteger('id_permintaan');
+            $table->unsignedBigInteger('id_permintaan')->nullable();
             $table->timestamps();
 
             // Definisi foreign key constraint
@@ -25,7 +26,7 @@ return new class extends Migration {
                 ->onDelete('cascade');
 
             $table->foreign('id_permintaan')
-                ->references('id_permintaan')->on('permintaan') // Pastikan kolom yang dirujuk sesuai
+                ->references('id_permintaan')->on('permintaan')
                 ->onDelete('cascade');
         });
     }

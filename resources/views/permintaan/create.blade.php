@@ -3,6 +3,7 @@
 @section('content')
     <div class="p-6 mt-2 sm:ml-64">
         <div class="text-2xl my-4">Form Permintaan Barang</div>
+
         {{-- Content --}}
         <form id="permintaan-form" method="POST" action="{{ route('permintaan.store') }}"
             class="mx-auto p-5 border bg-white shadow-xl rounded space-y-4" enctype="multipart/form-data">
@@ -45,6 +46,34 @@
                             class="border-gray-800 text-xs block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                             id="file_input" name="evidence" type="file">
                     </div>
+
+                    {{-- Flash Messages --}}
+                    @if ($errors->any())
+                        <div class="mb-4 mt-4">
+                            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+                                role="alert">
+                                <strong class="font-bold">Error!</strong>
+                                <span class="block sm:inline">Ada beberapa masalah dengan input Anda.</span>
+                                <ul class="mt-2 list-disc list-inside text-sm text-red-600">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
+                    @endif
+
+                    @if (session('success'))
+                        <div class="mb-4">
+                            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative"
+                                role="alert">
+                                <strong class="font-bold">Success!</strong>
+                                <span class="block sm:inline">{{ session('success') }}</span>
+                            </div>
+                        </div>
+                    @endif
+
+
                 </div>
 
                 <!-- Sebelah Kanan -->

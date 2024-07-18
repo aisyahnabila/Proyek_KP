@@ -10,6 +10,7 @@ use App\Http\Controllers\PermintaanController;
 use App\Http\Controllers\HistoryPermintaanController;
 use App\Http\Controllers\HistoryBulanController;
 use App\Http\Controllers\RiwayatController;
+use App\Http\Controllers\AboutController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +38,7 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 // Akun ada di seeder
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/aboutus', [AboutController::class, 'index'])->name('about');
 
     // Routes untuk Kelola
     Route::get('/kelola/index', [KelolaController::class, 'index'])->name('kelola.index');

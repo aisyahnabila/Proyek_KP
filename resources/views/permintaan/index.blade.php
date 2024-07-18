@@ -68,7 +68,7 @@
                                         stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                                 </svg>
                             </div>
-                            <input type="text" id="table-search-items"
+                            <input type="text" id="table-search-users"
                                 class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 placeholder="Cari">
                         </div>
@@ -85,22 +85,40 @@
                         </tr>
                     </thead>
                     <tbody id="item-table-body">
-                        @foreach ($items as $item)
-                            <tr
-                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="px-6 py-4">{{ $item->nama_barang }}</td>
-                                <td class="px-6 py-4">{{ $item->spesifikasi_nama_barang }}</td>
-                                <td class="px-6 py-4">{{ $item->jumlah }}</td>
-                                <td class="px-6 py-4">
-                                    <a href="#"
-                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline add-to-cart"
-                                        data-id="{{ $item->id_barang }}" data-nama="{{ $item->nama_barang }}"
-                                        data-spesifikasi="{{ $item->spesifikasi_nama_barang }}"
-                                        data-jumlah="{{ $item->jumlah }}">Tambah</a>
+                        @if ($items->isEmpty())
+                            <tr id="no-data-row">
+                                <td colspan="7" class="text-center p-4 text-gray-500 dark:text-gray-400">
+                                    Data tidak tersedia.
                                 </td>
                             </tr>
-                        @endforeach
-
+                        @else
+                            @php
+                                $index = 0;
+                            @endphp
+                            @foreach ($items as $item)
+                                @php
+                                    $index++;
+                                @endphp
+                                <tr
+                                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                    <td class="px-6 py-4">{{ $item->nama_barang }}</td>
+                                    <td class="px-6 py-4">{{ $item->spesifikasi_nama_barang }}</td>
+                                    <td class="px-6 py-4">{{ $item->jumlah }}</td>
+                                    <td class="px-6 py-4">
+                                        <a href="#"
+                                            class="font-medium text-blue-600 dark:text-blue-500 hover:underline add-to-cart"
+                                            data-id="{{ $item->id_barang }}" data-nama="{{ $item->nama_barang }}"
+                                            data-spesifikasi="{{ $item->spesifikasi_nama_barang }}"
+                                            data-jumlah="{{ $item->jumlah }}">Pilih</a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endif
+                        <tr id="no-results-row" style="display: none;">
+                            <td colspan="7" class="text-center p-4 text-gray-500 dark:text-gray-400">
+                                Data tidak ditemukan.
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
 
@@ -113,29 +131,43 @@
     </div>
 
     <script>
-        document.getElementById('table-search-items').addEventListener('input', function() {
-            let filter = this.value.toLowerCase();
-            let rows = document.querySelectorAll('#item-table-body tr');
-            let found = false;
+        document.getElementById('table-search-users').addEventListener('keyup', function() {
+            let searchQuery = this.value.toLowerCase();
+            let allRows = document.querySelectorAll('#barang-table tbody tr');
+            let noResultsRow = document.getElementById('no-results-row');
+            let noDataRow = document.getElementById('no-data-row');
+            let rowFound = false;
 
-            rows.forEach(row => {
-                let itemName = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
-                if (itemName.indexOf(filter) > -1) {
-                    row.style.display = '';
-                    found = true;
-                } else {
-                    row.style.display = 'none';
+            allRows.forEach(row => {
+                if (row !== noResultsRow && row !== noDataRow) {
+                    let rowText = row.innerText.toLowerCase();
+                    if (rowText.includes(searchQuery)) {
+                        row.style.display = '';
+                        rowFound = true;
+                    } else {
+                        row.style.display = 'none';
+                    }
                 }
             });
 
-            // Show "Data Not Found" message if no rows are visible
-            let noDataMessage = document.getElementById('no-data-message');
-            if (!found) {
-                noDataMessage.classList.remove('hidden');
+            if (!rowFound && searchQuery !== '') {
+                noResultsRow.style.display = '';
             } else {
-                noDataMessage.classList.add('hidden');
+                noResultsRow.style.display = 'none';
+            }
+
+            // Hide "no data" row if there's a search query
+            if (searchQuery !== '') {
+                noDataRow.style.display = 'none';
+            } else {
+                // Show "no data" row if there are no rows and no search query
+                if (!rowFound && !searchQuery) {
+                    noDataRow.style.display = '';
+                }
             }
         });
+
+        // Fungsi Keranjang
         document.addEventListener("DOMContentLoaded", function() {
             const addToCartButtons = document.querySelectorAll('.add-to-cart');
             const modalCartItems = document.getElementById('cart-items');

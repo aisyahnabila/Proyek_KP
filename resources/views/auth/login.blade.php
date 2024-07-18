@@ -20,12 +20,11 @@
         <!-- Left Content -->
         <div class="flex flex-col items-center justify-center w-full lg:w-1/2 p-4 border-r">
             <div class="flex justify-center mb-6">
-                <img src="../img/logo-provinsi.png" alt="Logo 1" class="h-34 w-32">
-                <img src='../img/logo-dinsos.png' alt="Logo 2" class="h-32 w-36">
+                <img src="../img/logo-provinsi.png" alt="Logo 1" class="h-24 w-22">
+                <img src='../img/logo-dinsos.png' alt="Logo 2" class="h-22 w-24">
             </div>
-            <img src="../img/Careventory.png" alt="Tulisan" class="w-60 mb-6">
-            <p class="text-black mb-4 text-center">Selamat datang di Careventory, Sistem Informasi Inventori untuk Asset
-                Barang Cepat Habis di Dinas Sosial Provinsi Jawa Timur. </p>
+            <p class="text-4xl">Careventory</p>
+            <p class="text-black mb-4 text-center"> </p>
         </div>
 
         <!-- Right Content -->
@@ -88,7 +87,7 @@
                 <!-- Submit Button -->
                 <div class="flex justify-end">
                     <button type="submit"
-                        class="text-black bg-yellow-300 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring-yellow-800">
+                        class="font-semibold text-black bg-yellow-300 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring-yellow-800">
                         Log In
                     </button>
                 </div>

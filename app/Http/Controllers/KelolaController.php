@@ -149,6 +149,14 @@ class KelolaController extends Controller
         $barang->jumlah += $request->jumlah;
         $barang->save();
 
+        LogActivity::create([
+            'id_barang' => $barang->id_barang,
+            'timestamp' => now(),
+            'jumlah_masuk' => $request->jumlah,
+            'jumlah_keluar' => 0, // Jumlah keluar tetap 0 karena ini adalah penambahan stok
+            'sisa' => $barang->jumlah,
+        ]);
+
         return redirect()->route('kelola.index')->with('success', 'Jumlah barang berhasil ditambahkan');
     }
 }

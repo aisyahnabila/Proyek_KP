@@ -28,7 +28,7 @@ class Permintaan extends Model
     }
 
     // Relasi dengan Detail Permintaan
-    public function detailPermintaans()
+    public function detailBarang()
     {
         return $this->hasMany(DetailPermintaan::class, 'id_permintaan');
     }

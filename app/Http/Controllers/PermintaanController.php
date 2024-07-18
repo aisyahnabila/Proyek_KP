@@ -45,6 +45,7 @@ class PermintaanController extends Controller
         ], [
             'evidence.max' => 'File evidence tidak boleh lebih dari 5MB.'
         ]);
+        
         // Generate kode permintaan
         $latestPermintaan = Permintaan::latest()->first();
         if ($latestPermintaan) {

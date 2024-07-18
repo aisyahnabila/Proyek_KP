@@ -13,11 +13,12 @@ class Permintaan extends Model
     protected $primaryKey = 'id_permintaan';
 
     protected $fillable = [
+        'id_unitkerja',
         'kode_permintaan',
         'tanggal_permintaan',
-        'keperluan',
         'nama_pemohon',
-        'id_unitkerja',
+        'keperluan',
+        'evidence',
     ];
 
     // Relasi dengan Unit Kerja

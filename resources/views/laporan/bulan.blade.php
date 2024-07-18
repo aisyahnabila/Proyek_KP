@@ -10,56 +10,31 @@
             <div class="flex space-x-4">
                 <!-- Filter unit kerja -->
                 <div class="flex-1">
-                    <button id="dropdownActionButton1" data-dropdown-toggle="dropdownAction1" class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" type="button">
-                        <span class="sr-only">Semua Unit Kerja</span>
-                        Semua Unit Kerja
-                        <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                        </svg>
-                    </button>
-                    <!-- Dropdown menu -->
-                    <div id="dropdownAction1" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600">
-                        <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownActionButton1">
-                            <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Sub Bag Umum dan Kepegawaian</a>
-                            </li>
-                            <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Sub.Bag. Keuangan</a>
-                            </li>
-                            <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Bidang Rehabilitas Sosial</a>
-                            </li>
-                        </ul>
-                    </div>
+                    <!-- Option Unit Kerja -->
+                    <select id="unit-kerja" name="id_kategori"
+                        class="text-sm block w-full md:w-72 p-2 border border-gray-300 rounded-lg bg-white focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option value="">Semua Unit Kerja</option>
+                        <option value="">Sub.Bag.Umum dan Kepegawaian</option>
+                        <option value="">Sub.Bag.Penyusunan Program dan Anggaran</option>
+                    </select>
                 </div>
                 <!-- Filter Bulan -->
                 <div>
-                    <button id="dropdownActionButton2" data-dropdown-toggle="dropdownAction2" class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" type="button">
-                        <span class="sr-only">Bulan</span>
-                        Bulan
-                        <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                        </svg>
-                    </button>
-                    <!-- Dropdown menu -->
-                    <div id="dropdownAction2" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600">
-                        <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownActionButton2">
-                            <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Januari</a>
-                            </li>
-                            <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Februari</a>
-                            </li>
-                            <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Maret</a>
-                            </li>
-                        </ul>
-                    </div>
+                    <select id="unit-kerja" name="id_kategori"
+                        class="text-sm block w-full md:w-72 p-2 border border-gray-300 rounded-lg bg-white focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option value="">Bulan</option>
+                        <option value="">Januari</option>
+                        <option value="">Februari</option>
+                        <option value="">Maret</option>
+                    </select>
                 </div>
             </div>
 
             <div class="mr-4">
-                <a href="#" class="focus:outline-none text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-yellow-900">Export</a>
+                <a href="#" class="flex items-center justify-center font-semibold focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-yellow-900">
+                    <i class="fa-solid fa-download mt-1 mr-2"></i>
+                    Export
+                </a>
             </div>
         </div>
 

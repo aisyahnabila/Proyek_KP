@@ -5,7 +5,7 @@
         <div class="text-2xl my-4">Kelola Barang</div>
 
         <div class="p-4 overflow-x-auto flex justify-end items-center pb-4 bg-white dark:bg-gray-900 space-x-4">
-            <div class="relative w-full lg:w-auto lg:px-0 mt-5 lg:mt-0 lg:ml-4">
+            <div class="relative w-full lg:w-auto lg:px-0 lg:mt-0 lg:ml-4">
                 <div class="relative">
                     <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                         <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
@@ -14,15 +14,29 @@
                                 d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                         </svg>
                     </div>
+                    {{-- fitur search --}}
                     <input type="text" id="table-search-users"
                         class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-800 rounded-lg bg-white focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Cari">
                 </div>
             </div>
 
+            {{-- fitur export --}}
+            <div>
+                <a href="#"
+                    class="flex items-center justify-center focus:outline-none text-white font-semibold bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-green-900">
+                    <i class="fa-solid fa-upload mr-1"></i>
+                    <span>Import</span>
+                </a>
+            </div>
+
+            {{-- fitur tambah --}}
             <div>
                 <a href="{{ route('kelola.create') }}"
-                    class="focus:outline-none text-black font-semibold bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-yellow-900">Tambah</a>
+                    class="flex items-center justify-center focus:outline-none text-black font-semibold bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-yellow-900">
+                    <i class="fa-solid fa-plus mr-1"></i>
+                    Tambah
+                </a>
             </div>
         </div>
 

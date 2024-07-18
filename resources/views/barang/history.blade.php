@@ -6,7 +6,7 @@
 
         <div class="flex justify-end items-center mb-4">
             <a href="{{ route('kelola.index') }}"
-                class="shadow-lg focus:outline-none text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-yellow-900 ml-auto">
+                class="font-semibold shadow-lg focus:outline-none text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-yellow-900 ml-auto">
                 Kembali
             </a>
         </div>
@@ -19,7 +19,7 @@
                 <span class="text-gray-900 dark:text-white">{{ $barang->nama_barang }}</span>
             </div>
         </div>
-        
+
         <div class="border relative overflow-x-auto shadow-xl sm:rounded">
             <table class="w-full text-sm text-left rtl:text-right text-gray-900 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-300 dark:bg-gray-700 dark:text-gray-400">

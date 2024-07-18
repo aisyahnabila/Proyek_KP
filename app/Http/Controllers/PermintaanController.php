@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Barang;
+use App\Models\LogActivity;
 use App\Models\UnitKerja;
 use App\Models\Permintaan;
 use Illuminate\Http\Request;
@@ -16,8 +17,9 @@ class PermintaanController extends Controller
      */
     public function index()
     {
+        $permintaans = Permintaan::with('detailBarang')->get();
         $items = Barang::all();
-        return view('permintaan.index', compact('items'));
+        return view('permintaan.index', compact('permintaans', 'items'));
     }
 
     /**
@@ -39,9 +41,9 @@ class PermintaanController extends Controller
             'unit_kerja' => 'required|exists:unit_kerja,id_unitkerja',
             'nama_pemohon' => 'required|string|max:255',
             'keperluan' => 'required|string',
-            'evidence' => 'required|file|mimes:jpeg,png,pdf|max:10240', // 10MB = 10240KB
+            'evidence' => 'required|file|mimes:jpeg,png,pdf|max:5240', // 5MB = 5240KB
         ], [
-            'evidence.max' => 'File evidence tidak boleh lebih dari 10MB.'
+            'evidence.max' => 'File evidence tidak boleh lebih dari 5MB.'
         ]);
         // Generate kode permintaan
         $latestPermintaan = Permintaan::latest()->first();
@@ -91,19 +93,28 @@ class PermintaanController extends Controller
                 $detailBarang->jumlah_permintaan = $item['jumlah']; // Sesuaikan dengan struktur data Anda
                 // Anda bisa tambahkan logika validasi jumlah permintaan atau lainnya di sini
                 $detailBarang->save();
+
+                // Catat log aktivitas jumlah keluar
+                $barang = Barang::find($item['id']);
+                $currentStock = $barang->jumlah - $item['jumlah'];
+
+                LogActivity::create([
+                    'id_barang' => $item['id'],
+                    'timestamp' => now(),
+                    'jumlah_masuk' => 0,
+                    'jumlah_keluar' => $item['jumlah'],
+                    'sisa' => $currentStock,
+                ]);
+
+                // Update jumlah barang di tabel Barang
+                $barang->jumlah = $currentStock;
+                $barang->save();
             }
         }
 
         // Redirect atau kembalikan response sesuai kebutuhan
         return redirect()->route('permintaan.index')->with('success', 'Permintaan barang berhasil disimpan.');
     }
-
-
-
-
-
-
-
 
 
     /**

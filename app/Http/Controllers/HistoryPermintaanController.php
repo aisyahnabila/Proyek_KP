@@ -10,3 +10,4 @@ class HistoryPermintaanController extends Controller
         return view('laporan.permintaan');
     }
 }
+

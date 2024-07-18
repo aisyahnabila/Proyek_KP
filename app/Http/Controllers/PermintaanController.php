@@ -25,7 +25,7 @@ class PermintaanController extends Controller
      */
     public function create()
     {
-        $unit_kerja =  UnitKerja::all();
+        $unit_kerja = UnitKerja::all();
         return view('permintaan.create', compact('unit_kerja'));
     }
 
@@ -39,9 +39,10 @@ class PermintaanController extends Controller
             'unit_kerja' => 'required|exists:unit_kerja,id_unitkerja',
             'nama_pemohon' => 'required|string|max:255',
             'keperluan' => 'required|string',
-            'evidence' => 'required|file|mimes:jpeg,png,pdf|max:2048',
+            'evidence' => 'required|file|mimes:jpeg,png,pdf|max:10240', // 10MB = 10240KB
+        ], [
+            'evidence.max' => 'File evidence tidak boleh lebih dari 10MB.'
         ]);
-
         // Generate kode permintaan
         $latestPermintaan = Permintaan::latest()->first();
         if ($latestPermintaan) {

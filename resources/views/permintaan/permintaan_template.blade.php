@@ -1,3 +1,4 @@
+<!-- resources/views/permintaan_template.blade.php -->
 <!DOCTYPE html>
 <html>
 
@@ -22,11 +23,11 @@
             <h1 class="text-xl font-bold">DINAS SOSIAL PROVINSI JAWA TIMUR</h1>
             <h2 class="text-lg">SEKRETARIAT</h2>
             <h3 class="text-lg font-bold mt-4">NOTA PERMINTAAN BARANG</h3>
-            <p>Nomor : {{ $permintaan->kode_permintaan }}</p>
+            <p>Nomor: ___________________________</p>
         </div>
 
         <div class="mb-6">
-            <p>Yang meminta : <strong>{{ $permintaan->unitKerja->nama_unit_kerja }}</strong></p>
+            <p>Yang meminta: <strong>{{ $permintaan->unitKerja->nama_unit_kerja }}</strong></p>
         </div>
 
         <table class="w-full table-auto border-collapse border border-gray-800">

@@ -63,6 +63,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Routes untuk Permintaan
     Route::resource('/permintaan', PermintaanController::class);
+    Route::get('/permintaan/export-pdf/{id}', [PermintaanController::class, 'exportPdf'])->name('permintaan.exportPdf');
 
     // Routes untuk History
     Route::get('/history', [HistoryPermintaanController::class, 'index'])->name('historypermintaan');

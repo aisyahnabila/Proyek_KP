@@ -47,7 +47,7 @@
                         <td class="border border-gray-800 px-4 py-2">{{ $detail->barang->nama_barang }}</td>
                         <td class="border border-gray-800 px-4 py-2">{{ $detail->jumlah_permintaan }}</td>
                         <td class="border border-gray-800 px-4 py-2">{{ $detail->barang->satuan }}</td>
-                        <td class="border border-gray-800 px-4 py-2">dinas...</td>
+                        <td class="border border-gray-800 px-4 py-2">{{ $permintaan->keperluan }}</td>
                         <td class="border border-gray-800 px-4 py-2">{{ $detail->keterangan }}</td>
                     </tr>
                 @endforeach

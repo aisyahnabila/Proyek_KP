@@ -1,3 +1,4 @@
+<!-- resources/views/permintaan_template.blade.php -->
 <!DOCTYPE html>
 <html>
 
@@ -22,11 +23,11 @@
             <h1 class="text-xl font-bold">DINAS SOSIAL PROVINSI JAWA TIMUR</h1>
             <h2 class="text-lg">SEKRETARIAT</h2>
             <h3 class="text-lg font-bold mt-4">NOTA PERMINTAAN BARANG</h3>
-            <p>Nomor : {{ $permintaan->kode_permintaan }}</p>
+            <p>Nomor: ___________________________</p>
         </div>
 
         <div class="mb-6">
-            <p>Yang meminta : <strong>{{ $permintaan->unitKerja->nama_unit_kerja }}</strong></p>
+            <p>Yang meminta: <strong>{{ $permintaan->unitKerja->nama_unit_kerja }}</strong></p>
         </div>
 
         <table class="w-full table-auto border-collapse border border-gray-800">
@@ -47,7 +48,7 @@
                         <td class="border border-gray-800 px-4 py-2">{{ $detail->barang->nama_barang }}</td>
                         <td class="border border-gray-800 px-4 py-2">{{ $detail->jumlah_permintaan }}</td>
                         <td class="border border-gray-800 px-4 py-2">{{ $detail->barang->satuan }}</td>
-                        <td class="border border-gray-800 px-4 py-2">dinas...</td>
+                        <td class="border border-gray-800 px-4 py-2">{{ $permintaan->keperluan }}</td>
                         <td class="border border-gray-800 px-4 py-2">{{ $detail->keterangan }}</td>
                     </tr>
                 @endforeach

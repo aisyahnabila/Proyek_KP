@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\UnitKerja;
 use Illuminate\Database\Seeder;
 
 // use Illuminate\Database\Seeders\UserSeeder;

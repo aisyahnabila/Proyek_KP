@@ -8,10 +8,8 @@ use App\Models\UnitKerja;
 use App\Models\Permintaan;
 use Illuminate\Http\Request;
 use App\Models\DetailPermintaan;
-use Illuminate\Support\Facades\Log;
-use PhpOffice\PhpWord\IOFactory;
-use PhpOffice\PhpWord\PhpWord;
-use PhpOffice\PhpWord\Shared\ZipArchive;
+use PhpOffice\PhpWord\TemplateProcessor;
+use Carbon\Carbon;
 
 class PermintaanController extends Controller
 {
@@ -153,31 +151,52 @@ class PermintaanController extends Controller
     }
     public function exportWord($id)
     {
+        // Path ke template Word
+        $templatePath = resource_path('views/templete_nota_permintaan_barang.docx');
+
+        // Verifikasi apakah file template ada
+        if (!file_exists($templatePath)) {
+            return response()->json(['error' => 'Template file not found'], 404);
+        }
+
+        // Buat instance TemplateProcessor
+        $templateProcessor = new TemplateProcessor($templatePath);
+
+        // Ambil data permintaan berdasarkan ID
         $permintaan = Permintaan::with('detailPermintaan.barang', 'unitKerja')->findOrFail($id);
 
-        // Render HTML view with data
-        $html = view('permintaan.permintaan_template', compact('permintaan'))->render();
+        // Mengatur locale ke bahasa Indonesia
+        Carbon::setLocale('id');
+        // Konversi tanggal_permintaan menjadi objek Carbon
+        $tanggalPermintaan = Carbon::parse($permintaan->tanggal_permintaan);
+        // Format tanggal dalam bahasa Indonesia
+        $formattedDate = $tanggalPermintaan->translatedFormat('d F Y');
 
-        // Create a new PHPWord object
-        $phpWord = new PhpWord();
+        // Set value dari placeholder di template
+        $templateProcessor->setValue('tanggal_permintaan', $formattedDate);
+        $templateProcessor->setValue('unit_kerja', $permintaan->unitKerja->nama_unit_kerja);
+        $templateProcessor->setValue('nama_pemohon', $permintaan->nama_pemohon);
 
-        // Add a section to the document
-        $section = $phpWord->addSection();
+        // Set value untuk detail permintaan (tabel)
+        $templateProcessor->cloneRow('no', $permintaan->detailPermintaan->count());
 
-        // Escape HTML characters
-        $cleanHtml = htmlentities($html, ENT_QUOTES, 'UTF-8');
+        foreach ($permintaan->detailPermintaan as $index => $detail) {
+            $rowIndex = $index + 1;
+            $templateProcessor->setValue("no#{$rowIndex}", $rowIndex);
+            $templateProcessor->setValue("barang_nama#{$rowIndex}", $detail->barang->nama_barang);
+            $templateProcessor->setValue("jumlah#{$rowIndex}", $detail->jumlah_permintaan);
+            $templateProcessor->setValue("satuan#{$rowIndex}", $detail->barang->satuan);
+            $templateProcessor->setValue("keperluan#{$rowIndex}", $permintaan->keperluan);
+            $templateProcessor->setValue("keterangan#{$rowIndex}", $detail->keterangan);
+        }
 
-        // Add HTML content to the document
-        \PhpOffice\PhpWord\Shared\Html::addHtml($section, $cleanHtml, false, false);
+        // Save file baru
+        $fileName = 'Nota_Permintaan_Barang_' . $permintaan->kode_permintaan . '.docx';
+        $tempFilePath = storage_path('app/public/' . $fileName);
+        $templateProcessor->saveAs($tempFilePath);
 
-        // Save the document
-        $filename = 'Nota_Permintaan_Barang_' . $permintaan->kode_permintaan . '.docx';
-        $path = storage_path($filename);
-        $objWriter = IOFactory::createWriter($phpWord, 'Word2007');
-        $objWriter->save($path);
-
-        return response()->download($path)->deleteFileAfterSend(true);
+        // Return file sebagai download response
+        return response()->download($tempFilePath)->deleteFileAfterSend(true);
     }
-
 
 }

@@ -63,19 +63,23 @@ Route::middleware(['auth'])->group(function () {
 
     // Routes untuk Permintaan
     Route::resource('/permintaan', PermintaanController::class);
-    Route::get('/permintaan/export-word/{id}', [PermintaanController::class, 'exportWord'])->name('permintaan.exportWord');
 
-    // Routes untuk History
-    Route::get('/history', [HistoryPermintaanController::class, 'index'])->name('historypermintaan');
-    Route::get('/bulanan', [HistoryBulanController::class, 'index'])->name('historybulan');
+    // Routes untuk History Per Permintaan
+    Route::prefix('history')->group(function () {
+        Route::get('/', [HistoryPermintaanController::class, 'index'])->name('historypermintaan.index');
+        // Route::get('/create', [HistoryPermintaanController::class, 'create'])->name('historypermintaan.create');
+        // Route::post('/', [HistoryPermintaanController::class, 'store'])->name('historypermintaan.store');
+        // Route::get('/{history}', [HistoryPermintaanController::class, 'show'])->name('historypermintaan.show');
+        // Route::get('/{history}/edit', [HistoryPermintaanController::class, 'edit'])->name('historypermintaan.edit');
+        // Route::put('/{history}', [HistoryPermintaanController::class, 'update'])->name('historypermintaan.update');
+        // Route::delete('/{history}', [HistoryPermintaanController::class, 'destroy'])->name('historypermintaan.destroy');
+        Route::get('/export-word/{id}', [HistoryPermintaanController::class, 'exportWord'])->name('historypermintaan.exportWord');
+    });
 
-    // Input form tambah barang (duplikat, bisa dihapus jika tidak diperlukan)
-    // Route::get('/barangs/create', [KelolaController::class, 'create'])->name('barangs.create');
-    // Route::post('/barangs', [KelolaController::class, 'store'])->name('barangs.store');
-
-    // Routes untuk CobaController (untuk fitur edit dan detail coba)
-    // Route::get('/editcoba', [CobaController::class, 'index'])->name('editcoba');
-    // Route::get('/detailcoba', [CobaController::class, 'detail'])->name('detailcoba');
+    // routes untuk history per bulan
+    Route::get('/laporan/bulan', [HistoryBulanController::class, 'index'])->name('laporan.bulan');
+    Route::post('/laporan/bulan', [HistoryBulanController::class, 'historyBulan'])->name('laporan.bulan.post');
+    Route::post('/laporan/bulan/export-pdf', [HistoryBulanController::class, 'exportPdf'])->name('laporan.bulan.exportPdf');
 
     // Routes untuk Riwayat Login
     Route::get('/riwayatlogin', [RiwayatController::class, 'index'])->name('riwayatlogin');

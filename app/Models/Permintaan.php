@@ -12,6 +12,10 @@ class Permintaan extends Model
     protected $table = 'permintaan';
     protected $primaryKey = 'id_permintaan';
 
+    protected $dates = [
+        'tanggal_permintaan',
+    ];
+
     protected $fillable = [
         'id_unitkerja',
         'kode_permintaan',

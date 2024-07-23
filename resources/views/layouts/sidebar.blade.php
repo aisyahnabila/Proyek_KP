@@ -42,7 +42,7 @@
             <span class="flex-1 text-white text-sm">Laporan</span>
             {{-- laporan per permintaan --}}
             <li>
-                <a href="{{ route('historypermintaan') }}"
+                <a href="{{ route('historypermintaan.index') }}"
                     class="text-sm flex items-center p-2 text-white rounded-lg dark:text-white hover:bg-yellow-500 dark:hover:bg-gray-700 group">
                     <i class="fa-solid fa-clipboard-list text-xl"></i>
                     <span class="flex-1 ms-3 whitespace-nowrap">Per Permintaan</span>
@@ -51,7 +51,7 @@
 
             {{-- laporan bulanan --}}
             <li>
-                <a href="{{ route('historybulan') }}"
+                <a href="{{ route('laporan.bulan') }}"
                     class="text-sm flex items-center p-2 text-white rounded-lg dark:text-white hover:bg-yellow-500 dark:hover:bg-gray-700 group">
                     <i class="fa-solid fa-clipboard-list text-xl"></i>
                     <span class="flex-1 ms-3 whitespace-nowrap">Bulanan</span>

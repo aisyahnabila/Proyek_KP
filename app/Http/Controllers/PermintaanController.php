@@ -8,10 +8,8 @@ use App\Models\UnitKerja;
 use App\Models\Permintaan;
 use Illuminate\Http\Request;
 use App\Models\DetailPermintaan;
-use Illuminate\Support\Facades\Log;
-use PhpOffice\PhpWord\IOFactory;
-use PhpOffice\PhpWord\PhpWord;
-use PhpOffice\PhpWord\Shared\ZipArchive;
+use PhpOffice\PhpWord\TemplateProcessor;
+use Carbon\Carbon;
 
 class PermintaanController extends Controller
 {
@@ -151,33 +149,4 @@ class PermintaanController extends Controller
     public function destroy(string $id)
     {
     }
-    public function exportWord($id)
-    {
-        $permintaan = Permintaan::with('detailPermintaan.barang', 'unitKerja')->findOrFail($id);
-
-        // Render HTML view with data
-        $html = view('permintaan.permintaan_template', compact('permintaan'))->render();
-
-        // Create a new PHPWord object
-        $phpWord = new PhpWord();
-
-        // Add a section to the document
-        $section = $phpWord->addSection();
-
-        // Escape HTML characters
-        $cleanHtml = htmlentities($html, ENT_QUOTES, 'UTF-8');
-
-        // Add HTML content to the document
-        \PhpOffice\PhpWord\Shared\Html::addHtml($section, $cleanHtml, false, false);
-
-        // Save the document
-        $filename = 'Nota_Permintaan_Barang_' . $permintaan->kode_permintaan . '.docx';
-        $path = storage_path($filename);
-        $objWriter = IOFactory::createWriter($phpWord, 'Word2007');
-        $objWriter->save($path);
-
-        return response()->download($path)->deleteFileAfterSend(true);
-    }
-
-
 }

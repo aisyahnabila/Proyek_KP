@@ -30,10 +30,33 @@ class HistoryBulanController extends Controller
             $query->whereYear('tanggal_permintaan', $tahun);
         }
 
-        $permintaan = $query->with('detailPermintaan.barang.kategori', 'unitKerja')->get();
+        //
+        $permintaan = $query->with('detailPermintaan.barang.kategori', 'unitKerja')
+            ->get()
+            ->groupBy(function ($item) {
+                // Mengelompokkan berdasarkan id_unitkerja,barang_id, dan spesifikasi_nama_barang
+                return $item->id_unitkerja . '-' . $item->detailPermintaan->first()->barang_id . '-' . $item->detailPermintaan->first()->barang->spesifikasi_nama_barang;
+            });
 
-        // Mengelompokkan data berdasarkan barang
-        $groupedPermintaan = $permintaan->groupBy('detailPermintaan.barang_id');
+        // Mengelompokkan data dan menjumlahkan permintaan berdasarkan divisi dan barang
+        $groupedPermintaan = [];
+        foreach ($permintaan as $group => $items) {
+            $totalPermintaan = 0;
+            foreach ($items as $item) {
+                foreach ($item->detailPermintaan as $detail) {
+                    $totalPermintaan += $detail->jumlah_permintaan;
+                }
+            }
+            $firstItem = $items->first();
+            $groupedPermintaan[] = [
+                'unit_kerja' => $firstItem->unitKerja->nama_unit_kerja,
+                'kode_barang' => $firstItem->detailPermintaan->first()->barang->kategori->kode_barang,
+                'nama_barang' => $firstItem->detailPermintaan->first()->barang->nama_barang,
+                'spesifikasi_nama_barang' => $firstItem->detailPermintaan->first()->barang->spesifikasi_nama_barang,
+                'total_permintaan' => $totalPermintaan,
+                'satuan' => $firstItem->detailPermintaan->first()->barang->satuan,
+            ];
+        }
 
         return view('laporan.bulan', [
             'permintaan' => $groupedPermintaan,
@@ -41,26 +64,32 @@ class HistoryBulanController extends Controller
         ]);
     }
 
-    public function historyBulan(Request $request)
+    public function laporanBulanan(Request $request)
     {
-        $unitKerja = $request->input('unit_kerja');
+        $unit_kerja_id = $request->input('unit_kerja_id');
         $bulan = $request->input('bulan');
         $tahun = $request->input('tahun');
 
-        $results = DB::table('permintaan')
+        $permintaan = DB::table('permintaan')
             ->join('detail_permintaan', 'permintaan.id', '=', 'detail_permintaan.permintaan_id')
             ->join('barang', 'detail_permintaan.barang_id', '=', 'barang.id')
-            ->join('unit_kerja', 'permintaan.id_unitkerja', '=', 'unit_kerja.id') // Perbaiki disini
-            ->select('unit_kerja.nama_unit_kerja', 'barang.kode_barang', 'barang.nama_barang', DB::raw('SUM(detail_permintaan.jumlah_permintaan) as total_jumlah'))
-            ->when($unitKerja, function ($query, $unitKerja) {
-                return $query->where('permintaan.id_unitkerja', $unitKerja); // Sesuaikan disini juga
-            })
+            ->join('unit_kerja', 'permintaan.unit_kerja_id', '=', 'unit_kerja.id')
+            ->select(
+                'unit_kerja.nama_unit_kerja',
+                'barang.kategori.kode_barang',
+                'barang.nama_barang',
+                'barang.spesifikasi_nama_barang',
+                'barang.satuan',
+                DB::raw('SUM(detail_permintaan.jumlah_permintaan) as total_permintaan')
+            )
+            ->where('permintaan.unit_kerja_id', $unit_kerja_id)
             ->whereMonth('permintaan.tanggal_permintaan', $bulan)
             ->whereYear('permintaan.tanggal_permintaan', $tahun)
-            ->groupBy('unit_kerja.nama_unit_kerja', 'barang.kode_barang', 'barang.nama_barang')
+            ->groupBy('unit_kerja.nama_unit_kerja', 'barang.kategori.kode_barang', 'barang.nama_barang', 'barang.spesifikasi_nama_barang', 'barang.satuan')
+            ->orderBy('unit_kerja.nama_unit_kerja')
             ->get();
 
-        return view('bulan', compact('results')); // Pastikan view ini benar
+        return view('laporan.bulanan', compact('permintaan'));
     }
 
     public function exportPdf(Request $request)

@@ -6,6 +6,7 @@ use App\Models\Permintaan;
 use App\Models\UnitKerja;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class HistoryBulanController extends Controller
@@ -47,14 +48,19 @@ class HistoryBulanController extends Controller
                     $totalPermintaan += $detail->jumlah_permintaan;
                 }
             }
+            // Konversi tanggal_permintaan menjadi objek Carbon
             $firstItem = $items->first();
+            Carbon::setLocale('id');
             $groupedPermintaan[] = [
+                'bulan' => \Carbon\Carbon::parse($firstItem->tanggal_permintaan)->translatedFormat('F'),
                 'unit_kerja' => $firstItem->unitKerja->nama_unit_kerja,
                 'kode_barang' => $firstItem->detailPermintaan->first()->barang->kategori->kode_barang,
                 'nama_barang' => $firstItem->detailPermintaan->first()->barang->nama_barang,
                 'spesifikasi_nama_barang' => $firstItem->detailPermintaan->first()->barang->spesifikasi_nama_barang,
                 'total_permintaan' => $totalPermintaan,
+                'jumlah' => $firstItem->detailPermintaan->first()->barang->jumlah,
                 'satuan' => $firstItem->detailPermintaan->first()->barang->satuan,
+                'keperluan' => $firstItem->keperluan,
             ];
         }
 
@@ -80,7 +86,10 @@ class HistoryBulanController extends Controller
                 'barang.nama_barang',
                 'barang.spesifikasi_nama_barang',
                 'barang.satuan',
-                DB::raw('SUM(detail_permintaan.jumlah_permintaan) as total_permintaan')
+                'permintaan.keperluan',
+                DB::raw('SUM(detail_permintaan.jumlah_permintaan) as total_permintaan'),
+                'barang.jumlah as sisa_persediaan' //jumlah barang yang tersisa
+
             )
             ->where('permintaan.unit_kerja_id', $unit_kerja_id)
             ->whereMonth('permintaan.tanggal_permintaan', $bulan)

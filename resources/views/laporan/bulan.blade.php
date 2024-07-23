@@ -52,23 +52,29 @@
             <table class="w-full text-sm text-left rtl:text-right text-gray-900 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-300 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
+                        <th scope="col" class="px-5 py-3">Bulan</th>
                         <th scope="col" class="px-5 py-3">Unit Kerja</th>
                         <th scope="col" class="px-5 py-3">Kode Barang</th>
                         <th scope="col" class="px-5 py-3">Nama Barang</th>
                         <th scope="col" class="px-5 py-3">Spesifikasi Nama Barang</th>
-                        <th scope="col" class="px-5 py-3">Total Permintaan</th>
+                        <th scope="col" class="px-5 py-3">Jumlah Pengajuan Permintaan</th>
+                        <th scope="col" class="px-5 py-3">Informasi Sisa Persediaan</th>
                         <th scope="col" class="px-5 py-3">Satuan</th>
+                        <th scope="col" class="px-5 py-3">Keperluan</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($permintaan as $p)
                         <tr>
+                            <td class="px-5 py-3">{{ $p['bulan'] }}</td>
                             <td class="px-5 py-3">{{ $p['unit_kerja'] }}</td>
                             <td class="px-5 py-3">{{ $p['kode_barang'] }}</td>
                             <td class="px-5 py-3">{{ $p['nama_barang'] }}</td>
                             <td class="px-5 py-3">{{ $p['spesifikasi_nama_barang'] }}</td>
                             <td class="px-5 py-3">{{ $p['total_permintaan'] }}</td>
+                            <td class="px-5 py-3">{{ $p['jumlah'] }}</td>
                             <td class="px-5 py-3">{{ $p['satuan'] }}</td>
+                            <td class="px-5 py-3">{{ $p['keperluan'] }}</td>
                         </tr>
                     @endforeach
                 </tbody>

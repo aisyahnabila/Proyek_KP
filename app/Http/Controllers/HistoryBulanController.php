@@ -70,7 +70,6 @@ class HistoryBulanController extends Controller
             ->join('unit_kerja', 'permintaan.unit_kerja_id', '=', 'unit_kerja.id')
             ->select(
                 DB::raw('DATE_FORMAT(permintaan.tanggal_permintaan, "%M") as bulan'),
-                // DB::raw('YEAR(permintaan.tanggal_permintaan) as tahun'),
                 'unit_kerja.nama_unit_kerja',
                 'barang.kategori.kode_barang',
                 'barang.nama_barang',

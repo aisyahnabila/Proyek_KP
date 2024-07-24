@@ -43,7 +43,7 @@ Route::middleware(['auth'])->group(function () {
     // Routes untuk Kelola
     Route::get('/kelola/index', [KelolaController::class, 'index'])->name('kelola.index');
     Route::get('/kelola/create', [KelolaController::class, 'showForm'])->name('kelola.create');
-    Route::get('/barang/search', [KelolaController::class, 'search'])->name('barang.search');
+    // Route::get('/barang/search', [KelolaController::class, 'search'])->name('barang.search');
 
 
     // Routes untuk CRUD form tambah barang

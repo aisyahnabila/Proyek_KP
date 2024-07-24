@@ -45,7 +45,7 @@
                     <tr>
                         <th scope="col" class="px-5 py-3">Tanggal Permintaan</th>
                         <th scope="col" class="px-5 py-3">Unit Kerja</th>
-                        <th scope="col" class="px-5 py-3">Kode Permintaan</th>
+                        <th scope="col" class="px-5 py-3">Kode Barang</th>
                         <th scope="col" class="px-5 py-3">Nama Barang</th>
                         <th scope="col" class="px-5 py-3">Spesifikasi Nama Barang</th>
                         <th scope="col" class="px-5 py-3">Pengajuan Permintaan</th>
@@ -58,7 +58,7 @@
                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                         <td class="px-5 py-4">01 Juli 2024</td>
                         <td class="px-5 py-4">Sub Bag Umum dan Kepegawaian</td>
-                        <td class="px-5 py-4">A-001</td>
+                        <td class="px-5 py-4">3101</td>
                         <td class="px-5 py-4">Cutter Kecil</td>
                         <td class="px-5 py-4">A-300, Joyko</td>
                         <td class="px-5 py-4">1</td>

@@ -7,9 +7,14 @@
         {{-- button cart --}}
         <div class="flex justify-end my-4">
             <button data-modal-target="default-modal" data-modal-toggle="default-modal"
-                class="block text-black bg-red-600 hover:bg-red-400 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                class="relative block text-black bg-yellow-400 hover:bg-yellow-600 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 type="button">
-                <i class="text-white fa-solid fa-cart-shopping"></i>
+                <i class="text-black fa-solid fa-cart-shopping"></i>
+                <!-- Elemen untuk jumlah item -->
+                <span id="cart-item-count"
+                    class="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white rounded-full text-xs px-2 py-1">
+                    0
+                </span>
             </button>
         </div>
 
@@ -171,6 +176,7 @@
         document.addEventListener("DOMContentLoaded", function() {
             const addToCartButtons = document.querySelectorAll('.add-to-cart');
             const modalCartItems = document.getElementById('cart-items');
+            const cartItemCount = document.getElementById('cart-item-count');
 
             // Fungsi untuk menampilkan barang yang ada di keranjang
             function displayCartItems() {
@@ -190,7 +196,7 @@
                 <span class="text-black dark:text-gray-500">${item.nama}</span>
                 <div class="flex items-center space-x-2">
                     <button class="text-black border border-gray-700 px-3 py-1 rounded addToCart">+</button>
-                    <span class="text-black text-xl p-2">${item.jumlah}</span>
+                    <span class="text-black text-xl p-2">${item.jumlahDiKeranjang}</span>
                     <button class="text-black border border-gray-700 px-3 py-1 rounded removeFromCart">-</button>
                     <button class="text-black p-2 bg-gray-300 rounded deleteCartItem">
                         <i class="fa-solid fa-trash-can"></i>
@@ -201,7 +207,7 @@
                     // Tambahkan event listener untuk tombol tambah barang
                     const addButton = cartItemElement.querySelector('.addToCart');
                     addButton.addEventListener('click', function() {
-                        addToCart(item);
+                        addToCart(item, false); // false indicates not a fresh add
                     });
 
                     // Tambahkan event listener untuk tombol kurang barang
@@ -218,10 +224,13 @@
 
                     modalCartItems.appendChild(cartItemElement);
                 });
+
+                // Update jumlah jenis barang di keranjang
+                updateCartItemCount();
             }
 
             // Fungsi untuk menambah barang ke dalam keranjang
-            function addToCart(item) {
+            function addToCart(item, isNew = true) {
                 // Ambil data barang dari localStorage
                 let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
 
@@ -229,24 +238,25 @@
                 const existingItem = cartItems.find(i => i.id === item.id);
                 if (existingItem) {
                     // Jika barang sudah ada, tambahkan jumlahnya
-                    existingItem.jumlah++;
-                    // Validasi jumlah agar tidak melebihi stok
-                    if (existingItem.jumlah > parseInt(item.jumlah)) {
-                        alert(`Jumlah ${item.nama} melebihi stok yang tersedia (${item.jumlah}).`);
-                        existingItem.jumlah--; // Kurangi jumlah kembali karena melebihi stok
+                    if (existingItem.jumlahDiKeranjang + 1 > parseInt(existingItem.jumlah)) {
+                        alert(`Jumlah ${item.nama} melebihi stok yang tersedia (${existingItem.jumlah}).`);
                         return;
                     }
+                    existingItem.jumlahDiKeranjang++;
                 } else {
                     // Jika barang belum ada, tambahkan ke keranjang
-                    item.jumlah = 1;
+                    item.jumlahDiKeranjang = 1; // Initialize jumlah di keranjang
+                    if (isNew) {
+                        item.jumlahDiKeranjang = 1;
+                    }
                     cartItems.push(item);
                 }
 
                 // Simpan kembali ke localStorage
                 localStorage.setItem('cartItems', JSON.stringify(cartItems));
 
-                // Tampilkan pesan sukses atau perubahan yang sesuai di UI jika diperlukan
-                alert(`Barang ${item.nama} telah ditambahkan ke keranjang`);
+                // // Tampilkan pesan sukses atau perubahan yang sesuai di UI jika diperlukan
+                // alert(`Barang ${item.nama} telah ditambahkan ke keranjang`);
 
                 // Update tampilan UI seperti jumlah barang di keranjang di modal
                 displayCartItems();
@@ -261,8 +271,8 @@
                 const existingItem = cartItems.find(i => i.id === item.id);
                 if (existingItem) {
                     // Kurangi jumlah barang jika lebih dari 1
-                    if (existingItem.jumlah > 1) {
-                        existingItem.jumlah--;
+                    if (existingItem.jumlahDiKeranjang > 1) {
+                        existingItem.jumlahDiKeranjang--;
 
                         // Simpan kembali ke localStorage
                         localStorage.setItem('cartItems', JSON.stringify(cartItems));
@@ -288,6 +298,13 @@
                 displayCartItems();
             }
 
+            // Fungsi untuk mengupdate jumlah jenis barang di keranjang
+            function updateCartItemCount() {
+                let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+                let uniqueItemCount = cartItems.length; // Jumlah jenis barang unik
+                cartItemCount.textContent = uniqueItemCount;
+            }
+
             // Event listener untuk tombol "Tambah ke Keranjang"
             addToCartButtons.forEach(button => {
                 button.addEventListener('click', function(event) {
@@ -302,7 +319,8 @@
                         id: id,
                         nama: nama,
                         spesifikasi: spesifikasi,
-                        jumlah: parseInt(jumlah) // Pastikan jumlah di-parse ke integer
+                        jumlah: parseInt(jumlah), // Jumlah stok barang
+                        jumlahDiKeranjang: 0 // Initialize jumlah di keranjang
                     };
 
                     // Panggil fungsi untuk menambah barang ke keranjang

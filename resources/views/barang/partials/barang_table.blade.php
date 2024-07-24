@@ -2,7 +2,7 @@
     @if ($barangs->isEmpty())
         <tr id="no-data-row">
             <td colspan="7" class="text-center p-4 text-gray-500 dark:text-gray-400">
-                Data tidak tersedia.
+                Tidak Ada Data
             </td>
         </tr>
     @else
@@ -31,7 +31,7 @@
     @endif
     <tr id="no-results-row" style="display: none;">
         <td colspan="7" class="text-center p-4 text-gray-500 dark:text-gray-400">
-            Data tidak ditemukan.
+            Tidak Ada Hasil Ditemukan
         </td>
     </tr>
 </tbody>

@@ -115,7 +115,7 @@ class PermintaanController extends Controller
         }
 
         // Redirect atau kembalikan response sesuai kebutuhan
-        return redirect()->route('permintaan.index')->with('success', 'Permintaan barang berhasil disimpan.');
+        return redirect()->route('historypermintaan.index')->with('success', 'Permintaan barang berhasil disimpan.');
     }
 
 

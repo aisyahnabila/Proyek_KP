@@ -10,7 +10,7 @@ class HistoryPermintaanController extends Controller
 {
     public function index()
     {
-        $permintaans = Permintaan::with('detailPermintaan', 'unitKerja')->get();
+        $permintaans = Permintaan::with('detailPermintaan', 'unitKerja')->orderBy('created_at', 'desc')->get();
         return view('laporan.permintaan', compact('permintaans'));
     }
 
@@ -48,7 +48,7 @@ class HistoryPermintaanController extends Controller
         foreach ($permintaan->detailPermintaan as $index => $detail) {
             $rowIndex = $index + 1;
             $templateProcessor->setValue("no#{$rowIndex}", $rowIndex);
-            $templateProcessor->setValue("barang_nama#{$rowIndex}", $detail->barang->spesifikasi_nama_barang);
+            $templateProcessor->setValue("barang_nama#{$rowIndex}", $detail->barang->nama_barang);
             $templateProcessor->setValue("jumlah#{$rowIndex}", $detail->jumlah_permintaan);
             $templateProcessor->setValue("satuan#{$rowIndex}", $detail->barang->satuan);
             $templateProcessor->setValue("keperluan#{$rowIndex}", $permintaan->keperluan);

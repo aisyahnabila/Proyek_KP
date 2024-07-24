@@ -6,6 +6,7 @@ use App\Models\Permintaan;
 use App\Models\UnitKerja;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class HistoryBulanController extends Controller
@@ -30,33 +31,26 @@ class HistoryBulanController extends Controller
             $query->whereYear('tanggal_permintaan', $tahun);
         }
 
-        //
-        $permintaan = $query->with('detailPermintaan.barang.kategori', 'unitKerja')
-            ->get()
-            ->groupBy(function ($item) {
-                // Mengelompokkan berdasarkan id_unitkerja,barang_id, dan spesifikasi_nama_barang
-                return $item->id_unitkerja . '-' . $item->detailPermintaan->first()->barang_id . '-' . $item->detailPermintaan->first()->barang->spesifikasi_nama_barang;
-            });
+        // Get all permintaan with related models
+        $permintaan = $query->with('detailPermintaan.barang.kategori', 'unitKerja')->get();
 
-        // Mengelompokkan data dan menjumlahkan permintaan berdasarkan divisi dan barang
-        $groupedPermintaan = [];
-        foreach ($permintaan as $group => $items) {
-            $totalPermintaan = 0;
-            foreach ($items as $item) {
-                foreach ($item->detailPermintaan as $detail) {
-                    $totalPermintaan += $detail->jumlah_permintaan;
-                }
-            }
-            $firstItem = $items->first();
-            $groupedPermintaan[] = [
-                'unit_kerja' => $firstItem->unitKerja->nama_unit_kerja,
-                'kode_barang' => $firstItem->detailPermintaan->first()->barang->kategori->kode_barang,
-                'nama_barang' => $firstItem->detailPermintaan->first()->barang->nama_barang,
-                'spesifikasi_nama_barang' => $firstItem->detailPermintaan->first()->barang->spesifikasi_nama_barang,
+        // Group and transform data
+        $groupedPermintaan = $permintaan->map(function ($item) {
+            $totalPermintaan = $item->detailPermintaan->sum('jumlah_permintaan');
+            Carbon::setLocale('id');
+
+            return [
+                'bulan' => \Carbon\Carbon::parse($item->tanggal_permintaan)->translatedFormat('F Y'),
+                'unit_kerja' => $item->unitKerja->nama_unit_kerja,
+                'kode_barang' => $item->detailPermintaan->first()->barang->kategori->kode_barang,
+                'nama_barang' => $item->detailPermintaan->first()->barang->nama_barang,
+                'spesifikasi_nama_barang' => $item->detailPermintaan->first()->barang->spesifikasi_nama_barang,
                 'total_permintaan' => $totalPermintaan,
-                'satuan' => $firstItem->detailPermintaan->first()->barang->satuan,
+                'jumlah' => $item->detailPermintaan->first()->barang->jumlah,
+                'satuan' => $item->detailPermintaan->first()->barang->satuan,
+                'keperluan' => $item->keperluan,
             ];
-        }
+        });
 
         return view('laporan.bulan', [
             'permintaan' => $groupedPermintaan,
@@ -70,22 +64,39 @@ class HistoryBulanController extends Controller
         $bulan = $request->input('bulan');
         $tahun = $request->input('tahun');
 
-        $permintaan = DB::table('permintaan')
+        $query = DB::table('permintaan')
             ->join('detail_permintaan', 'permintaan.id', '=', 'detail_permintaan.permintaan_id')
             ->join('barang', 'detail_permintaan.barang_id', '=', 'barang.id')
             ->join('unit_kerja', 'permintaan.unit_kerja_id', '=', 'unit_kerja.id')
             ->select(
+                DB::raw('DATE_FORMAT(permintaan.tanggal_permintaan, "%M") as bulan'),
+                // DB::raw('YEAR(permintaan.tanggal_permintaan) as tahun'),
                 'unit_kerja.nama_unit_kerja',
                 'barang.kategori.kode_barang',
                 'barang.nama_barang',
                 'barang.spesifikasi_nama_barang',
                 'barang.satuan',
-                DB::raw('SUM(detail_permintaan.jumlah_permintaan) as total_permintaan')
-            )
-            ->where('permintaan.unit_kerja_id', $unit_kerja_id)
-            ->whereMonth('permintaan.tanggal_permintaan', $bulan)
-            ->whereYear('permintaan.tanggal_permintaan', $tahun)
-            ->groupBy('unit_kerja.nama_unit_kerja', 'barang.kategori.kode_barang', 'barang.nama_barang', 'barang.spesifikasi_nama_barang', 'barang.satuan')
+                'permintaan.keperluan',
+                DB::raw('SUM(detail_permintaan.jumlah_permintaan) as total_permintaan'),
+                'barang.jumlah as sisa_persediaan'
+            );
+
+        if ($unit_kerja_id) {
+            $query->where('permintaan.unit_kerja_id', $unit_kerja_id);
+        }
+
+        if ($bulan) {
+            $query->whereMonth('permintaan.tanggal_permintaan', $bulan);
+        }
+
+        if ($tahun) {
+            $query->whereYear('permintaan.tanggal_permintaan', $tahun);
+        }
+
+        $permintaan = $query
+            ->groupBy('bulan', 'unit_kerja.nama_unit_kerja', 'barang.kategori.kode_barang', 'barang.nama_barang', 'barang.spesifikasi_nama_barang', 'barang.satuan')
+            ->orderBy('tahun')
+            ->orderBy('bulan')
             ->orderBy('unit_kerja.nama_unit_kerja')
             ->get();
 

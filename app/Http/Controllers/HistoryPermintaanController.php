@@ -62,4 +62,3 @@ class HistoryPermintaanController extends Controller
         return response()->download($tempFilePath)->deleteFileAfterSend(true);
     }
 }
-

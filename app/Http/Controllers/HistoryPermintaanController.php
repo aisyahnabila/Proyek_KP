@@ -17,7 +17,7 @@ class HistoryPermintaanController extends Controller
     public function exportWord($id)
     {
         // Path ke template Word
-        $templatePath = resource_path('views/templete_nota_permintaan_barang.docx');
+        $templatePath = public_path('templates/templete_nota_permintaan_barang.docx');
 
         // Verifikasi apakah file template ada
         if (!file_exists($templatePath)) {

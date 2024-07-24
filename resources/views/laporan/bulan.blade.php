@@ -4,7 +4,8 @@
     <div class="p-6 mt-2 sm:ml-64">
         <div class="text-2xl my-4">Laporan Bulanan</div>
 
-        <div class="p-5 border border-black overflow-x-auto flex justify-between items-center pb-4 bg-white dark:bg-gray-900 space-x-4">
+        <div
+            class="p-5 border border-black overflow-x-auto flex justify-between items-center pb-4 bg-white dark:bg-gray-900 space-x-4">
             <form action="{{ route('laporan.bulan') }}" method="GET" class="flex space-x-4">
                 <div class="flex-1">
                     <select id="unit-kerja" name="unit_kerja"

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\PhpWord;
+use PhpOffice\PhpWord\TemplateProcessor;
 
 class HistoryBulanController extends Controller
 {
@@ -37,8 +38,6 @@ class HistoryBulanController extends Controller
         // Group and transform data
         $groupedPermintaan = $permintaan->map(function ($item) {
             $totalPermintaan = $item->detailPermintaan->sum('jumlah_permintaan');
-            Carbon::setLocale('id');
-
             return [
                 'bulan' => \Carbon\Carbon::parse($item->tanggal_permintaan)->translatedFormat('F Y'),
                 'unit_kerja' => $item->unitKerja->nama_unit_kerja,
@@ -61,62 +60,59 @@ class HistoryBulanController extends Controller
 
     public function exportToWord(Request $request)
     {
+        // Path ke template
+        $templatePath = public_path('templates/template_surat_permintaan_barang.docx');
+
+        // Buat instance TemplateProcessor
+        $templateProcessor = new TemplateProcessor($templatePath);
+
+        // Mengambil data dari filter
+        $unit_kerja = $request->input('unit_kerja');
         $bulan = $request->input('bulan');
         $tahun = $request->input('tahun');
-        $divisi = $request->input('divisi');
 
-        $permintaan = Permintaan::when($bulan, function ($query, $bulan) {
-            return $query->whereMonth('tanggal_permintaan', $bulan);
+        // Simpan data yang sudah difilter dari database
+        $permintaan = Permintaan::when($unit_kerja, function ($query, $unit_kerja) {
+            return $query->where('id_unitkerja', $unit_kerja);
         })
+            ->when($bulan, function ($query, $bulan) {
+                return $query->whereMonth('tanggal_permintaan', $bulan);
+            })
             ->when($tahun, function ($query, $tahun) {
                 return $query->whereYear('tanggal_permintaan', $tahun);
-            })
-            ->when($divisi, function ($query, $divisi) {
-                return $query->where('unit_kerja_id', $divisi);
             })
             ->with('detailPermintaan.barang.kategori', 'unitKerja')
             ->get();
 
-        $phpWord = new PhpWord();
-        $section = $phpWord->addSection();
+        // Mengisi placeholder dengan data yang sudah difilter
+        $templateProcessor->setValue('bulan', $bulan);
+        $templateProcessor->setValue('tahun', $tahun);
+        $templateProcessor->setValue('unit_kerja', $permintaan->first()->unitKerja->nama_unit_kerja ?? 'Semua Divisi');
 
-        $section->addText("Laporan Bulanan Permintaan Barang");
-        $section->addText("Divisi: " . ($permintaan->first()->unitKerja->nama_unit_kerja ?? 'Semua Divisi'));
-        $section->addText("Bulan: " . \Carbon\Carbon::create($tahun, $bulan)->translatedFormat('F Y'));
+        // Menambahkan tanggal cetak
+        $tanggalCetak = Carbon::now()->format('d-m-Y');
+        $templateProcessor->setValue('tanggal_cetak', $tanggalCetak);
 
-        $table = $section->addTable();
-
-        $table->addRow();
-        $table->addCell()->addText('Bulan');
-        $table->addCell()->addText('Unit Kerja');
-        $table->addCell()->addText('Kode Barang');
-        $table->addCell()->addText('Nama Barang');
-        $table->addCell()->addText('Spesifikasi Nama Barang');
-        $table->addCell()->addText('Jumlah Pengajuan Permintaan');
-        $table->addCell()->addText('Informasi Sisa Persediaan');
-        $table->addCell()->addText('Satuan');
-        $table->addCell()->addText('Keperluan');
-
-        foreach ($permintaan as $item) {
-            $table->addRow();
-            $table->addCell()->addText(\Carbon\Carbon::parse($item->tanggal_permintaan)->translatedFormat('F Y'));
-            $table->addCell()->addText($item->unitKerja->nama_unit_kerja);
-            $table->addCell()->addText($item->detailPermintaan->first()->barang->kategori->kode_barang);
-            $table->addCell()->addText($item->detailPermintaan->first()->barang->nama_barang);
-            $table->addCell()->addText($item->detailPermintaan->first()->barang->spesifikasi_nama_barang);
-            $table->addCell()->addText($item->detailPermintaan->sum('jumlah_permintaan'));
-            $table->addCell()->addText($item->detailPermintaan->first()->barang->jumlah);
-            $table->addCell()->addText($item->detailPermintaan->first()->barang->satuan);
-            $table->addCell()->addText($item->keperluan);
+        // Loop through permintaan and fill in the table
+        $templateProcessor->cloneRow('kode_barang', $permintaan->count());
+        foreach ($permintaan as $index => $item) {
+            $index += 1;
+            $templateProcessor->setValue("no#{$index}", $index);
+            $templateProcessor->setValue("unit_kerja#{$index}", $item->unitKerja->nama_unit_kerja);
+            $templateProcessor->setValue("kode_barang#{$index}", $item->detailPermintaan->first()->barang->kategori->kode_barang);
+            $templateProcessor->setValue("nama_barang#{$index}", $item->detailPermintaan->first()->barang->nama_barang);
+            $templateProcessor->setValue("spesifikasi_nama_barang#{$index}", $item->detailPermintaan->first()->barang->spesifikasi_nama_barang);
+            $templateProcessor->setValue("total_permintaan#{$index}", $item->detailPermintaan->sum('jumlah_permintaan'));
+            $templateProcessor->setValue("jumlah#{$index}", $item->detailPermintaan->first()->barang->jumlah);
+            $templateProcessor->setValue("satuan#{$index}", $item->detailPermintaan->first()->barang->satuan);
+            $templateProcessor->setValue("keperluan#{$index}", $item->keperluan);
         }
 
-        $fileName = 'template_surat_permintaan_barang.docx';
-        $tempFile = tempnam(sys_get_temp_dir(), $fileName);
-
-        $objWriter = IOFactory::createWriter($phpWord, 'Word2007');
-        $objWriter->save($tempFile);
-
-        return response()->download($tempFile, $fileName)->deleteFileAfterSend(true);
+        // Save file baru
+        $fileName = 'SPB_' . $tanggalCetak . '.docx';
+        $tempFilePath = storage_path('app/public/' . $fileName);
+        $templateProcessor->saveAs($tempFilePath);
+        return response()->download($tempFilePath)->deleteFileAfterSend(true);
     }
 
 }

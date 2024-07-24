@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Permintaan;
 use App\Models\UnitKerja;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
+use PhpOffice\PhpWord\IOFactory;
+use PhpOffice\PhpWord\PhpWord;
 
 class HistoryBulanController extends Controller
 {
@@ -58,67 +58,65 @@ class HistoryBulanController extends Controller
         ]);
     }
 
-    public function laporanBulanan(Request $request)
+
+    public function exportToWord(Request $request)
     {
-        $unit_kerja_id = $request->input('unit_kerja_id');
         $bulan = $request->input('bulan');
         $tahun = $request->input('tahun');
+        $divisi = $request->input('divisi');
 
-        $query = DB::table('permintaan')
-            ->join('detail_permintaan', 'permintaan.id', '=', 'detail_permintaan.permintaan_id')
-            ->join('barang', 'detail_permintaan.barang_id', '=', 'barang.id')
-            ->join('unit_kerja', 'permintaan.unit_kerja_id', '=', 'unit_kerja.id')
-            ->select(
-                DB::raw('DATE_FORMAT(permintaan.tanggal_permintaan, "%M") as bulan'),
-                'unit_kerja.nama_unit_kerja',
-                'barang.kategori.kode_barang',
-                'barang.nama_barang',
-                'barang.spesifikasi_nama_barang',
-                'barang.satuan',
-                'permintaan.keperluan',
-                DB::raw('SUM(detail_permintaan.jumlah_permintaan) as total_permintaan'),
-                'barang.jumlah as sisa_persediaan'
-            );
-
-        if ($unit_kerja_id) {
-            $query->where('permintaan.unit_kerja_id', $unit_kerja_id);
-        }
-
-        if ($bulan) {
-            $query->whereMonth('permintaan.tanggal_permintaan', $bulan);
-        }
-
-        if ($tahun) {
-            $query->whereYear('permintaan.tanggal_permintaan', $tahun);
-        }
-
-        $permintaan = $query
-            ->groupBy('bulan', 'unit_kerja.nama_unit_kerja', 'barang.kategori.kode_barang', 'barang.nama_barang', 'barang.spesifikasi_nama_barang', 'barang.satuan')
-            ->orderBy('tahun')
-            ->orderBy('bulan')
-            ->orderBy('unit_kerja.nama_unit_kerja')
-            ->get();
-
-        return view('laporan.bulanan', compact('permintaan'));
-    }
-
-    public function exportPdf(Request $request)
-    {
-        $unitKerja = $request->input('unit_kerja');
-        $bulan = $request->input('bulan');
-        $tahun = $request->input('tahun');
-
-        $query = Permintaan::with(['detailPermintaan.barang', 'unitKerja'])
-            ->when($unitKerja, function ($query, $unitKerja) {
-                return $query->where('id_unitkerja', $unitKerja);
+        $permintaan = Permintaan::when($bulan, function ($query, $bulan) {
+            return $query->whereMonth('tanggal_permintaan', $bulan);
+        })
+            ->when($tahun, function ($query, $tahun) {
+                return $query->whereYear('tanggal_permintaan', $tahun);
             })
-            ->whereMonth('tanggal_permintaan', $bulan)
-            ->whereYear('tanggal_permintaan', $tahun)
+            ->when($divisi, function ($query, $divisi) {
+                return $query->where('unit_kerja_id', $divisi);
+            })
+            ->with('detailPermintaan.barang.kategori', 'unitKerja')
             ->get();
 
-        $permintaan = $query->groupBy('id_unitkerja');
+        $phpWord = new PhpWord();
+        $section = $phpWord->addSection();
 
-        $pdf = Pdf::loadView('exports.permintaan_pdf', compact('permintaan'));
-        return $pdf->download('Laporan_Bulanan.pdf');
+        $section->addText("Laporan Bulanan Permintaan Barang");
+        $section->addText("Divisi: " . ($permintaan->first()->unitKerja->nama_unit_kerja ?? 'Semua Divisi'));
+        $section->addText("Bulan: " . \Carbon\Carbon::create($tahun, $bulan)->translatedFormat('F Y'));
+
+        $table = $section->addTable();
+
+        $table->addRow();
+        $table->addCell()->addText('Bulan');
+        $table->addCell()->addText('Unit Kerja');
+        $table->addCell()->addText('Kode Barang');
+        $table->addCell()->addText('Nama Barang');
+        $table->addCell()->addText('Spesifikasi Nama Barang');
+        $table->addCell()->addText('Jumlah Pengajuan Permintaan');
+        $table->addCell()->addText('Informasi Sisa Persediaan');
+        $table->addCell()->addText('Satuan');
+        $table->addCell()->addText('Keperluan');
+
+        foreach ($permintaan as $item) {
+            $table->addRow();
+            $table->addCell()->addText(\Carbon\Carbon::parse($item->tanggal_permintaan)->translatedFormat('F Y'));
+            $table->addCell()->addText($item->unitKerja->nama_unit_kerja);
+            $table->addCell()->addText($item->detailPermintaan->first()->barang->kategori->kode_barang);
+            $table->addCell()->addText($item->detailPermintaan->first()->barang->nama_barang);
+            $table->addCell()->addText($item->detailPermintaan->first()->barang->spesifikasi_nama_barang);
+            $table->addCell()->addText($item->detailPermintaan->sum('jumlah_permintaan'));
+            $table->addCell()->addText($item->detailPermintaan->first()->barang->jumlah);
+            $table->addCell()->addText($item->detailPermintaan->first()->barang->satuan);
+            $table->addCell()->addText($item->keperluan);
+        }
+
+        $fileName = 'template_surat_permintaan_barang.docx';
+        $tempFile = tempnam(sys_get_temp_dir(), $fileName);
+
+        $objWriter = IOFactory::createWriter($phpWord, 'Word2007');
+        $objWriter->save($tempFile);
+
+        return response()->download($tempFile, $fileName)->deleteFileAfterSend(true);
     }
+
 }

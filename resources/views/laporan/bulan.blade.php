@@ -4,8 +4,7 @@
     <div class="p-6 mt-2 sm:ml-64">
         <div class="text-2xl my-4">Laporan Bulanan</div>
 
-        <div
-            class="p-5 border border-black overflow-x-auto flex justify-between items-center pb-4 bg-white dark:bg-gray-900 space-x-4">
+        <div class="p-5 border border-black overflow-x-auto flex justify-between items-center pb-4 bg-white dark:bg-gray-900 space-x-4">
             <form action="{{ route('laporan.bulan') }}" method="GET" class="flex space-x-4">
                 <div class="flex-1">
                     <select id="unit-kerja" name="unit_kerja"
@@ -44,13 +43,18 @@
                         class="flex items-center justify-center font-semibold focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-yellow-900">
                         Filter
                     </button>
-
-                    <a href="#"
-                        class="flex text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                        <i class="fa-solid fa-download mt-1 mr-2"></i>
-                        Export To Word
-                    </a>
                 </div>
+            </form>
+
+            <form action="{{ route('laporan.bulan.word') }}" method="POST" class="flex space-x-4">
+                @csrf <!-- Tambahkan CSRF token untuk validasi permintaan POST -->
+                <input type="hidden" name="bulan" value="{{ request('bulan') }}">
+                <input type="hidden" name="tahun" value="{{ request('tahun') }}">
+                <input type="hidden" name="divisi" value="{{ request('divisi') }}">
+                <button type="submit"
+                    class="flex items-center justify-center font-semibold focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-green-900">
+                    Export to Word
+                </button>
             </form>
         </div>
 
@@ -72,7 +76,6 @@
                 <tbody>
                     @foreach ($permintaan as $p)
                         <tr>
-                            
                             <td class="px-5 py-3">{{ $p['bulan'] }}</td>
                             <td class="px-5 py-3">{{ $p['unit_kerja'] }}</td>
                             <td class="px-5 py-3">{{ $p['kode_barang'] }}</td>

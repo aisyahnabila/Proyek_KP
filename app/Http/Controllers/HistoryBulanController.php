@@ -32,10 +32,10 @@ class HistoryBulanController extends Controller
             $query->whereYear('tanggal_permintaan', $tahun);
         }
 
-        // Get all permintaan with related models
+        // Get semua permintaan yang sesuai dengan model
         $permintaan = $query->with('detailPermintaan.barang.kategori', 'unitKerja')->get();
 
-        // Group and transform data
+        // grouping dan transform data euy
         $groupedPermintaan = $permintaan->map(function ($item) {
             $totalPermintaan = $item->detailPermintaan->sum('jumlah_permintaan');
             return [
@@ -60,18 +60,18 @@ class HistoryBulanController extends Controller
 
     public function exportToWord(Request $request)
     {
-        // Path ke template
+        // path ke template
         $templatePath = public_path('templates/template_surat_permintaan_barang.docx');
 
-        // Buat instance TemplateProcessor
+        // buat instance TemplateProcessor
         $templateProcessor = new TemplateProcessor($templatePath);
 
-        // Mengambil data dari filter
+        // mengambil data dari filter
         $unit_kerja = $request->input('unit_kerja');
         $bulan = $request->input('bulan');
         $tahun = $request->input('tahun');
 
-        // Simpan data yang sudah difilter dari database
+        // simpan data yang sudah difilter dari database
         $permintaan = Permintaan::when($unit_kerja, function ($query, $unit_kerja) {
             return $query->where('id_unitkerja', $unit_kerja);
         })
@@ -84,16 +84,16 @@ class HistoryBulanController extends Controller
             ->with('detailPermintaan.barang.kategori', 'unitKerja')
             ->get();
 
-        // Mengisi placeholder dengan data yang sudah difilter
+        // mengisi placeholder dengan data yang sudah difilter
         $templateProcessor->setValue('bulan', $bulan);
         $templateProcessor->setValue('tahun', $tahun);
         $templateProcessor->setValue('unit_kerja', $permintaan->first()->unitKerja->nama_unit_kerja ?? 'Semua Divisi');
 
-        // Menambahkan tanggal cetak
+        // menambahkan tanggal cetak
         $tanggalCetak = Carbon::now()->format('d-m-Y');
         $templateProcessor->setValue('tanggal_cetak', $tanggalCetak);
 
-        // Loop through permintaan and fill in the table
+        // loop through permintaan and fill in the table
         $templateProcessor->cloneRow('kode_barang', $permintaan->count());
         foreach ($permintaan as $index => $item) {
             $index += 1;
@@ -108,7 +108,7 @@ class HistoryBulanController extends Controller
             $templateProcessor->setValue("keperluan#{$index}", $item->keperluan);
         }
 
-        // Save file baru
+        // save file baru
         $fileName = 'SPB_' . $tanggalCetak . '.docx';
         $tempFilePath = storage_path('app/public/' . $fileName);
         $templateProcessor->saveAs($tempFilePath);

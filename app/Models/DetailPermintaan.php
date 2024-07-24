@@ -10,12 +10,15 @@ class DetailPermintaan extends Model
     use HasFactory;
 
     protected $table = 'detail_permintaan';
-    protected $primaryKey = 'id_log';
+    // protected $primaryKey = 'id_log';
+
+    protected $primaryKey = 'id_detail_permintaan';
 
     protected $fillable = [
         'id_barang',
         'id_permintaan',
         'jumlah_permintaan',
+        'keterangan'
     ];
 
     // Relasi dengan Barang

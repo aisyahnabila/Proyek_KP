@@ -27,7 +27,7 @@
                             class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                             <td class="px-6 py-4">{{ $permintaan->tanggal_permintaan }}</td>
                             <td class="px-6 py-4">{{ $permintaan->kode_permintaan }}</td>
-                            <td class="px-6 py-4">{{ $permintaan->unitKerja->nama_unitkerja }}</td>
+                            <td class="px-6 py-4">{{ $permintaan->unitkerja->nama_unit_kerja }}</td>
                             <td class="px-6 py-4">{{ $permintaan->nama_pemohon }}</td>
                             <td class="px-6 py-4">
                                 <!-- Button untuk detail -->
@@ -45,7 +45,22 @@
                                         <!-- Modal content -->
                                         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
                                             <!-- Modal header -->
-                                            <!-- ... (bagian header modal) -->
+                                            <div
+                                                class="flex justify-between items-start p-4 border-b rounded-t dark:border-gray-600">
+                                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                                                    Detail Permintaan
+                                                </h3>
+                                                <button type="button"
+                                                    class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                                    data-modal-hide="detail-modal-{{ $permintaan->id_permintaan }}">
+                                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill-rule="evenodd"
+                                                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                                            clip-rule="evenodd"></path>
+                                                    </svg>
+                                                </button>
+                                            </div>
 
                                             <!-- Modal body -->
                                             <div class="p-6 overflow-y-auto max-h-[70vh]">
@@ -74,15 +89,16 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            @foreach ($permintaan->detailPermintaans as $detail)
+                                                            @foreach ($permintaan->detailPermintaan as $detail)
                                                                 <tr
                                                                     class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                                                    <td class="px-6 py-4">{{ $detail->barang->kode_barang }}
-                                                                    </td>
-                                                                    <td class="px-6 py-4">{{ $detail->barang->nama_barang }}
+                                                                    <td class="px-6 py-4">
+                                                                        {{ $detail->barang->kategori->kode_barang }}
                                                                     </td>
                                                                     <td class="px-6 py-4">
-                                                                        {{ $detail->barang->spesifikasi }}</td>
+                                                                        {{ $detail->barang->nama_barang }}</td>
+                                                                    <td class="px-6 py-4">
+                                                                        {{ $detail->barang->spesifikasi_nama_barang }}</td>
                                                                     <td class="px-6 py-4">{{ $detail->jumlah_permintaan }}
                                                                     </td>
                                                                     <td class="px-6 py-4">{{ $detail->barang->satuan }}
@@ -94,18 +110,21 @@
                                                     </table>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <!-- Modal footer -->
-                                        <div
-                                            class="flex justify-end items-center p-3 md:p-3 border-t border-gray-200 rounded-b dark:border-gray-600">
-                                            <a href="#" data-modal-hide="default-modal" type="button"
-                                                class="flex text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                                <i class="fa-solid fa-download mt-1 mr-2"></i>
-                                                Export
-                                            </a>
+
+                                            <!-- Modal footer -->
+                                            <div
+                                                class="flex justify-end items-center p-3 md:p-3 border-t border-gray-200 rounded-b dark:border-gray-600">
+
+                                                <a href="{{ route('historypermintaan.exportWord', $permintaan->id_permintaan) }}"
+                                                    class="flex text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                    <i class="fa-solid fa-download mt-1 mr-2"></i>
+                                                    Export To Word
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+                                <!-- End Modal -->
                             </td>
                         </tr>
                     @endforeach

@@ -8,7 +8,8 @@ use App\Models\UnitKerja;
 use App\Models\Permintaan;
 use Illuminate\Http\Request;
 use App\Models\DetailPermintaan;
-use Illuminate\Support\Facades\Log;
+use PhpOffice\PhpWord\TemplateProcessor;
+use Carbon\Carbon;
 
 class PermintaanController extends Controller
 {
@@ -17,7 +18,7 @@ class PermintaanController extends Controller
      */
     public function index()
     {
-        $permintaans = Permintaan::with('detailBarang')->get();
+        $permintaans = Permintaan::with('detailPermintaan')->get();
         $items = Barang::all();
         return view('permintaan.index', compact('permintaans', 'items'));
     }
@@ -45,6 +46,7 @@ class PermintaanController extends Controller
         ], [
             'evidence.max' => 'File evidence tidak boleh lebih dari 5MB.'
         ]);
+
         // Generate kode permintaan
         $latestPermintaan = Permintaan::latest()->first();
         if ($latestPermintaan) {
@@ -146,6 +148,5 @@ class PermintaanController extends Controller
      */
     public function destroy(string $id)
     {
-        //
     }
 }

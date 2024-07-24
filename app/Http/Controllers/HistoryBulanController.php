@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Permintaan;
 use App\Models\UnitKerja;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
+use PhpOffice\PhpWord\IOFactory;
+use PhpOffice\PhpWord\PhpWord;
+use PhpOffice\PhpWord\TemplateProcessor;
 
 class HistoryBulanController extends Controller
 {
@@ -37,8 +38,6 @@ class HistoryBulanController extends Controller
         // Group and transform data
         $groupedPermintaan = $permintaan->map(function ($item) {
             $totalPermintaan = $item->detailPermintaan->sum('jumlah_permintaan');
-            Carbon::setLocale('id');
-
             return [
                 'bulan' => \Carbon\Carbon::parse($item->tanggal_permintaan)->translatedFormat('F Y'),
                 'unit_kerja' => $item->unitKerja->nama_unit_kerja,
@@ -58,68 +57,62 @@ class HistoryBulanController extends Controller
         ]);
     }
 
-    public function laporanBulanan(Request $request)
+
+    public function exportToWord(Request $request)
     {
-        $unit_kerja_id = $request->input('unit_kerja_id');
+        // Path ke template
+        $templatePath = public_path('templates/template_surat_permintaan_barang.docx');
+
+        // Buat instance TemplateProcessor
+        $templateProcessor = new TemplateProcessor($templatePath);
+
+        // Mengambil data dari filter
+        $unit_kerja = $request->input('unit_kerja');
         $bulan = $request->input('bulan');
         $tahun = $request->input('tahun');
 
-        $query = DB::table('permintaan')
-            ->join('detail_permintaan', 'permintaan.id', '=', 'detail_permintaan.permintaan_id')
-            ->join('barang', 'detail_permintaan.barang_id', '=', 'barang.id')
-            ->join('unit_kerja', 'permintaan.unit_kerja_id', '=', 'unit_kerja.id')
-            ->select(
-                DB::raw('DATE_FORMAT(permintaan.tanggal_permintaan, "%M") as bulan'),
-                // DB::raw('YEAR(permintaan.tanggal_permintaan) as tahun'),
-                'unit_kerja.nama_unit_kerja',
-                'barang.kategori.kode_barang',
-                'barang.nama_barang',
-                'barang.spesifikasi_nama_barang',
-                'barang.satuan',
-                'permintaan.keperluan',
-                DB::raw('SUM(detail_permintaan.jumlah_permintaan) as total_permintaan'),
-                'barang.jumlah as sisa_persediaan'
-            );
-
-        if ($unit_kerja_id) {
-            $query->where('permintaan.unit_kerja_id', $unit_kerja_id);
-        }
-
-        if ($bulan) {
-            $query->whereMonth('permintaan.tanggal_permintaan', $bulan);
-        }
-
-        if ($tahun) {
-            $query->whereYear('permintaan.tanggal_permintaan', $tahun);
-        }
-
-        $permintaan = $query
-            ->groupBy('bulan', 'unit_kerja.nama_unit_kerja', 'barang.kategori.kode_barang', 'barang.nama_barang', 'barang.spesifikasi_nama_barang', 'barang.satuan')
-            ->orderBy('tahun')
-            ->orderBy('bulan')
-            ->orderBy('unit_kerja.nama_unit_kerja')
-            ->get();
-
-        return view('laporan.bulanan', compact('permintaan'));
-    }
-
-    public function exportPdf(Request $request)
-    {
-        $unitKerja = $request->input('unit_kerja');
-        $bulan = $request->input('bulan');
-        $tahun = $request->input('tahun');
-
-        $query = Permintaan::with(['detailPermintaan.barang', 'unitKerja'])
-            ->when($unitKerja, function ($query, $unitKerja) {
-                return $query->where('id_unitkerja', $unitKerja);
+        // Simpan data yang sudah difilter dari database
+        $permintaan = Permintaan::when($unit_kerja, function ($query, $unit_kerja) {
+            return $query->where('id_unitkerja', $unit_kerja);
+        })
+            ->when($bulan, function ($query, $bulan) {
+                return $query->whereMonth('tanggal_permintaan', $bulan);
             })
-            ->whereMonth('tanggal_permintaan', $bulan)
-            ->whereYear('tanggal_permintaan', $tahun)
+            ->when($tahun, function ($query, $tahun) {
+                return $query->whereYear('tanggal_permintaan', $tahun);
+            })
+            ->with('detailPermintaan.barang.kategori', 'unitKerja')
             ->get();
 
-        $permintaan = $query->groupBy('id_unitkerja');
+        // Mengisi placeholder dengan data yang sudah difilter
+        $templateProcessor->setValue('bulan', $bulan);
+        $templateProcessor->setValue('tahun', $tahun);
+        $templateProcessor->setValue('unit_kerja', $permintaan->first()->unitKerja->nama_unit_kerja ?? 'Semua Divisi');
 
-        $pdf = Pdf::loadView('exports.permintaan_pdf', compact('permintaan'));
-        return $pdf->download('Laporan_Bulanan.pdf');
+        // Menambahkan tanggal cetak
+        $tanggalCetak = Carbon::now()->format('d-m-Y');
+        $templateProcessor->setValue('tanggal_cetak', $tanggalCetak);
+
+        // Loop through permintaan and fill in the table
+        $templateProcessor->cloneRow('kode_barang', $permintaan->count());
+        foreach ($permintaan as $index => $item) {
+            $index += 1;
+            $templateProcessor->setValue("no#{$index}", $index);
+            $templateProcessor->setValue("unit_kerja#{$index}", $item->unitKerja->nama_unit_kerja);
+            $templateProcessor->setValue("kode_barang#{$index}", $item->detailPermintaan->first()->barang->kategori->kode_barang);
+            $templateProcessor->setValue("nama_barang#{$index}", $item->detailPermintaan->first()->barang->nama_barang);
+            $templateProcessor->setValue("spesifikasi_nama_barang#{$index}", $item->detailPermintaan->first()->barang->spesifikasi_nama_barang);
+            $templateProcessor->setValue("total_permintaan#{$index}", $item->detailPermintaan->sum('jumlah_permintaan'));
+            $templateProcessor->setValue("jumlah#{$index}", $item->detailPermintaan->first()->barang->jumlah);
+            $templateProcessor->setValue("satuan#{$index}", $item->detailPermintaan->first()->barang->satuan);
+            $templateProcessor->setValue("keperluan#{$index}", $item->keperluan);
+        }
+
+        // Save file baru
+        $fileName = 'SPB_' . $tanggalCetak . '.docx';
+        $tempFilePath = storage_path('app/public/' . $fileName);
+        $templateProcessor->saveAs($tempFilePath);
+        return response()->download($tempFilePath)->deleteFileAfterSend(true);
     }
+
 }

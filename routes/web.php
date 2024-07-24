@@ -43,7 +43,7 @@ Route::middleware(['auth'])->group(function () {
     // Routes untuk Kelola
     Route::get('/kelola/index', [KelolaController::class, 'index'])->name('kelola.index');
     Route::get('/kelola/create', [KelolaController::class, 'showForm'])->name('kelola.create');
-    Route::get('/barang/search', [KelolaController::class, 'search'])->name('barang.search');
+    // Route::get('/barang/search', [KelolaController::class, 'search'])->name('barang.search');
 
 
     // Routes untuk CRUD form tambah barang
@@ -79,7 +79,7 @@ Route::middleware(['auth'])->group(function () {
     // routes untuk history per bulan
     Route::get('/laporan/bulan', [HistoryBulanController::class, 'index'])->name('laporan.bulan');
     Route::post('/laporan/bulan', [HistoryBulanController::class, 'historyBulan'])->name('laporan.bulan.post');
-    Route::post('/laporan/bulan/export-pdf', [HistoryBulanController::class, 'exportPdf'])->name('laporan.bulan.exportPdf');
+    Route::post('/laporan/bulan/export-word', [HistoryBulanController::class, 'exportToWord'])->name('laporan.bulan.word');
 
     // Routes untuk Riwayat Login
     Route::get('/riwayatlogin', [RiwayatController::class, 'index'])->name('riwayatlogin');

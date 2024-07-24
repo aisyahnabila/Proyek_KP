@@ -32,9 +32,7 @@ class HistoryPermintaanController extends Controller
 
 
         // Konversi tanggal_permintaan menjadi objek Carbon
-        Carbon::setLocale('id');
         $tanggalPermintaan = Carbon::parse($permintaan->tanggal_permintaan);
-        // Format tanggal dalam bahasa Indonesia
         $formattedDate = $tanggalPermintaan->translatedFormat('d F Y');
 
         // Set value dari placeholder di template

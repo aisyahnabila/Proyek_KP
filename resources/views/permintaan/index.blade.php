@@ -255,7 +255,7 @@
                 // Simpan kembali ke localStorage
                 localStorage.setItem('cartItems', JSON.stringify(cartItems));
 
-                // // Tampilkan pesan sukses atau perubahan yang sesuai di UI jika diperlukan
+                // Tampilkan pesan sukses atau perubahan yang sesuai di UI jika diperlukan
                 // alert(`Barang ${item.nama} telah ditambahkan ke keranjang`);
 
                 // Update tampilan UI seperti jumlah barang di keranjang di modal

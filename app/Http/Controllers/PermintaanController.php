@@ -36,87 +36,109 @@ class PermintaanController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        // Validasi input
-        $validatedData = $request->validate([
-            'unit_kerja' => 'required|exists:unit_kerja,id_unitkerja',
-            'nama_pemohon' => 'required|string|max:255',
-            'keperluan' => 'required|string',
-            'evidence' => 'required|file|mimes:jpeg,png,pdf|max:5240', // 5MB = 5240KB
-        ], [
-            'evidence.max' => 'File evidence tidak boleh lebih dari 5MB.'
-        ]);
+{
+    // Validasi input
+    $validatedData = $request->validate([
+        'unit_kerja' => 'required|exists:unit_kerja,id_unitkerja',
+        'nama_pemohon' => 'required|string|max:255',
+        'keperluan' => 'required|string',
+        'evidence' => 'required|file|mimes:jpeg,png,pdf|max:5240', // 5MB = 5240KB
+    ], [
+        'evidence.max' => 'File evidence tidak boleh lebih dari 5MB.'
+    ]);
 
-        // Generate kode permintaan
-        $latestPermintaan = Permintaan::latest()->first();
-        if ($latestPermintaan) {
-            $lastCode = $latestPermintaan->kode_permintaan;
-            $lastNumber = (int) substr($lastCode, strpos($lastCode, '-') + 1);
-            $nextNumber = $lastNumber + 1;
-            $nextCode = substr($lastCode, 0, strpos($lastCode, '-') + 1) . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
-        } else {
-            $nextCode = 'A-001'; // Jika belum ada data, mulai dari A-001
-        }
+    // Generate kode permintaan
+    $latestPermintaan = Permintaan::latest()->first();
+    if ($latestPermintaan) {
+        $lastCode = $latestPermintaan->kode_permintaan;
+        $lastNumber = (int) substr($lastCode, strpos($lastCode, '-') + 1);
+        $nextNumber = $lastNumber + 1;
+        $nextCode = substr($lastCode, 0, strpos($lastCode, '-') + 1) . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
+    } else {
+        $nextCode = 'A-001'; // Jika belum ada data, mulai dari A-001
+    }
 
-        // Simpan file evidence
-        if ($request->hasFile('evidence')) {
-            $file = $request->file('evidence');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $file->storeAs('public/evidence', $filename);
-        } else {
-            return redirect()->back()->withInput()->withErrors(['evidence' => 'File evidence harus diunggah.']);
-        }
+    // Simpan file evidence
+    if ($request->hasFile('evidence')) {
+        $file = $request->file('evidence');
+        $filename = time() . '_' . $file->getClientOriginalName();
+        $file->storeAs('public/evidence', $filename);
+    } else {
+        return redirect()->back()->withInput()->withErrors(['evidence' => 'File evidence harus diunggah.']);
+    }
 
-        // Simpan data permintaan barang ke dalam database
-        $permintaan = Permintaan::create([
-            'kode_permintaan' => $nextCode,
-            'tanggal_permintaan' => now(),
-            'id_unitkerja' => $validatedData['unit_kerja'],
-            'nama_pemohon' => $validatedData['nama_pemohon'],
-            'keperluan' => $validatedData['keperluan'],
-            'evidence' => $filename,
-        ]);
+    // Simpan data permintaan barang ke dalam database
+    $permintaan = Permintaan::create([
+        'kode_permintaan' => $nextCode,
+        'tanggal_permintaan' => now(),
+        'id_unitkerja' => $validatedData['unit_kerja'],
+        'nama_pemohon' => $validatedData['nama_pemohon'],
+        'keperluan' => $validatedData['keperluan'],
+        'evidence' => $filename,
+    ]);
 
-        // Pastikan bahwa penyimpanan berhasil
-        if (!$permintaan->save()) {
-            return redirect()->back()->withInput()->withErrors(['error' => 'Gagal menyimpan permintaan barang.']);
-        }
+    // Pastikan bahwa penyimpanan berhasil
+    if (!$permintaan->save()) {
+        return redirect()->back()->withInput()->withErrors(['error' => 'Gagal menyimpan permintaan barang.']);
+    }
 
-        // Ambil ID permintaan setelah disimpan
-        $permintaanID = $permintaan->id_permintaan;
+    // Ambil ID permintaan setelah disimpan
+    $permintaanID = $permintaan->id_permintaan;
+    \Log::info('Permintaan ID:', ['id' => $permintaanID]);
 
-        // Simpan detail barang ke dalam database
-        if ($request->has('cartItems')) {
-            $cartItems = json_decode($request->cartItems, true); // Decode JSON ke array asosiatif
-            foreach ($cartItems as $item) {
+    // Simpan detail barang ke dalam database
+    if ($request->has('cart-items-input')) {
+        $cartItems = json_decode($request->input('cart-items-input'), true); // Decode JSON ke array asosiatif
+
+        // Log untuk debugging
+        \Log::info('Cart Items:', $cartItems);
+
+        foreach ($cartItems as $item) {
+            // Log untuk debugging
+            \Log::info('Processing item:', $item);
+
+            if (isset($item['id']) && isset($item['jumlahDiKeranjang'])) {
                 $detailBarang = new DetailPermintaan();
                 $detailBarang->id_permintaan = $permintaanID; // Gunakan id yang baru disimpan
                 $detailBarang->id_barang = $item['id']; // Ambil id barang dari setiap item
-                $detailBarang->jumlah_permintaan = $item['jumlah']; // Sesuaikan dengan struktur data Anda
-                // Anda bisa tambahkan logika validasi jumlah permintaan atau lainnya di sini
+                $detailBarang->jumlah_permintaan = $item['jumlahDiKeranjang']; // Sesuaikan dengan struktur data Anda
                 $detailBarang->save();
 
                 // Catat log aktivitas jumlah keluar
                 $barang = Barang::find($item['id']);
-                $currentStock = $barang->jumlah - $item['jumlah'];
+                if ($barang) {
+                    $currentStock = $barang->jumlah - $item['jumlahDiKeranjang']; // Kurangi stok dengan jumlahDiKeranjang
 
-                LogActivity::create([
-                    'id_barang' => $item['id'],
-                    'timestamp' => now(),
-                    'jumlah_masuk' => 0,
-                    'jumlah_keluar' => $item['jumlah'],
-                    'sisa' => $currentStock,
-                ]);
+                    LogActivity::create([
+                        'id_barang' => $item['id'],
+                        'timestamp' => now(),
+                        'jumlah_masuk' => 0,
+                        'jumlah_keluar' => $item['jumlahDiKeranjang'], // Ambil jumlah dari jumlahDiKeranjang
+                        'sisa' => $currentStock,
+                    ]);
 
-                // Update jumlah barang di tabel Barang
-                $barang->jumlah = $currentStock;
-                $barang->save();
+                    // Update jumlah barang di tabel Barang
+                    $barang->jumlah = $currentStock;
+                    $barang->save();
+
+                    \Log::info('Updated Barang:', ['id' => $item['id'], 'current_stock' => $currentStock]);
+                } else {
+                    \Log::error('Barang not found for id:', ['id' => $item['id']]);
+                }
+            } else {
+                \Log::error('Invalid cart item data:', $item);
             }
         }
-
-        // Redirect atau kembalikan response sesuai kebutuhan
-        return redirect()->route('historypermintaan.index')->with('success', 'Permintaan barang berhasil disimpan.');
+    } else {
+        \Log::error('No cart items input found.');
     }
+
+    // Redirect atau kembalikan response sesuai kebutuhan
+    return redirect()->route('historypermintaan.index')->with('success', 'Permintaan barang berhasil disimpan.');
+}
+
+
+
 
 
     /**

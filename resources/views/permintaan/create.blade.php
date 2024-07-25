@@ -130,10 +130,10 @@
                     row.classList.add(index % 2 === 0 ? 'even:bg-gray-50' : 'odd:bg-white', 'border-b');
 
                     row.innerHTML = `
-                        <td class="px-6 py-4">${index + 1}</td>
-                        <td class="px-6 py-4">${item.nama}</td>
-                        <td class="px-6 py-4">${item.jumlah}</td>
-                    `;
+                <td class="px-6 py-4">${index + 1}</td>
+                <td class="px-6 py-4">${item.nama}</td>
+                <td class="px-6 py-4">${item.jumlahDiKeranjang}</td>
+            `;
 
                     cartItemsTable.querySelector('tbody').appendChild(row);
                 });

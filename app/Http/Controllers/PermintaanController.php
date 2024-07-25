@@ -49,6 +49,7 @@ class PermintaanController extends Controller
 
         // Generate kode permintaan
         $latestPermintaan = Permintaan::latest()->first();
+
         if ($latestPermintaan) {
             $lastCode = $latestPermintaan->kode_permintaan;
             $lastNumber = (int) substr($lastCode, strpos($lastCode, '-') + 1);

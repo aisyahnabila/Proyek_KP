@@ -6,8 +6,6 @@ use App\Models\Permintaan;
 use App\Models\UnitKerja;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use PhpOffice\PhpWord\IOFactory;
-use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\TemplateProcessor;
 
 class HistoryBulanController extends Controller

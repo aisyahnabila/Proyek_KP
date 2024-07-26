@@ -7,7 +7,6 @@ use App\Models\UnitKerja;
 use App\Models\Permintaan;
 use Illuminate\Http\Request;
 use App\Models\DetailPermintaan;
-use illuminate\Support\Facades\DB;
 
 class PermintaanController extends Controller
 {
@@ -33,7 +32,7 @@ class PermintaanController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+        public function store(Request $request)
     {
         // Validasi input
         $validatedData = $request->validate([
@@ -87,79 +86,36 @@ class PermintaanController extends Controller
         // Simpan detail barang ke dalam database
         if ($request->has('cartItems')) {
             $cartItems = json_decode($request->cartItems, true); // Decode JSON ke array asosiatif
+            foreach ($cartItems as $item) {
+                $detailBarang = new DetailPermintaan();
+                $detailBarang->id_permintaan = $permintaanID; // Gunakan id yang baru disimpan
+                $detailBarang->id_barang = $item['id']; // Ambil id barang dari setiap item
+                $detailBarang->jumlah_permintaan = $item['jumlah']; // Sesuaikan dengan struktur data Anda
+                // Anda bisa tambahkan logika validasi jumlah permintaan atau lainnya di sini
+                $detailBarang->save();
 
-            DB::beginTransaction();
-            try {
-                foreach ($cartItems as $item) {
-                    $barang = Barang::find($item['id']);
-                    if (!$barang) {
-                        throw new \Exception('Barang tidak ditemukan.');
-                    }
+                // Catat log aktivitas jumlah keluar
+                $barang = Barang::find($item['id']);
+                $currentStock = $barang->jumlah - $item['jumlah'];
 
-                    // Periksa stok barang
-                    if ($barang->jumlah < $item['jumlah']) {
-                        throw new \Exception('Jumlah barang yang diminta melebihi stok.');
-                    }
+                LogActivity::create([
+                    'id_barang' => $item['id'],
+                    'timestamp' => now(),
+                    'jumlah_masuk' => 0,
+                    'jumlah_keluar' => $item['jumlah'],
+                    'sisa' => $currentStock,
+                ]);
 
-                    // Simpan detail permintaan
-                    $detailBarang = new DetailPermintaan();
-                    $detailBarang->id_permintaan = $permintaanID; // Gunakan id yang baru disimpan
-                    $detailBarang->id_barang = $item['id']; // Ambil id barang dari setiap item
-                    $detailBarang->jumlah_permintaan = $item['jumlah']; // Sesuaikan dengan struktur data Anda
-                    $detailBarang->save();
-
-                    // Catat log aktivitas jumlah keluar
-                    $currentStock = $barang->jumlah - $item['jumlah'];
-
-                    LogActivity::create([
-                        'id_barang' => $item['id'],
-                        'timestamp' => now(),
-                        'jumlah_masuk' => 0,
-                        'jumlah_keluar' => $item['jumlah'],
-                        'sisa' => $currentStock,
-                    ]);
-
-                    // Update jumlah barang di tabel Barang
-                    $barang->jumlah = $currentStock;
-                    $barang->save();
-                }
-
-                // Commit transaksi jika semua operasi berhasil
-                DB::commit();
-
-            } catch (\Exception $e) {
-                // Rollback transaksi jika ada kesalahan
-                DB::rollback();
-                return redirect()->back()->withInput()->withErrors(['error' => $e->getMessage()]);
+                // Update jumlah barang di tabel Barang
+                $barang->jumlah = $currentStock;
+                $barang->save();
             }
-            // foreach ($cartItems as $item) {
-            //     $detailBarang = new DetailPermintaan();
-            //     $detailBarang->id_permintaan = $permintaanID; // Gunakan id yang baru disimpan
-            //     $detailBarang->id_barang = $item['id']; // Ambil id barang dari setiap item
-            //     $detailBarang->jumlah_permintaan = $item['jumlah']; // Sesuaikan dengan struktur data Anda
-            //     // Anda bisa tambahkan logika validasi jumlah permintaan atau lainnya di sini
-            //     $detailBarang->save();
 
-            //     // Catat log aktivitas jumlah keluar
-            //     $barang = Barang::find($item['id']);
-            //     $currentStock = $barang->jumlah - $item['jumlah'];
-
-            //     LogActivity::create([
-            //         'id_barang' => $item['id'],
-            //         'timestamp' => now(),
-            //         'jumlah_masuk' => 0,
-            //         'jumlah_keluar' => $item['jumlah'],
-            //         'sisa' => $currentStock,
-            //     ]);
-
-            //     // Update jumlah barang di tabel Barang
-            //     $barang->jumlah = $currentStock;
-            //     $barang->save();
+            // Redirect atau kembalikan response sesuai kebutuhan
+            return redirect()->route('permintaan.index')->with('success', 'Permintaan barang berhasil disimpan.');
         }
-
-        // Redirect atau kembalikan response sesuai kebutuhan
-        return redirect()->route('permintaan.index')->with('success', 'Permintaan barang berhasil disimpan.');
     }
+
 
 
     /**

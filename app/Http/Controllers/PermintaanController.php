@@ -1,15 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\Barang;
 use App\Models\LogActivity;
 use App\Models\UnitKerja;
 use App\Models\Permintaan;
 use Illuminate\Http\Request;
 use App\Models\DetailPermintaan;
-use PhpOffice\PhpWord\TemplateProcessor;
-use Carbon\Carbon;
+use illuminate\Support\Facades\DB;
 
 class PermintaanController extends Controller
 {
@@ -89,30 +87,74 @@ class PermintaanController extends Controller
         // Simpan detail barang ke dalam database
         if ($request->has('cartItems')) {
             $cartItems = json_decode($request->cartItems, true); // Decode JSON ke array asosiatif
-            foreach ($cartItems as $item) {
-                $detailBarang = new DetailPermintaan();
-                $detailBarang->id_permintaan = $permintaanID; // Gunakan id yang baru disimpan
-                $detailBarang->id_barang = $item['id']; // Ambil id barang dari setiap item
-                $detailBarang->jumlah_permintaan = $item['jumlah']; // Sesuaikan dengan struktur data Anda
-                // Anda bisa tambahkan logika validasi jumlah permintaan atau lainnya di sini
-                $detailBarang->save();
 
-                // Catat log aktivitas jumlah keluar
-                $barang = Barang::find($item['id']);
-                $currentStock = $barang->jumlah - $item['jumlah'];
+            DB::beginTransaction();
+            try {
+                foreach ($cartItems as $item) {
+                    $barang = Barang::find($item['id']);
+                    if (!$barang) {
+                        throw new \Exception('Barang tidak ditemukan.');
+                    }
 
-                LogActivity::create([
-                    'id_barang' => $item['id'],
-                    'timestamp' => now(),
-                    'jumlah_masuk' => 0,
-                    'jumlah_keluar' => $item['jumlah'],
-                    'sisa' => $currentStock,
-                ]);
+                    // Periksa stok barang
+                    if ($barang->jumlah < $item['jumlah']) {
+                        throw new \Exception('Jumlah barang yang diminta melebihi stok.');
+                    }
 
-                // Update jumlah barang di tabel Barang
-                $barang->jumlah = $currentStock;
-                $barang->save();
+                    // Simpan detail permintaan
+                    $detailBarang = new DetailPermintaan();
+                    $detailBarang->id_permintaan = $permintaanID; // Gunakan id yang baru disimpan
+                    $detailBarang->id_barang = $item['id']; // Ambil id barang dari setiap item
+                    $detailBarang->jumlah_permintaan = $item['jumlah']; // Sesuaikan dengan struktur data Anda
+                    $detailBarang->save();
+
+                    // Catat log aktivitas jumlah keluar
+                    $currentStock = $barang->jumlah - $item['jumlah'];
+
+                    LogActivity::create([
+                        'id_barang' => $item['id'],
+                        'timestamp' => now(),
+                        'jumlah_masuk' => 0,
+                        'jumlah_keluar' => $item['jumlah'],
+                        'sisa' => $currentStock,
+                    ]);
+
+                    // Update jumlah barang di tabel Barang
+                    $barang->jumlah = $currentStock;
+                    $barang->save();
+                }
+
+                // Commit transaksi jika semua operasi berhasil
+                DB::commit();
+
+            } catch (\Exception $e) {
+                // Rollback transaksi jika ada kesalahan
+                DB::rollback();
+                return redirect()->back()->withInput()->withErrors(['error' => $e->getMessage()]);
             }
+            // foreach ($cartItems as $item) {
+            //     $detailBarang = new DetailPermintaan();
+            //     $detailBarang->id_permintaan = $permintaanID; // Gunakan id yang baru disimpan
+            //     $detailBarang->id_barang = $item['id']; // Ambil id barang dari setiap item
+            //     $detailBarang->jumlah_permintaan = $item['jumlah']; // Sesuaikan dengan struktur data Anda
+            //     // Anda bisa tambahkan logika validasi jumlah permintaan atau lainnya di sini
+            //     $detailBarang->save();
+
+            //     // Catat log aktivitas jumlah keluar
+            //     $barang = Barang::find($item['id']);
+            //     $currentStock = $barang->jumlah - $item['jumlah'];
+
+            //     LogActivity::create([
+            //         'id_barang' => $item['id'],
+            //         'timestamp' => now(),
+            //         'jumlah_masuk' => 0,
+            //         'jumlah_keluar' => $item['jumlah'],
+            //         'sisa' => $currentStock,
+            //     ]);
+
+            //     // Update jumlah barang di tabel Barang
+            //     $barang->jumlah = $currentStock;
+            //     $barang->save();
         }
 
         // Redirect atau kembalikan response sesuai kebutuhan

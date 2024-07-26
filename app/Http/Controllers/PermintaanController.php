@@ -8,7 +8,6 @@ use App\Models\UnitKerja;
 use App\Models\Permintaan;
 use Illuminate\Http\Request;
 use App\Models\DetailPermintaan;
-use illuminate\Support\Facades\DB;
 
 class PermintaanController extends Controller
 {

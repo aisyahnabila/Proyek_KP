@@ -24,7 +24,7 @@
 
         {{-- Content --}}
         <div class="border relative overflow-x-auto shadow-xl sm:rounded">
-            <table class="w-full text-sm text-left rtl:text-right text-gray-900 dark:text-gray-400">
+            <table id="history-table" class="w-full text-sm text-left rtl:text-right text-gray-900 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-300 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         <th scope="col" class="px-6 py-3">Tanggal Permintaan</th>
@@ -141,6 +141,12 @@
                             </td>
                         </tr>
                     @endforeach
+                    <tr id="no-results-row" class="hidden">
+                        <td colspan="5" class="text-center py-4">No results found</td>
+                    </tr>
+                    <tr id="no-data-row" class="hidden">
+                        <td colspan="5" class="text-center py-4">No data available</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -148,20 +154,19 @@
     <script>
         document.getElementById('table-search-users').addEventListener('keyup', function() {
             let searchQuery = this.value.toLowerCase();
-            let allRows = document.querySelectorAll('#history-table tbody tr');
+            let allRows = document.querySelectorAll(
+                '#history-table tbody tr:not(#no-results-row):not(#no-data-row)');
             let noResultsRow = document.getElementById('no-results-row');
             let noDataRow = document.getElementById('no-data-row');
             let rowFound = false;
 
             allRows.forEach(row => {
-                if (row !== noResultsRow && row !== noDataRow) {
-                    let rowText = row.innerText.toLowerCase();
-                    if (rowText.includes(searchQuery)) {
-                        row.style.display = '';
-                        rowFound = true;
-                    } else {
-                        row.style.display = 'none';
-                    }
+                let rowText = row.innerText.toLowerCase();
+                if (rowText.includes(searchQuery)) {
+                    row.style.display = '';
+                    rowFound = true;
+                } else {
+                    row.style.display = 'none';
                 }
             });
 
@@ -171,22 +176,10 @@
                 noResultsRow.style.display = 'none';
             }
 
-            if (searchQuery !== '') {
+            if (searchQuery === '') {
+                noDataRow.style.display = rowFound ? 'none' : '';
+            } else {
                 noDataRow.style.display = 'none';
-            } else {
-                if (!rowFound && !searchQuery) {
-                    noDataRow.style.display = '';
-                }
-            }
-            if (setInterval(() => {
-
-                }, interval););
-
-            if (true) {
-
-            } else {
-                false --> getElementById({{barang.row}})
-
             }
         });
     </script>

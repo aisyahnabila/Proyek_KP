@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\Barang;
 use App\Models\LogActivity;
 use App\Models\UnitKerja;
@@ -33,7 +32,7 @@ class PermintaanController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+        public function store(Request $request)
     {
         // Validasi input
         $validatedData = $request->validate([
@@ -116,6 +115,7 @@ class PermintaanController extends Controller
             return redirect()->route('permintaan.index')->with('success', 'Permintaan barang berhasil disimpan.');
         }
     }
+
 
 
     /**

@@ -15,23 +15,28 @@ class HistoryBulanController extends Controller
         $unit_kerja = $request->input('unit_kerja');
         $bulan = $request->input('bulan');
         $tahun = $request->input('tahun');
+
         $query = Permintaan::query();
+
         if ($unit_kerja) {
             $query->where('id_unitkerja', $unit_kerja);
         }
+
         if ($bulan) {
             $query->whereMonth('tanggal_permintaan', $bulan);
         }
+
         if ($tahun) {
             $query->whereYear('tanggal_permintaan', $tahun);
         }
 
-        // Get semua permintaan yang sesuai dengan model
+        // Get all permintaan with related models
         $permintaan = $query->with('detailPermintaan.barang.kategori', 'unitKerja')->get();
 
-        // grouping dan transform data euy
+        // Group and transform data
         $groupedPermintaan = $permintaan->map(function ($item) {
             $totalPermintaan = $item->detailPermintaan->sum('jumlah_permintaan');
+
             return [
                 'bulan' => \Carbon\Carbon::parse($item->tanggal_permintaan)->translatedFormat('F Y'),
                 'unit_kerja' => $item->unitKerja->nama_unit_kerja,
@@ -44,6 +49,7 @@ class HistoryBulanController extends Controller
                 'keperluan' => $item->keperluan,
             ];
         });
+
         return view('laporan.bulan', [
             'permintaan' => $groupedPermintaan,
             'unitKerjaOptions' => UnitKerja::all(),
@@ -77,7 +83,7 @@ class HistoryBulanController extends Controller
             ->get();
 
         // mengisi placeholder dengan data yang sudah difilter
-        $templateProcessor->setValue('unit_kerja', $permintaan->first()->unitKerja->nama_unit_kerja ?? 'Semua Divisi');
+        $templateProcessor->setValue('unit_kerja', $permintaan->first()->unitKerja->nama_unit_kerja ?? 'Semua Unit Kerja');
         $templateProcessor->setValue('bulan', $bulan);
         $templateProcessor->setValue('tahun', $tahun);
 

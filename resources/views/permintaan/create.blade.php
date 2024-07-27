@@ -100,7 +100,7 @@
             </div>
 
             <!-- Hidden Input untuk Menyimpan Data Keranjang -->
-            <input type="hidden" id="cart-items-input" name="cartItems">
+            <input type="text" id="cart-items-input" name="cartItems">
 
             <!-- Buttons -->
             <div class="flex justify-end space-x-4">

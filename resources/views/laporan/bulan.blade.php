@@ -46,29 +46,46 @@
                     </button>
                 </div>
             </form>
+
+            <form action="{{ route('laporan.bulan.word') }}" method="POST" class="flex space-x-4">
+                @csrf <!-- Tambahkan CSRF token untuk validasi permintaan POST -->
+                <input type="hidden" name="bulan" value="{{ request('bulan') }}">
+                <input type="hidden" name="tahun" value="{{ request('tahun') }}">
+                <input type="hidden" name="divisi" value="{{ request('divisi') }}">
+                <button type="submit"
+                    class="flex items-center justify-center font-semibold focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-green-900">
+                    Export to Word
+                </button>
+            </form>
         </div>
 
         <div class="border relative overflow-x-auto shadow-xl sm:rounded">
             <table class="w-full text-sm text-left rtl:text-right text-gray-900 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-300 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
+                        <th scope="col" class="px-5 py-3">Bulan Pengajuan</th>
                         <th scope="col" class="px-5 py-3">Unit Kerja</th>
                         <th scope="col" class="px-5 py-3">Kode Barang</th>
                         <th scope="col" class="px-5 py-3">Nama Barang</th>
                         <th scope="col" class="px-5 py-3">Spesifikasi Nama Barang</th>
-                        <th scope="col" class="px-5 py-3">Total Permintaan</th>
+                        <th scope="col" class="px-5 py-3">Jumlah Pengajuan Permintaan</th>
+                        <th scope="col" class="px-5 py-3">Informasi Sisa Persediaan</th>
                         <th scope="col" class="px-5 py-3">Satuan</th>
+                        <th scope="col" class="px-5 py-3">Keperluan</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($permintaan as $p)
                         <tr>
+                            <td class="px-5 py-3">{{ $p['bulan'] }}</td>
                             <td class="px-5 py-3">{{ $p['unit_kerja'] }}</td>
                             <td class="px-5 py-3">{{ $p['kode_barang'] }}</td>
                             <td class="px-5 py-3">{{ $p['nama_barang'] }}</td>
                             <td class="px-5 py-3">{{ $p['spesifikasi_nama_barang'] }}</td>
                             <td class="px-5 py-3">{{ $p['total_permintaan'] }}</td>
+                            <td class="px-5 py-3">{{ $p['jumlah'] }}</td>
                             <td class="px-5 py-3">{{ $p['satuan'] }}</td>
+                            <td class="px-5 py-3">{{ $p['keperluan'] }}</td>
                         </tr>
                     @endforeach
                 </tbody>

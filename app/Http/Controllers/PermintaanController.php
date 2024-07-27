@@ -9,7 +9,6 @@ use App\Models\Permintaan;
 use Illuminate\Http\Request;
 use App\Models\DetailPermintaan;
 
-
 class PermintaanController extends Controller
 {
     /**
@@ -48,6 +47,7 @@ class PermintaanController extends Controller
 
         // Generate kode permintaan
         $latestPermintaan = Permintaan::latest()->first();
+
         if ($latestPermintaan) {
             $lastCode = $latestPermintaan->kode_permintaan;
             $lastNumber = (int) substr($lastCode, strpos($lastCode, '-') + 1);
@@ -133,11 +133,8 @@ class PermintaanController extends Controller
         }
 
         // Redirect atau kembalikan response sesuai kebutuhan
-        return redirect()->route('historypermintaan.index')->with('success', 'Permintaan barang berhasil disimpan.');
+        return redirect()->route('permintaan.index')->with('success', 'Permintaan barang berhasil disimpan.');
     }
-
-
-
 
 
     /**

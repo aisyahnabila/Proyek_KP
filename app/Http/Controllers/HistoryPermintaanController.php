@@ -17,7 +17,7 @@ class HistoryPermintaanController extends Controller
     public function exportWord($id)
     {
         // Path ke template Word
-        $templatePath = resource_path('views/templete_nota_permintaan_barang.docx');
+        $templatePath = public_path('templates/templete_nota_permintaan_barang.docx');
 
         // Verifikasi apakah file template ada
         if (!file_exists($templatePath)) {
@@ -32,9 +32,7 @@ class HistoryPermintaanController extends Controller
 
 
         // Konversi tanggal_permintaan menjadi objek Carbon
-        Carbon::setLocale('id');
         $tanggalPermintaan = Carbon::parse($permintaan->tanggal_permintaan);
-        // Format tanggal dalam bahasa Indonesia
         $formattedDate = $tanggalPermintaan->translatedFormat('d F Y');
 
         // Set value dari placeholder di template
@@ -62,4 +60,3 @@ class HistoryPermintaanController extends Controller
         return response()->download($tempFilePath)->deleteFileAfterSend(true);
     }
 }
-

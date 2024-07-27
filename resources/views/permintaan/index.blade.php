@@ -90,40 +90,7 @@
                         </tr>
                     </thead>
                     <tbody id="item-table-body">
-                        @if ($items->isEmpty())
-                            <tr id="no-data-row">
-                                <td colspan="7" class="text-center p-4 text-gray-500 dark:text-gray-400">
-                                    Data tidak tersedia.
-                                </td>
-                            </tr>
-                        @else
-                            @php
-                                $index = 0;
-                            @endphp
-                            @foreach ($items as $item)
-                                @php
-                                    $index++;
-                                @endphp
-                                <tr
-                                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                    <td class="px-6 py-4">{{ $item->nama_barang }}</td>
-                                    <td class="px-6 py-4">{{ $item->spesifikasi_nama_barang }}</td>
-                                    <td class="px-6 py-4">{{ $item->jumlah }}</td>
-                                    <td class="px-6 py-4">
-                                        <a href="#"
-                                            class="font-medium text-blue-600 dark:text-blue-500 hover:underline add-to-cart"
-                                            data-id="{{ $item->id_barang }}" data-nama="{{ $item->nama_barang }}"
-                                            data-spesifikasi="{{ $item->spesifikasi_nama_barang }}"
-                                            data-jumlah="{{ $item->jumlah }}">Pilih</a>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        @endif
-                        <tr id="no-results-row" style="display: none;">
-                            <td colspan="7" class="text-center p-4 text-gray-500 dark:text-gray-400">
-                                Data tidak ditemukan.
-                            </td>
-                        </tr>
+                        @include('permintaan.partials_permintaan.permintaan_barang_table')
                     </tbody>
                 </table>
 
@@ -138,20 +105,18 @@
     <script>
         document.getElementById('table-search-users').addEventListener('keyup', function() {
             let searchQuery = this.value.toLowerCase();
-            let allRows = document.querySelectorAll('#barang-table tbody tr');
+            let allRows = document.querySelectorAll('#item-table-body tr');
             let noResultsRow = document.getElementById('no-results-row');
             let noDataRow = document.getElementById('no-data-row');
             let rowFound = false;
 
             allRows.forEach(row => {
-                if (row !== noResultsRow && row !== noDataRow) {
-                    let rowText = row.innerText.toLowerCase();
-                    if (rowText.includes(searchQuery)) {
-                        row.style.display = '';
-                        rowFound = true;
-                    } else {
-                        row.style.display = 'none';
-                    }
+                let rowText = row.innerText.toLowerCase();
+                if (rowText.includes(searchQuery)) {
+                    row.style.display = '';
+                    rowFound = true;
+                } else {
+                    row.style.display = 'none';
                 }
             });
 
@@ -160,10 +125,9 @@
             } else {
                 noResultsRow.style.display = 'none';
             }
-
-            // Hide "no data" row if there's a search query
-            if (searchQuery !== '') {
-                noDataRow.style.display = 'none';
+            // Tampilkan baris yang sesuai
+            if (searchQuery === '') {
+                noDataRow.style.display = allRows.length === 0 ? '' : 'none';
             } else {
                 // Show "no data" row if there are no rows and no search query
                 if (!rowFound && !searchQuery) {

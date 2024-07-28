@@ -115,13 +115,20 @@ class HistoryBulanController extends Controller
         $templateProcessor->cloneRow('kode_barang', $groupedDetails->count());
         foreach ($groupedDetails->values() as $index => $detail) {
             $index = $index + 1; // Adjusting index to start from 1
+
+            $stok_awal = $detail->barang->jumlah + $detail->jumlah_permintaan;
+            $sisa_persediaan = $stok_awal - $detail->jumlah_permintaan;
+            $usulan_pengajuan_persetujuan = $detail->jumlah_permintaan;
+
             $templateProcessor->setValue("no#{$index}", $index);
             $templateProcessor->setValue("unit_kerja#{$index}", $detail->permintaan->unitKerja->nama_unit_kerja);
             $templateProcessor->setValue("kode_barang#{$index}", $detail->barang->kategori->kode_barang);
             $templateProcessor->setValue("nama_barang#{$index}", $detail->barang->nama_barang);
             $templateProcessor->setValue("spesifikasi_nama_barang#{$index}", $detail->barang->spesifikasi_nama_barang);
             $templateProcessor->setValue("total_permintaan#{$index}", $detail->jumlah_permintaan);
+            $templateProcessor->setValue("stok_awal#{$index}", $stok_awal);
             $templateProcessor->setValue("jumlah#{$index}", $detail->barang->jumlah);
+            $templateProcessor->setValue("usulan_pengajuan_persetujuan#{$index}", $usulan_pengajuan_persetujuan);
             $templateProcessor->setValue("satuan#{$index}", $detail->barang->satuan);
             $templateProcessor->setValue("keperluan#{$index}", $detail->permintaan->keperluan);
         }

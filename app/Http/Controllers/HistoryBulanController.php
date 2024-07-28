@@ -33,7 +33,7 @@ class HistoryBulanController extends Controller
         // Get all permintaan with related models
         $permintaan = $query->with('detailPermintaan.barang.kategori', 'unitKerja')->get();
 
-        // Group and transform data
+        // Group and transform data considering unit kerja and bulan
         $groupedPermintaan = $permintaan->flatMap(function ($item) {
             return $item->detailPermintaan->map(function ($detail) use ($item) {
                 return [
@@ -49,13 +49,12 @@ class HistoryBulanController extends Controller
                 ];
             });
         })->groupBy(function ($item) {
-            return $item['nama_barang'] . '-' . $item['spesifikasi_nama_barang'];
+            return $item['unit_kerja'] . '-' . $item['bulan'] . '-' . $item['nama_barang'] . '-' . $item['spesifikasi_nama_barang'];
         })->map(function ($group) {
             $first = $group->first();
             $first['total_permintaan'] = $group->sum('total_permintaan');
             return $first;
         });
-        ;
 
         return view('laporan.bulan', [
             'permintaan' => $groupedPermintaan,
@@ -89,10 +88,10 @@ class HistoryBulanController extends Controller
             ->with('detailPermintaan.barang.kategori', 'unitKerja')
             ->get();
 
-        // Group and aggregate data
+        // Group and aggregate data considering unit kerja and bulan
         $details = $permintaan->flatMap->detailPermintaan;
         $groupedDetails = $details->groupBy(function ($detail) {
-            return $detail->barang->nama_barang . '-' . $detail->barang->spesifikasi_nama_barang;
+            return $detail->permintaan->unitKerja->nama_unit_kerja . '-' . \Carbon\Carbon::parse($detail->permintaan->tanggal_permintaan)->format('F Y') . '-' . $detail->barang->nama_barang . '-' . $detail->barang->spesifikasi_nama_barang;
         })->map(function ($group) {
             $first = $group->first();
             $first->jumlah_permintaan = $group->sum('jumlah_permintaan');
@@ -111,8 +110,7 @@ class HistoryBulanController extends Controller
         // loop through grouped details and fill in the table
         $templateProcessor->cloneRow('kode_barang', $groupedDetails->count());
         foreach ($groupedDetails as $index => $detail) {
-            $index += 1;
-            $templateProcessor->setValue("no#{$index}", $index);
+            $templateProcessor->setValue("no#{$index}", $index + 1);
             $templateProcessor->setValue("unit_kerja#{$index}", $detail->permintaan->unitKerja->nama_unit_kerja);
             $templateProcessor->setValue("kode_barang#{$index}", $detail->barang->kategori->kode_barang);
             $templateProcessor->setValue("nama_barang#{$index}", $detail->barang->nama_barang);

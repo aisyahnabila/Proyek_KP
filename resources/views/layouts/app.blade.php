@@ -15,6 +15,8 @@
     {{-- JS --}}
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.4.1/dist/flowbite.min.js"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.51.0/apexcharts.min.js" integrity="sha512-rgvuw7+rpm6cEJOUFmmzb2UWUVWg2VkIbmw6vMoWjbX/7CsyPgiMvrXhzZJbS0Ow1Bq/3illaZaqQej1n3AA7Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 </head>
 
 <body>
@@ -24,6 +26,8 @@
     @include('layouts.navbar')
 
     @yield('content')
+
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
 </body>
 

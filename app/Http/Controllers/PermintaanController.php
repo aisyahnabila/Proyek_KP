@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Barang;
 use App\Models\LogActivity;
 use App\Models\UnitKerja;
@@ -32,7 +33,7 @@ class PermintaanController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-        public function store(Request $request)
+    public function store(Request $request)
     {
         // Validasi input
         $validatedData = $request->validate([
@@ -82,40 +83,58 @@ class PermintaanController extends Controller
 
         // Ambil ID permintaan setelah disimpan
         $permintaanID = $permintaan->id_permintaan;
+        \Log::info('Permintaan ID:', ['id' => $permintaanID]);
 
         // Simpan detail barang ke dalam database
         if ($request->has('cartItems')) {
-            $cartItems = json_decode($request->cartItems, true); // Decode JSON ke array asosiatif
+            $cartItems = json_decode($request->cartItems, true);// Decode JSON ke array asosiatif
+            // dd($cartItems);
+            // Log untuk debugging
+            \Log::info('Cart Items:', $cartItems);
+
             foreach ($cartItems as $item) {
-                $detailBarang = new DetailPermintaan();
-                $detailBarang->id_permintaan = $permintaanID; // Gunakan id yang baru disimpan
-                $detailBarang->id_barang = $item['id']; // Ambil id barang dari setiap item
-                $detailBarang->jumlah_permintaan = $item['jumlah']; // Sesuaikan dengan struktur data Anda
-                // Anda bisa tambahkan logika validasi jumlah permintaan atau lainnya di sini
-                $detailBarang->save();
+                // Log untuk debugging
+                \Log::info('Processing item:', $item);
 
-                // Catat log aktivitas jumlah keluar
-                $barang = Barang::find($item['id']);
-                $currentStock = $barang->jumlah - $item['jumlah'];
+                if (isset($item['id']) && isset($item['jumlahDiKeranjang'])) {
+                    $detailBarang = new DetailPermintaan();
+                    $detailBarang->id_permintaan = $permintaanID; // Gunakan id yang baru disimpan
+                    $detailBarang->id_barang = $item['id']; // Ambil id barang dari setiap item
+                    $detailBarang->jumlah_permintaan = $item['jumlahDiKeranjang']; // Sesuaikan dengan struktur data Anda
+                    $detailBarang->save();
 
-                LogActivity::create([
-                    'id_barang' => $item['id'],
-                    'timestamp' => now(),
-                    'jumlah_masuk' => 0,
-                    'jumlah_keluar' => $item['jumlah'],
-                    'sisa' => $currentStock,
-                ]);
+                    // Catat log aktivitas jumlah keluar
+                    $barang = Barang::find($item['id']);
+                    if ($barang) {
+                        $currentStock = $barang->jumlah - $item['jumlahDiKeranjang']; // Kurangi stok dengan jumlahDiKeranjang
 
-                // Update jumlah barang di tabel Barang
-                $barang->jumlah = $currentStock;
-                $barang->save();
+                        LogActivity::create([
+                            'id_barang' => $item['id'],
+                            'timestamp' => now(),
+                            'jumlah_masuk' => 0,
+                            'jumlah_keluar' => $item['jumlahDiKeranjang'], // Ambil jumlah dari jumlahDiKeranjang
+                            'sisa' => $currentStock,
+                        ]);
+
+                        // Update jumlah barang di tabel Barang
+                        $barang->jumlah = $currentStock;
+                        $barang->save();
+
+                        \Log::info('Updated Barang:', ['id' => $item['id'], 'current_stock' => $currentStock]);
+                    } else {
+                        \Log::error('Barang not found for id:', ['id' => $item['id']]);
+                    }
+                } else {
+                    \Log::error('Invalid cart item data:', $item);
+                }
             }
-
-            // Redirect atau kembalikan response sesuai kebutuhan
-            return redirect()->route('permintaan.index')->with('success', 'Permintaan barang berhasil disimpan.');
+        } else {
+            \Log::error('No cart items input found.');
         }
-    }
 
+        // Redirect atau kembalikan response sesuai kebutuhan
+        return redirect()->route('permintaan.index')->with('success', 'Permintaan barang berhasil disimpan.');
+    }
 
 
     /**

@@ -90,11 +90,11 @@ class PermintaanController extends Controller
             $cartItems = json_decode($request->cartItems, true);// Decode JSON ke array asosiatif
             // dd($cartItems);
             // Log untuk debugging
-            \Log::info('Cart Items:', $cartItems);
+            // \Log::info('Cart Items:', $cartItems);
 
             foreach ($cartItems as $item) {
                 // Log untuk debugging
-                \Log::info('Processing item:', $item);
+                // \Log::info('Processing item:', $item);
 
                 if (isset($item['id']) && isset($item['jumlahDiKeranjang'])) {
                     $detailBarang = new DetailPermintaan();
@@ -120,20 +120,15 @@ class PermintaanController extends Controller
                         $barang->jumlah = $currentStock;
                         $barang->save();
 
-                        \Log::info('Updated Barang:', ['id' => $item['id'], 'current_stock' => $currentStock]);
-                    } else {
-                        \Log::error('Barang not found for id:', ['id' => $item['id']]);
-                    }
-                } else {
-                    \Log::error('Invalid cart item data:', $item);
+                        // \Log::info('Updated Barang:', ['id' => $item['id'], 'current_stock' => $currentStock]);
+                    } 
                 }
             }
-        } else {
-            \Log::error('No cart items input found.');
         }
 
         // Redirect atau kembalikan response sesuai kebutuhan
-        return redirect()->route('permintaan.index')->with('success', 'Permintaan barang berhasil disimpan.');
+        // return redirect()->route('permintaan.index')->with('success', 'Permintaan barang berhasil disimpan.');
+        return redirect()->route('historypermintaan.index');
     }
 
 

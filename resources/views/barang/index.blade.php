@@ -25,13 +25,17 @@
             <div>
                 <form action="{{ route('barang.import') }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                    <input type="file" name="file"
-                        class="block w-full text-sm text-gray-900 border border-gray-800 rounded-lg bg-white dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
-                    <button type="submit"
+                    {{-- <input type="file" name="file"
+                        class="block w-full text-sm text-gray-900 border border-gray-800 rounded-lg bg-white dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"> --}}
+                    {{-- <button type="submit"
                         class="flex items-center justify-center focus:outline-none text-white font-semibold bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-green-900 mt-2">
                         <i class="fa-solid fa-upload mr-1"></i>
                         <span>Import</span>
-                    </button>
+                    </button> --}}
+                    <label for="excel_file" class="flex items-center justify-center focus:outline-none text-white font-semibold bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-green-900 mt-2">
+                        <i class="fa-solid fa-upload mr-1"></i> Import
+                        <input type="file" id="excel_file" name="excel_file" style="display: none;">
+                    </label>
                 </form>
             </div>
 

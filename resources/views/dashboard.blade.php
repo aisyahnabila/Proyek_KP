@@ -7,12 +7,12 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
             <div class="flex flex-col items-center justify-center h-36 rounded bg-white shadow-xl dark:bg-gray-800">
                 <p class="text-black font-medium my-2 dark:text-gray-500">Total Barang</p>
-                <p class="text-black font-medium my-3 text-5xl dark:text-gray-500">50</p>
+                <p class="text-black font-medium my-3 text-5xl dark:text-gray-500">{{ $totalItems }}</p>
             </div>
 
             <div class="flex flex-col items-center justify-center h-36 rounded bg-white shadow-xl dark:bg-gray-800">
                 <p class="text-black font-medium my-2 dark:text-gray-500">Total Permintaan</p>
-                <p class="text-black font-medium my-3 text-5xl dark:text-gray-500">20</p>
+                <p class="text-black font-medium my-3 text-5xl dark:text-gray-500">{{ $totalRequest }}</p>
             </div>
             <div class="flex items-center justify-center h-36 rounded bg-white shadow-xl dark:bg-gray-800">
                 <p class="text-2xl text-gray-400 dark:text-gray-500"></p>
@@ -33,13 +33,46 @@
     </div>
 
     <script>
+        // Define the chart options and data
         var options = {
-            series: [44, 55, 13, 43, 22],
+            series: [{
+                data: @json($topRequestCounts)
+            }],
+            chart: {
+                type: 'bar',
+                height: 350
+            },
+            plotOptions: {
+                bar: {
+                    borderRadius: 1,
+                    borderRadiusApplication: 'end',
+                    horizontal: true,
+                }
+            },
+            dataLabels: {
+                enabled: true
+            },
+            xaxis: {
+                categories: @json($topCategories),
+            }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#barchart"), options);
+        chart.render();
+    </script>
+
+    <script>
+        // Log the data to the console for debugging
+        console.log(@json($unitSeries));
+        console.log(@json($unitLabels));
+
+        var options = {
+            series: @json($unitSeries),
             chart: {
                 width: 450,
                 type: 'pie',
             },
-            labels: ['Keuangan', 'Umum dan Kepegawaian', 'Penyusunan Program', 'Arsip', 'Bencana'],
+            labels: @json($unitLabels),
             legend: {
                 position: 'bottom', // Menempatkan legenda di bawah chart
                 horizontalAlign: 'center', // Menyelaraskan legenda di tengah secara horizontal
@@ -61,36 +94,6 @@
         };
 
         var chart = new ApexCharts(document.querySelector("#piechart"), options);
-        chart.render();
-    </script>
-
-    <script>
-        var options = {
-            series: [{
-                data: [400, 430, 448, 470, 540, 580, 690, 1100, 1200]
-            }],
-            chart: {
-                type: 'bar',
-                height: 350
-            },
-            plotOptions: {
-                bar: {
-                    borderRadius: 1,
-                    borderRadiusApplication: 'end',
-                    horizontal: true,
-                }
-            },
-            dataLabels: {
-                enabled: true
-            },
-            xaxis: {
-                categories: ['ATK', 'Alat Listrik', 'Alat Perabotan Kantor', 'Cetak', 'Bahan Komputer',
-                    'Perlengkapan Olahraga', 'Obat-obatan', 'Kertas Cover', 'Souvenir'
-                ],
-            }
-        };
-
-        var chart = new ApexCharts(document.querySelector("#barchart"), options);
         chart.render();
     </script>
 @endsection

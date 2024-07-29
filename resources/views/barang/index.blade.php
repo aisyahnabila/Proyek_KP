@@ -23,12 +23,11 @@
 
             {{-- fitur export --}}
             <div>
-                <form action="{{ route('barang.import') }}" method="POST" enctype="multipart/form-data">
+                <form id="import-form" action="{{ route('barang.import') }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                    <input type="file" name="file"
-                        class="block w-full text-sm text-gray-900 border border-gray-800 rounded-lg bg-white dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
-                    <button type="submit"
-                        class="flex items-center justify-center focus:outline-none text-white font-semibold bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-green-900 mt-2">
+                    <input type="file" name="file" id="file-input" style="display: none;">
+                    <button type="button" id="import-button"
+                        class="flex items-center justify-center focus:outline-none text-white font-semibold bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-green-900">
                         <i class="fa-solid fa-upload mr-1"></i>
                         <span>Import</span>
                     </button>
@@ -38,7 +37,7 @@
             {{-- fitur tambah --}}
             <div>
                 <a href="{{ route('kelola.create') }}"
-                    class="flex items-center justify-center focus:outline-none text-black font-semibold bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-yellow-900">
+                    class="flex items-center justify-center focus:outline-none text-white font-semibold bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-yellow-900">
                     <i class="fa-solid fa-plus mr-1"></i>
                     Tambah
                 </a>
@@ -131,6 +130,14 @@
                     noDataRow.style.display = '';
                 }
             }
+        });
+
+        document.getElementById('import-button').addEventListener('click', function() {
+            document.getElementById('file-input').click();
+        });
+
+        document.getElementById('file-input').addEventListener('change', function() {
+            document.getElementById('import-form').submit();
         });
     </script>
 @endsection

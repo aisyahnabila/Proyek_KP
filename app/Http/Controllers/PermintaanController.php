@@ -121,7 +121,7 @@ class PermintaanController extends Controller
                         $barang->save();
 
                         // \Log::info('Updated Barang:', ['id' => $item['id'], 'current_stock' => $currentStock]);
-                    } 
+                    }
                 }
             }
         }

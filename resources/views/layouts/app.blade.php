@@ -10,6 +10,7 @@
     {{-- UI and Font --}}
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.4.1/dist/flowbite.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
     {{-- JS --}}

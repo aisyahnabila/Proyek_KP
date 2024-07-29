@@ -13,8 +13,8 @@
         <ul class="space-y-2 font-medium">
             {{-- dashboard --}}
             <li>
-                <a href="{{ route('dashboard') }}"
-                    class="text-sm flex items-center p-2 text-white rounded-lg dark:text-white hover:bg-yellow-500 dark:hover:bg-yellow-400 group">
+                <a href="{{ route('dashboard') }}" {{-- class="text-sm flex items-center p-2 text-white bg-yellow-500 rounded-lg active w-full" --}}
+                    class="text-sm flex items-center p-2 rounded-lg {{ request()->routeIs('dashboard') ? 'bg-yellow-500 text-white' : 'text-white hover:bg-yellow-500' }}">
                     <i class="fa-solid fa-square-poll-vertical text-xl"></i>
                     <span class="flex-1 ms-3 whitespace-nowrap">Dashboard</span>
                 </a>
@@ -23,7 +23,7 @@
             {{-- kelola barang --}}
             <li>
                 <a href="{{ route('kelola.index') }}"
-                    class="text-sm flex items-center p-2 text-white rounded-lg dark:text-white hover:bg-yellow-500 dark:hover:bg-gray-700 group">
+                    class="text-sm flex items-center p-2 rounded-lg {{ request()->routeIs('kelola.index') ? 'bg-yellow-500 text-white' : 'text-white hover:bg-yellow-500' }}">
                     <i class="fa-solid fa-box text-xl"></i>
                     <span class="flex-1 ms-3 whitespace-nowrap">Kelola Barang</span>
                 </a>
@@ -32,7 +32,7 @@
             {{-- permintaan barang --}}
             <li>
                 <a href="{{ route('permintaan.index') }}"
-                    class="mb-3 text-sm flex items-center p-2 text-white rounded-lg dark:text-white hover:bg-yellow-500 dark:hover:bg-gray-700 group">
+                    class="text-sm flex items-center p-2 rounded-lg {{ request()->routeIs('permintaan.index') ? 'bg-yellow-500 text-white' : 'text-white hover:bg-yellow-500' }}">
 
                     <i class="fa-solid fa-arrow-right-to-bracket text-xl"></i>
                     <span class="flex-1 ms-3 whitespace-nowrap">Permintaan Barang</span>
@@ -43,7 +43,7 @@
             {{-- laporan per permintaan --}}
             <li>
                 <a href="{{ route('historypermintaan.index') }}"
-                    class="text-sm flex items-center p-2 text-white rounded-lg dark:text-white hover:bg-yellow-500 dark:hover:bg-gray-700 group">
+                    class="text-sm flex items-center p-2 rounded-lg {{ request()->routeIs('historypermintaan.index') ? 'bg-yellow-500 text-white' : 'text-white hover:bg-yellow-500' }}">
                     <i class="fa-solid fa-clipboard-list text-xl"></i>
                     <span class="flex-1 ms-3 whitespace-nowrap">Per Permintaan</span>
                 </a>
@@ -52,7 +52,7 @@
             {{-- laporan bulanan --}}
             <li>
                 <a href="{{ route('laporan.bulan') }}"
-                    class="text-sm flex items-center p-2 text-white rounded-lg dark:text-white hover:bg-yellow-500 dark:hover:bg-gray-700 group">
+                    class="text-sm flex items-center p-2 rounded-lg {{ request()->routeIs('laporan.bulan') ? 'bg-yellow-500 text-white' : 'text-white hover:bg-yellow-500' }}">
                     <i class="fa-solid fa-clipboard-list text-xl"></i>
                     <span class="flex-1 ms-3 whitespace-nowrap">Bulanan</span>
                 </a>

@@ -1,12 +1,10 @@
 <?php
 
 use App\Http\Controllers\ImportBarangController;
-use App\Models\Kategori;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KelolaController;
-use App\Http\Controllers\CobaController;
 use App\Http\Controllers\PermintaanController;
 use App\Http\Controllers\HistoryPermintaanController;
 use App\Http\Controllers\HistoryBulanController;

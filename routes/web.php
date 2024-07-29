@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ImportBarangController;
 use App\Models\Kategori;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
@@ -59,6 +60,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/tambah-jumlah/{id}', [KelolaController::class, 'showTambahJumlahForm'])->name('barang.tambahJumlahForm');
         Route::post('/tambah-jumlah/{id}', [KelolaController::class, 'tambahJumlah'])->name('barang.tambahJumlah');
 
+        Route::post('/import', [ImportBarangController::class, 'import'])->name('barang.import');
     });
 
     // Routes untuk Permintaan

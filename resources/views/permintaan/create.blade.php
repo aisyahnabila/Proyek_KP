@@ -100,7 +100,7 @@
             </div>
 
             <!-- Hidden Input untuk Menyimpan Data Keranjang -->
-            <input type="text" id="cart-items-input" name="cartItems">
+            <input type="hidden" id="cart-items-input" name="cartItems">
 
             <!-- Buttons -->
             <div class="flex justify-end space-x-4">
@@ -144,6 +144,14 @@
 
             // Panggil fungsi displayCartItemsInTable saat halaman dimuat untuk pertama kali
             displayCartItemsInTable();
+
+            // Tambahkan script untuk mengosongkan keranjang setelah formulir dikirim
+            const permintaanForm = document.getElementById('permintaan-form');
+
+            permintaanForm.addEventListener('submit', function() {
+                // Hapus data keranjang dari localStorage
+                localStorage.removeItem('cartItems');
+            });
         });
     </script>
 @endsection

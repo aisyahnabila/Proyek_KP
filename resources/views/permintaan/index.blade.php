@@ -48,8 +48,8 @@
                     </div>
                     <!-- Modal footer -->
                     <div class="flex items-center p-3 md:p-3 border-t border-gray-200 rounded-b dark:border-gray-600">
-                        <a href="#"
-                            class="font-semibold text-black bg-white border border-gray-900 hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5">Kembali</a>
+                        <button data-modal-hide="default-modal" type="button"
+                            class="font-semibold text-black bg-white border border-gray-900 hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5">Kembali</button>
                         <a href="{{ route('permintaan.create') }}" data-modal-hide="default-modal" type="button"
                             class="flex text-black bg-yellow-400 ml-3 hover:bg-yellow-700 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                             Buat Permintaan

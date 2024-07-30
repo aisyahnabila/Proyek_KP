@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ImportBarangRequest;
 use App\Models\Barang;
 use App\Models\Kategori;
 use App\Models\LogActivity;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\BarangImport;
 
 class KelolaController extends Controller
 {
@@ -43,7 +46,14 @@ class KelolaController extends Controller
             'spesifikasi_nama_barang' => 'required',
             'jumlah' => 'required|integer',
             'satuan' => 'required',
+        ], [
+            'required' => 'Masukkan data :attribute',
+            'id_kategori.required' => 'Masukkan kode barang',
         ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
         $barang = Barang::create($request->all());
 
@@ -55,8 +65,6 @@ class KelolaController extends Controller
             'jumlah_keluar' => 0,
             'sisa' => $barang->jumlah,
         ]);
-
-
 
         // Set flash message
         return redirect()->route('barang.index')->with('success', 'Data Berhasil Ditambahkan!');
@@ -111,7 +119,7 @@ class KelolaController extends Controller
     public function destroy(Barang $barang)
     {
         $barang->delete();
-        return redirect()->route('barang.index')->with('Berhasil', 'Barang berhasil dihapus');
+        return response()->json(['success' => true, 'message' => 'Barang berhasil dihapus']);
     }
 
     public function showForm()
@@ -145,5 +153,13 @@ class KelolaController extends Controller
         ]);
 
         return redirect()->route('kelola.index')->with('success', 'Jumlah barang berhasil ditambahkan');
+    }
+
+    public function import(ImportBarangRequest $request)
+    {
+        // Import the file
+        Excel::import(new BarangImport, $request->file('file'));
+
+        return redirect()->back()->with('success', 'Goods imported successfully.');
     }
 }

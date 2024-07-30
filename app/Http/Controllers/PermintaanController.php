@@ -42,7 +42,8 @@ class PermintaanController extends Controller
             'keperluan' => 'required|string',
             'evidence' => 'nullable|file|mimes:jpeg,png,pdf|max:5240', // 5MB = 5240KB
         ], [
-            'evidence.max' => 'File evidence tidak boleh lebih dari 5MB.'
+            'evidence.max' => 'File evidence tidak boleh lebih dari 5MB.',
+            'required' => 'Masukkan data :attribute',
         ]);
 
         // Generate kode permintaan

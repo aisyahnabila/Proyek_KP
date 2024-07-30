@@ -38,7 +38,7 @@
                     @if ($permintaans->isEmpty())
                         <tr id="no-data-row">
                             <td colspan="5" class="text-center p-4 text-gray-500 dark:text-gray-400">
-                                Tidak Ada Data
+                                Data Tidak Ada
                             </td>
                         </tr>
                     @else

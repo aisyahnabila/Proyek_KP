@@ -40,7 +40,7 @@ class PermintaanController extends Controller
             'unit_kerja' => 'required|exists:unit_kerja,id_unitkerja',
             'nama_pemohon' => 'required|string|max:255',
             'keperluan' => 'required|string',
-            'evidence' => 'required|file|mimes:jpeg,png,pdf|max:5240', // 5MB = 5240KB
+            'evidence' => 'nullable|file|mimes:jpeg,png,pdf|max:5240', // 5MB = 5240KB
         ], [
             'evidence.max' => 'File evidence tidak boleh lebih dari 5MB.'
         ]);
@@ -57,13 +57,12 @@ class PermintaanController extends Controller
             $nextCode = 'A-001'; // Jika belum ada data, mulai dari A-001
         }
 
-        // Simpan file evidence
+        // Simpan file evidence jika ada
+        $filename = null;
         if ($request->hasFile('evidence')) {
             $file = $request->file('evidence');
             $filename = time() . '_' . $file->getClientOriginalName();
             $file->storeAs('public/evidence', $filename);
-        } else {
-            return redirect()->back()->withInput()->withErrors(['evidence' => 'File evidence harus diunggah.']);
         }
 
         // Simpan data permintaan barang ke dalam database
@@ -73,7 +72,7 @@ class PermintaanController extends Controller
             'id_unitkerja' => $validatedData['unit_kerja'],
             'nama_pemohon' => $validatedData['nama_pemohon'],
             'keperluan' => $validatedData['keperluan'],
-            'evidence' => $filename,
+            'evidence' => $filename, // Bisa bernilai null jika evidence tidak diunggah
         ]);
 
         // Pastikan bahwa penyimpanan berhasil
@@ -87,15 +86,9 @@ class PermintaanController extends Controller
 
         // Simpan detail barang ke dalam database
         if ($request->has('cartItems')) {
-            $cartItems = json_decode($request->cartItems, true);// Decode JSON ke array asosiatif
-            // dd($cartItems);
-            // Log untuk debugging
-            // \Log::info('Cart Items:', $cartItems);
+            $cartItems = json_decode($request->cartItems, true); // Decode JSON ke array asosiatif
 
             foreach ($cartItems as $item) {
-                // Log untuk debugging
-                // \Log::info('Processing item:', $item);
-
                 if (isset($item['id']) && isset($item['jumlahDiKeranjang'])) {
                     $detailBarang = new DetailPermintaan();
                     $detailBarang->id_permintaan = $permintaanID; // Gunakan id yang baru disimpan
@@ -119,15 +112,12 @@ class PermintaanController extends Controller
                         // Update jumlah barang di tabel Barang
                         $barang->jumlah = $currentStock;
                         $barang->save();
-
-                        // \Log::info('Updated Barang:', ['id' => $item['id'], 'current_stock' => $currentStock]);
-                    } 
+                    }
                 }
             }
         }
 
         // Redirect atau kembalikan response sesuai kebutuhan
-        // return redirect()->route('permintaan.index')->with('success', 'Permintaan barang berhasil disimpan.');
         return redirect()->route('historypermintaan.index');
     }
 

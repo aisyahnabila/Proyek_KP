@@ -43,7 +43,14 @@ class KelolaController extends Controller
             'spesifikasi_nama_barang' => 'required',
             'jumlah' => 'required|integer',
             'satuan' => 'required',
+        ], [
+            'required' => 'Masukkan data :attribute',
+            'id_kategori.required' => 'Masukkan kode barang',
         ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
         $barang = Barang::create($request->all());
 
@@ -55,8 +62,6 @@ class KelolaController extends Controller
             'jumlah_keluar' => 0,
             'sisa' => $barang->jumlah,
         ]);
-
-
 
         // Set flash message
         return redirect()->route('barang.index')->with('success', 'Data Berhasil Ditambahkan!');

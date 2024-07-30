@@ -13,42 +13,65 @@
                 <div class="w-full md:w-1/2">
                     <!-- Kategori Barang -->
                     <div class="mb-4">
-                        <label for="kategori-barang"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Unit Kerja</label>
-                        <select id="kategori-barang" name="unit_kerja"
-                            class="text-sm block w-full md:w-72 p-2 border border-gray-800 rounded bg-white focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <label for="unit_kerja" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Unit
+                            Kerja</label>
+                        <select id="unit_kerja" name="unit_kerja"
+                            class="text-sm block w-full md:w-72 p-2 border @error('unit_kerja') border-red-500 @else border-gray-800 @enderror rounded bg-white focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option value="">Pilih Unit Kerja</option>
                             @foreach ($unit_kerja as $unit)
-                                <option value="{{ $unit->id_unitkerja }}">{{ $unit->nama_unit_kerja }}</option>
+                                <option value="{{ $unit->id_unitkerja }}"
+                                    {{ old('unit_kerja') == $unit->id_unitkerja ? 'selected' : '' }}>
+                                    {{ $unit->nama_unit_kerja }}
+                                </option>
                             @endforeach
                         </select>
+                        @error('unit_kerja')
+                            <p id="outlined_error_help" class="mt-2 text-xs text-red-600 dark:text-red-400">{{ $message }}
+                            </p>
+                        @enderror
                     </div>
+
                     <!-- Nama Pemohon -->
                     <div class="mb-4">
                         <label for="nama-pemohon" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama
                             Pemohon</label>
-                        <input type="text" id="nama-pemohon" name="nama_pemohon"
-                            class="block w-full p-2 border border-gray-800 text-sm rounded bg-white focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="Masukkan Nama Pemohon">
+                        <input type="text" id="nama_pemohon" name="nama_pemohon"
+                            class="block w-full p-2 border @error('jumlah') border-red-500 @else border-gray-800 @enderror text-sm rounded bg-white focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            placeholder="Masukkan Nama Pemohon" value="{{ old('nama_pemohon') }}">
+                        @error('nama_pemohon')
+                            <p id="outlined_error_help" class="mt-2 text-xs text-red-600 dark:text-red-400">{{ $message }}
+                            </p>
+                        @enderror
                     </div>
+
                     <!-- Keperluan -->
                     <div class="mb-4">
                         <label for="keperluan"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Keperluan</label>
                         <textarea id="keperluan" name="keperluan"
-                            class="block w-full p-2 border border-gray-800 text-sm rounded bg-white focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                            class="block w-full p-2 border @error('spesifikasi_nama_barang') border-red-500 @else border-gray-800 @enderror text-sm rounded bg-white focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            placeholder="Masukkan Keperluan">{{ old('keperluan') }}
+                        </textarea>
+                        @error('keperluan')
+                            <p id="outlined_error_help" class="mt-2 text-xs text-red-600 dark:text-red-400">{{ $message }}
+                            </p>
+                        @enderror
                     </div>
+
                     <!-- Evidence -->
                     <div>
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                            for="file_input">Evidence(Opsional)</label>
+                            for="file_input">Evidence (Opsional)</label>
                         <input
-                            class="border-gray-800 text-xs block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                            class="border-gray-800 text-xs block w-full text-sm text-gray-900 border @error('evidence') border-red-500 @else border-gray-300 @enderror rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                             id="file_input" name="evidence" type="file">
+                        @error('evidence')
+                            <p class="mt-2 text-xs text-red-600 dark:text-red-400">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     {{-- Flash Messages --}}
-                    @if ($errors->any())
+                    {{-- @if ($errors->any())
                         <div class="mb-4 mt-4">
                             <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
                                 role="alert">
@@ -61,7 +84,7 @@
                                 </ul>
                             </div>
                         </div>
-                    @endif
+                    @endif --}}
 
                     @if (session('success'))
                         <div class="mb-4">
@@ -100,7 +123,7 @@
             </div>
 
             <!-- Hidden Input untuk Menyimpan Data Keranjang -->
-            <input type="hidden" id="cart-items-input" name="cartItems">
+            <input type="hidden" id="cart-items-input" name="cartItems" value="{{ old('cartItems') }}">
 
             <!-- Buttons -->
             <div class="flex justify-end space-x-4">
@@ -115,11 +138,12 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const cartItemsTable = document.getElementById('cart-items-table');
+            const cartItemsInput = document.getElementById('cart-items-input');
 
             // Fungsi untuk menampilkan barang yang ada di keranjang dalam tabel
             function displayCartItemsInTable() {
-                // Ambil data barang dari localStorage
-                let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+                // Ambil data barang dari input hidden atau localStorage
+                let cartItems = JSON.parse(cartItemsInput.value || localStorage.getItem('cartItems')) || [];
 
                 // Kosongkan konten tabel sebelum menambahkan kembali
                 cartItemsTable.querySelector('tbody').innerHTML = '';
@@ -130,16 +154,16 @@
                     row.classList.add(index % 2 === 0 ? 'even:bg-gray-50' : 'odd:bg-white', 'border-b');
 
                     row.innerHTML = `
-                <td class="px-6 py-4">${index + 1}</td>
-                <td class="px-6 py-4">${item.nama}</td>
-                <td class="px-6 py-4">${item.jumlahDiKeranjang}</td>
-            `;
+                        <td class="px-6 py-4">${index + 1}</td>
+                        <td class="px-6 py-4">${item.nama}</td>
+                        <td class="px-6 py-4">${item.jumlahDiKeranjang}</td>
+                    `;
 
                     cartItemsTable.querySelector('tbody').appendChild(row);
                 });
 
                 // Simpan data ke input hidden
-                document.getElementById('cart-items-input').value = JSON.stringify(cartItems);
+                cartItemsInput.value = JSON.stringify(cartItems);
             }
 
             // Panggil fungsi displayCartItemsInTable saat halaman dimuat untuk pertama kali

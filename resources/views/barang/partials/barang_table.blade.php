@@ -31,6 +31,12 @@
     @endforeach
 @endif
 
+<tr id="no-results-row" style="display: none;">
+    <td colspan="7" class="text-center p-4 text-gray-500 dark:text-gray-400">
+        Data tidak ditemukan.
+    </td>
+</tr>
+
 <!-- Modal konfirmasi -->
 <div id="confirmModal" class="fixed z-10 inset-0 overflow-y-auto hidden">
     <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">

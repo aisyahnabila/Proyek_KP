@@ -114,7 +114,7 @@ class KelolaController extends Controller
     public function destroy(Barang $barang)
     {
         $barang->delete();
-        return redirect()->route('barang.index')->with('Berhasil', 'Barang berhasil dihapus');
+        return response()->json(['success' => true, 'message' => 'Barang berhasil dihapus']);
     }
 
     public function showForm()

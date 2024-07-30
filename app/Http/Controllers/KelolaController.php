@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ImportBarangRequest;
 use App\Models\Barang;
 use App\Models\Kategori;
 use App\Models\LogActivity;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\BarangImport;
 
 class KelolaController extends Controller
 {
@@ -145,5 +148,13 @@ class KelolaController extends Controller
         ]);
 
         return redirect()->route('kelola.index')->with('success', 'Jumlah barang berhasil ditambahkan');
+    }
+
+    public function import(ImportBarangRequest $request)
+    {
+        // Import the file
+        Excel::import(new BarangImport, $request->file('file'));
+
+        return redirect()->back()->with('success', 'Goods imported successfully.');
     }
 }

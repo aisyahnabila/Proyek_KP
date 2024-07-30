@@ -75,19 +75,30 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($permintaan as $p)
-                        <tr>
-                            <td class="px-5 py-3">{{ $p['bulan'] }}</td>
-                            <td class="px-5 py-3">{{ $p['unit_kerja'] }}</td>
-                            <td class="px-5 py-3">{{ $p['kode_barang'] }}</td>
-                            <td class="px-5 py-3">{{ $p['nama_barang'] }}</td>
-                            <td class="px-5 py-3">{{ $p['spesifikasi_nama_barang'] }}</td>
-                            <td class="px-5 py-3">{{ $p['total_permintaan'] }}</td>
-                            <td class="px-5 py-3">{{ $p['jumlah'] }}</td>
-                            <td class="px-5 py-3">{{ $p['satuan'] }}</td>
-                            <td class="px-5 py-3">{{ $p['keperluan'] }}</td>
+                    @if ($permintaan->isEmpty())
+                        <tr id="no-data-row">
+                            <td colspan="9" class="text-center p-4 text-gray-500 dark:text-gray-400">
+                                Data tidak tersedia
+                            </td>
                         </tr>
-                    @endforeach
+                    @else
+                        @php
+                            $index = 0;
+                        @endphp
+                        @foreach ($permintaan as $p)
+                            <tr>
+                                <td class="px-5 py-3">{{ $p['bulan'] }}</td>
+                                <td class="px-5 py-3">{{ $p['unit_kerja'] }}</td>
+                                <td class="px-5 py-3">{{ $p['kode_barang'] }}</td>
+                                <td class="px-5 py-3">{{ $p['nama_barang'] }}</td>
+                                <td class="px-5 py-3">{{ $p['spesifikasi_nama_barang'] }}</td>
+                                <td class="px-5 py-3">{{ $p['total_permintaan'] }}</td>
+                                <td class="px-5 py-3">{{ $p['jumlah'] }}</td>
+                                <td class="px-5 py-3">{{ $p['satuan'] }}</td>
+                                <td class="px-5 py-3">{{ $p['keperluan'] }}</td>
+                            </tr>
+                        @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>

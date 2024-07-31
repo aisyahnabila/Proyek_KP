@@ -33,6 +33,7 @@
     @include('sweetalert::alert')
 
     @yield('content')
+    @include('sweetalert::alert')
 
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.7/dist/sweetalert2.min.js"></script>

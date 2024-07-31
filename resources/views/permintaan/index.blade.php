@@ -50,8 +50,9 @@
                     <div class="flex items-center p-3 md:p-3 border-t border-gray-200 rounded-b dark:border-gray-600">
                         <button data-modal-hide="default-modal" type="button"
                             class=" text-black bg-white border border-gray-900 hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5">Kembali</button>
-                        <a href="{{ route('permintaan.create') }}" data-modal-hide="default-modal" type="button"
-                            class="flex text-black bg-yellow-400 ml-3 hover:bg-yellow-700 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        <a id="buat-permintaan" href="{{ route('permintaan.create') }}" data-modal-hide="default-modal"
+                            type="button"
+                            class="flex text-black bg-yellow-400 ml-3 hover:bg-yellow-700 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ">
                             Buat Permintaan
                         </a>
                     </div>
@@ -141,6 +142,7 @@
             const addToCartButtons = document.querySelectorAll('.add-to-cart');
             const modalCartItems = document.getElementById('cart-items');
             const cartItemCount = document.getElementById('cart-item-count');
+            const buatPermintaanButton = document.getElementById('buat-permintaan');
 
             // Fungsi untuk menampilkan barang yang ada di keranjang
             function displayCartItems() {
@@ -191,6 +193,9 @@
 
                 // Update jumlah jenis barang di keranjang
                 updateCartItemCount();
+
+                // status tombol dari button buat permintaan
+                updateBuatPermintaanButton();
             }
 
             // Fungsi untuk menambah barang ke dalam keranjang
@@ -262,6 +267,26 @@
                 cartItemCount.textContent = uniqueItemCount;
             }
 
+            // Fungsi untuk mengelola status tombol "Buat Permintaan"
+            function updateBuatPermintaanButton() {
+                let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+
+                if (cartItems.length === 0) {
+                    // Jika keranjang kosong, tombol dinonaktifkan
+                    buatPermintaanButton.disabled = true;
+                    buatPermintaanButton.classList.add('cursor-not-allowed', 'bg-gray-400');
+                    buatPermintaanButton.classList.remove('bg-yellow-400', 'hover:bg-yellow-700');
+                } else {
+                    // Jika ada barang di keranjang, tombol diaktifkan
+                    buatPermintaanButton.disabled = false;
+                    buatPermintaanButton.classList.remove('cursor-not-allowed', 'bg-gray-400');
+                    buatPermintaanButton.classList.add('bg-yellow-400', 'hover:bg-yellow-700');
+                }
+            }
+
+            // Panggil fungsi displayCartItems saat halaman dimuat untuk pertama kali
+            displayCartItems();
+
             // Event listener untuk tombol "Tambah ke Keranjang"
             addToCartButtons.forEach(button => {
                 button.addEventListener('click', function(event) {
@@ -285,11 +310,26 @@
 
                     // Panggil fungsi untuk menambah barang ke keranjang
                     addToCart(item);
+                    document.dispatchEvent(new Event('cartUpdated'));
                 });
             });
+            
+            // Panggil fungsi updateBuatPermintaanButton saat halaman dimuat untuk pertama kali
+            updateBuatPermintaanButton();
 
-            // Panggil fungsi displayCartItems saat halaman dimuat untuk pertama kali
-            displayCartItems();
+            // Panggil updateBuatPermintaanButton setiap kali keranjang diubah
+            document.addEventListener('cartUpdated', function() {
+                updateBuatPermintaanButton();
+            });
+
+            buatPermintaanButton.addEventListener('click', function(event) {
+                if (buatPermintaanButton.disabled) {
+                    event.preventDefault(); // Mencegah aksi default jika tombol dinonaktifkan
+                    return;
+                }
+                // Panggil fungsi displayCartItems saat halaman dimuat untuk pertama kali
+                displayCartItems();
+            });
         });
     </script>
 @endsection

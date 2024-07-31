@@ -114,8 +114,8 @@ class KelolaController extends Controller
      */
     public function destroy(Barang $barang)
     {
-        $barang->delete();
-        return response()->json(['success' => true, 'message' => 'Barang berhasil dihapus']);
+        // $barang->delete();
+        // return response()->json(['success' => true, 'message' => 'Barang berhasil dihapus']);
     }
 
     public function showForm()

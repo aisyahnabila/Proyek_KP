@@ -23,9 +23,7 @@
                 <a href="{{ route('barang.tambahJumlahForm', $barang->id_barang) }}"
                     class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Tambah Jumlah</a> |
                 <a href="{{ route('barang.show', $barang->id_barang) }}"
-                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Detail</a> |
-                <button type="button" class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                    onclick="confirmDeletion({{ $barang->id_barang }})">Hapus Data</button>
+                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Detail</a>
             </td>
         </tr>
     @endforeach
@@ -36,54 +34,3 @@
         Data tidak ditemukan.
     </td>
 </tr>
-
-<script>
-    function confirmDeletion(barangId) {
-        Swal.fire({
-            title: 'Konfirmasi Penghapusan',
-            text: "Apakah Anda yakin ingin menghapus barang ini?",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Ya, hapus!',
-            cancelButtonText: 'Batal'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                fetch(`/barang/${barangId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Content-Type': 'application/json'
-                    }
-                }).then(response => {
-                    if (response.ok) {
-                        Swal.fire(
-                            'Dihapus!',
-                            'Barang telah dihapus.',
-                            'success'
-                        ).then(() => {
-                            window.location.reload();
-                        });
-                    } else {
-                        response.json().then(data => {
-                            Swal.fire(
-                                'Gagal!',
-                                'Barang gagal dihapus.',
-                                'error'
-                            );
-                            console.error('Failed to delete item', response.status, data);
-                        });
-                    }
-                }).catch(error => {
-                    console.error('Error:', error);
-                    Swal.fire(
-                        'Gagal!',
-                        'Terjadi kesalahan saat menghapus barang.',
-                        'error'
-                    );
-                });
-            }
-        })
-    }
-</script>

@@ -8,6 +8,7 @@ use App\Models\UnitKerja;
 use App\Models\Permintaan;
 use Illuminate\Http\Request;
 use App\Models\DetailPermintaan;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class PermintaanController extends Controller
 {
@@ -117,6 +118,9 @@ class PermintaanController extends Controller
                 }
             }
         }
+
+        // Show a success alert
+        Alert::success('Berhasil', 'Permintaan barang berhasil dibuat.');
 
         // Redirect atau kembalikan response sesuai kebutuhan
         return redirect()->route('historypermintaan.index');

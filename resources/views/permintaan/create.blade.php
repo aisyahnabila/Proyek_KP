@@ -36,7 +36,7 @@
                         <label for="nama-pemohon" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama
                             Pemohon</label>
                         <input type="text" id="nama_pemohon" name="nama_pemohon"
-                            class="block w-full p-2 border @error('jumlah') border-red-500 @else border-gray-800 @enderror text-sm rounded bg-white focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            class="block w-full p-2 border @error('nama_pemohon') border-red-500 @else border-gray-800 @enderror text-sm rounded bg-white focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="Masukkan Nama Pemohon" value="{{ old('nama_pemohon') }}">
                         @error('nama_pemohon')
                             <p id="outlined_error_help" class="mt-2 text-xs text-red-600 dark:text-red-400">{{ $message }}
@@ -49,9 +49,8 @@
                         <label for="keperluan"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Keperluan</label>
                         <textarea id="keperluan" name="keperluan"
-                            class="block w-full p-2 border @error('spesifikasi_nama_barang') border-red-500 @else border-gray-800 @enderror text-sm rounded bg-white focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="Masukkan Keperluan">{{ old('keperluan') }}
-                        </textarea>
+                            class="block w-full md:w-72 p-2 border @error('keperluan') border-red-500 @else border-gray-800 @enderror text-sm rounded bg-white focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            placeholder="Masukkan Spesifikasi Barang">{{ old('keperluan') }}</textarea>
                         @error('keperluan')
                             <p id="outlined_error_help" class="mt-2 text-xs text-red-600 dark:text-red-400">{{ $message }}
                             </p>
@@ -130,7 +129,7 @@
                 <a href="{{ route('permintaan.index') }}"
                     class=" text-black bg-white border border-gray-900 hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5">Kembali</a>
                 <button type="submit"
-                    class=" text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-600 font-medium rounded-lg text-sm px-5 py-2.5">Simpan</button>
+                    class=" text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-400 font-medium rounded-lg text-sm px-5 py-2.5">Simpan</button>
             </div>
         </form>
     </div>

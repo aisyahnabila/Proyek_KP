@@ -51,10 +51,6 @@ class KelolaController extends Controller
             'id_kategori.required' => 'Masukkan kode barang',
         ]);
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
         $barang = Barang::create($request->all());
 
         // Log activity

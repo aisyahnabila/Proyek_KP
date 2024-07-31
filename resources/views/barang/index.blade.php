@@ -37,7 +37,7 @@
             {{-- fitur tambah --}}
             <div>
                 <a href="{{ route('kelola.create') }}"
-                    class="flex items-center justify-center focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 rounded-lg text-sm px-5 py-2.5 dark:focus:ring-yellow-900">
+                    class="flex items-center justify-center focus:outline-none text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 rounded-lg text-sm px-5 py-2.5 dark:focus:ring-yellow-900">
                     <i class="fa-solid fa-plus mr-1"></i>
                     Tambah
                 </a>

@@ -17,9 +17,17 @@
             <td class="px-6 py-4">{{ $item->spesifikasi_nama_barang }}</td>
             <td class="px-6 py-4">{{ $item->jumlah }}</td>
             <td class="px-6 py-4">
-                <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline add-to-cart"
-                    data-id="{{ $item->id_barang }}" data-nama="{{ $item->nama_barang }}"
-                    data-spesifikasi="{{ $item->spesifikasi_nama_barang }}" data-jumlah="{{ $item->jumlah }}">Pilih</a>
+                @if ($item->jumlah > 0)
+                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline add-to-cart"
+                        data-id="{{ $item->id_barang }}" data-nama="{{ $item->nama_barang }}"
+                        data-spesifikasi="{{ $item->spesifikasi_nama_barang }}" data-jumlah="{{ $item->jumlah }}">
+                        Pilih
+                    </a>
+                @else
+                    <span class="font-medium text-gray-400 cursor-not-allowed">
+                        Pilih
+                    </span>
+                @endif
             </td>
         </tr>
     @endforeach

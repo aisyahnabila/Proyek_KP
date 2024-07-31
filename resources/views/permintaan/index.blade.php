@@ -49,7 +49,7 @@
                     <!-- Modal footer -->
                     <div class="flex items-center p-3 md:p-3 border-t border-gray-200 rounded-b dark:border-gray-600">
                         <button data-modal-hide="default-modal" type="button"
-                            class="font-semibold text-black bg-white border border-gray-900 hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5">Kembali</button>
+                            class=" text-black bg-white border border-gray-900 hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5">Kembali</button>
                         <a href="{{ route('permintaan.create') }}" data-modal-hide="default-modal" type="button"
                             class="flex text-black bg-yellow-400 ml-3 hover:bg-yellow-700 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                             Buat Permintaan
@@ -171,7 +171,7 @@
                     // Tambahkan event listener untuk tombol tambah barang
                     const addButton = cartItemElement.querySelector('.addToCart');
                     addButton.addEventListener('click', function() {
-                        addToCart(item, false); // false indicates not a fresh add
+                        addToCart(item, false);
                     });
 
                     // Tambahkan event listener untuk tombol kurang barang
@@ -218,10 +218,6 @@
 
                 // Simpan kembali ke localStorage
                 localStorage.setItem('cartItems', JSON.stringify(cartItems));
-
-                // Tampilkan pesan sukses atau perubahan yang sesuai di UI jika diperlukan
-                // alert(`Barang ${item.nama} telah ditambahkan ke keranjang`);
-
                 // Update tampilan UI seperti jumlah barang di keranjang di modal
                 displayCartItems();
             }
@@ -251,13 +247,10 @@
             function deleteCartItem(itemId) {
                 // Ambil data barang dari localStorage
                 let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-
                 // Filter barang berdasarkan id yang akan dihapus
                 cartItems = cartItems.filter(item => item.id !== itemId);
-
                 // Simpan kembali ke localStorage
                 localStorage.setItem('cartItems', JSON.stringify(cartItems));
-
                 // Tampilkan kembali daftar barang yang tersisa di keranjang
                 displayCartItems();
             }
@@ -273,6 +266,9 @@
             addToCartButtons.forEach(button => {
                 button.addEventListener('click', function(event) {
                     event.preventDefault();
+                    if (this.classList.contains('cursor-not-allowed')) {
+                        return;
+                    }
                     const id = this.getAttribute('data-id');
                     const nama = this.getAttribute('data-nama');
                     const spesifikasi = this.getAttribute('data-spesifikasi');

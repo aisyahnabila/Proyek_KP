@@ -15,8 +15,11 @@
                     <div class="mb-4">
                         <label for="unit_kerja" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Unit
                             Kerja</label>
-                        <select id="unit_kerja" name="unit_kerja"
-                            class="text-sm block w-full md:w-72 p-2 border @error('unit_kerja') border-red-500 @else border-gray-800 @enderror rounded bg-white focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <select id="unit_kerja" name="unit_kerja" @class([
+                            'text-sm block w-full md:w-72 p-2 rounded bg-white focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
+                            'border-red-500' => $errors->has('unit_kerja'),
+                            'border-gray-800' => !$errors->has('unit_kerja'),
+                        ])>
                             <option value="">Pilih Unit Kerja</option>
                             @foreach ($unit_kerja as $unit)
                                 <option value="{{ $unit->id_unitkerja }}"
@@ -35,22 +38,28 @@
                     <div class="mb-4">
                         <label for="nama-pemohon" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama
                             Pemohon</label>
-                        <input type="text" id="nama_pemohon" name="nama_pemohon"
-                            class="block w-full p-2 border @error('nama_pemohon') border-red-500 @else border-gray-800 @enderror text-sm rounded bg-white focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        <input type="text" id="nama_pemohon" name="nama_pemohon" @class([
+                            'block w-full p-2 text-sm rounded bg-white focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
+                            'border-red-500' => $errors->has('nama_pemohon'),
+                            'border-gray-800' => !$errors->has('nama_pemohon'),
+                        ])
                             placeholder="Masukkan Nama Pemohon" value="{{ old('nama_pemohon') }}">
                         @error('nama_pemohon')
                             <p id="outlined_error_help" class="mt-2 text-xs text-red-600 dark:text-red-400">{{ $message }}
                             </p>
                         @enderror
+
                     </div>
 
                     <!-- Keperluan -->
                     <div class="mb-4">
                         <label for="keperluan"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Keperluan</label>
-                        <textarea id="keperluan" name="keperluan"
-                            class="block w-full md:w-72 p-2 border @error('keperluan') border-red-500 @else border-gray-800 @enderror text-sm rounded bg-white focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="Masukkan Spesifikasi Barang">{{ old('keperluan') }}</textarea>
+                        <textarea id="keperluan" name="keperluan" @class([
+                            'block w-full md:w-72 p-2 text-sm rounded bg-white focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
+                            'border-red-500' => $errors->has('keperluan'),
+                            'border-gray-800' => !$errors->has('keperluan'),
+                        ]) placeholder="Masukkan Spesifikasi Barang">{{ old('keperluan') }}</textarea>
                         @error('keperluan')
                             <p id="outlined_error_help" class="mt-2 text-xs text-red-600 dark:text-red-400">{{ $message }}
                             </p>
@@ -62,7 +71,10 @@
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                             for="file_input">Evidence (Opsional)</label>
                         <input
-                            class="border-gray-800 text-xs block w-full text-sm text-gray-900 border @error('evidence') border-red-500 @else border-gray-300 @enderror rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                            class="text-xs block w-full cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:placeholder-gray-400 @class([
+                                'border-red-500' => $errors->has('evidence'),
+                                'border-gray-800' => !$errors->has('evidence'),
+                            ])"
                             id="file_input" name="evidence" type="file">
                         @error('evidence')
                             <p class="mt-2 text-xs text-red-600 dark:text-red-400">{{ $message }}</p>

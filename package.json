@@ -11,5 +11,8 @@
     },
     "dependencies": {
         "tailwindcss": "^3.4.7"
+    },
+    "engines": {
+        "node": "18.x"
     }
 }

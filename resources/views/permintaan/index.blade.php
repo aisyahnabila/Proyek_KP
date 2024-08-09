@@ -162,7 +162,7 @@
                 <span class="text-black dark:text-gray-500">${item.nama}</span>
                 <div class="flex items-center space-x-2">
                     <button class="text-black border border-gray-700 px-3 py-1 rounded addToCart">+</button>
-                    <span class="text-black text-xl p-2">${item.jumlahDiKeranjang}</span>
+                    <input type="text" class="text-black text-xl w-20 py-1 quantityInput" value="${item.jumlahDiKeranjang}" min="0" step="1">
                     <button class="text-black border border-gray-700 px-3 py-1 rounded removeFromCart">-</button>
                     <button class="text-black p-2 bg-gray-300 rounded deleteCartItem">
                         <i class="fa-solid fa-trash-can"></i>
@@ -186,6 +186,14 @@
                     const deleteButton = cartItemElement.querySelector('.deleteCartItem');
                     deleteButton.addEventListener('click', function() {
                         deleteCartItem(item.id);
+                    });
+
+                    // Event listener for input change
+                    cartItemElement.querySelector('.quantityInput').addEventListener('change', function() {
+                        let newQuantity = parseInt(this.value);
+                        if (isNaN(newQuantity) || newQuantity < 0) newQuantity = 0;
+
+                        updateCartItemQuantity(item.id, newQuantity);
                     });
 
                     modalCartItems.appendChild(cartItemElement);
@@ -260,6 +268,21 @@
                 displayCartItems();
             }
 
+            function updateCartItemQuantity(itemId, newQuantity) {
+                let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+                let item = cartItems.find(i => i.id === itemId);
+                if (item) {
+                    if (newQuantity > item.jumlah) {
+                        alert(`Jumlah ${item.nama} melebihi stok yang tersedia (${item.jumlah}).`);
+                        newQuantity = item.jumlah;
+                    }
+                    item.jumlahDiKeranjang = newQuantity;
+
+                    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+                    displayCartItems();
+                }
+            }
+
             // Fungsi untuk mengupdate jumlah jenis barang di keranjang
             function updateCartItemCount() {
                 let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
@@ -313,7 +336,7 @@
                     document.dispatchEvent(new Event('cartUpdated'));
                 });
             });
-            
+
             // Panggil fungsi updateBuatPermintaanButton saat halaman dimuat untuk pertama kali
             updateBuatPermintaanButton();
 

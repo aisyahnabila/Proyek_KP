@@ -47,6 +47,18 @@ class PermintaanController extends Controller
             'required' => 'Masukkan data :attribute',
         ]);
 
+        // Cek duplikasi berdasarkan unit_kerja, nama_pemohon, dan tanggal_permintaan
+        $duplicate = Permintaan::where('id_unitkerja', $validatedData['unit_kerja'])
+            ->where('nama_pemohon', $validatedData['nama_pemohon'])
+            ->whereDate('tanggal_permintaan', now()->subSeconds(20))
+            ->first();
+
+        if ($duplicate) {
+            // Hapus permintaan duplikat dan rollback stok
+            $this->rollbackStock($duplicate->id_permintaan);
+            $duplicate->delete();
+        }
+
         // Generate kode permintaan
         $latestPermintaan = Permintaan::latest()->first();
 
@@ -127,6 +139,8 @@ class PermintaanController extends Controller
     }
 
 
+
+
     /**
      * Display the specified resource.
      */
@@ -156,5 +170,29 @@ class PermintaanController extends Controller
      */
     public function destroy(string $id)
     {
+    }
+
+    // fungsi ini hanya akan digunakan ada data permintaan barang yang diinputkan oleh user duplikat karena kesalahan klik.
+    private function rollbackStock($permintaanId)
+    {
+        $permintaan = Permintaan::with('detailPermintaan')->find($permintaanId);
+        if ($permintaan) {
+            foreach ($permintaan->detailPermintaan as $detail) {
+                $barang = Barang::find($detail->id_barang);
+                if ($barang) {
+                    $barang->jumlah += $detail->jumlah_permintaan;
+                    $barang->save();
+
+                    // Catat log aktivitas jumlah masuk
+                    LogActivity::create([
+                        'id_barang' => $detail->id_barang,
+                        'timestamp' => now(),
+                        'jumlah_masuk' => $detail->jumlah_permintaan,
+                        'jumlah_keluar' => 0,
+                        'sisa' => $barang->jumlah,
+                    ]);
+                }
+            }
+        }
     }
 }

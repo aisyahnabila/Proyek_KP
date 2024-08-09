@@ -14,10 +14,22 @@ class HistoryPermintaanController extends Controller
         return view('laporan.permintaan', compact('permintaans'));
     }
 
-    public function exportWord($id)
+    public function exportWord($id, $type)
     {
         // Path ke template Word
-        $templatePath = public_path('templates/templete_nota_permintaan_barang.docx');
+        // $templatePath = public_path('templates/templete_nota_permintaan_barang.docx');
+
+        // Tentukan path template berdasarkan tipe dokumen
+        switch ($type) {
+            case 'spb':
+                $templatePath = public_path('templates/templete_spb.docx');
+                break;
+            case 'penyaluran':
+                $templatePath = public_path('templates/templete_penyaluran.docx');
+                break;
+            default:
+                $templatePath = public_path('templates/templete_nota_permintaan_barang.docx');
+        }
 
         // Verifikasi apakah file template ada
         if (!file_exists($templatePath)) {

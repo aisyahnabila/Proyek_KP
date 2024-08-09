@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Careventory's Web</title>
-    @vite('resources/sass/app.scss')
     {{-- UI and Font --}}
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.4.1/dist/flowbite.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">

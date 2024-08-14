@@ -52,17 +52,28 @@ class HistoryPermintaanController extends Controller
 
         foreach ($permintaan->detailPermintaan as $index => $detail) {
             $rowIndex = $index + 1;
-            $stok_awal = $detail->barang->jumlah + $detail->jumlah_permintaan;
-            $sisa_persediaan = $stok_awal - $detail->jumlah_permintaan;
-            $usulan_pengajuan_persetujuan = $detail->jumlah_permintaan;
+            // $stok_awal = $detail->barang->jumlah + $detail->jumlah_permintaan;
+            // $sisa_persediaan = $stok_awal - $detail->jumlah_permintaan;
+            // $usulan_pengajuan_persetujuan = $detail->jumlah_permintaan;
+            // $templateProcessor->setValue("no#{$rowIndex}", $rowIndex);
+            // $templateProcessor->setValue("kode_barang#{$rowIndex}", $detail->barang->kategori->kode_barang);
+            // $templateProcessor->setValue("barang_nama#{$rowIndex}", $detail->barang->nama_barang);
+            // $templateProcessor->setValue("spesifikasi_nama_barang#{$rowIndex}", $detail->barang->spesifikasi_nama_barang);
+            // $templateProcessor->setValue("stok_awal#{$rowIndex}", $stok_awal);
+            // $templateProcessor->setValue("jumlah#{$rowIndex}", $detail->jumlah_permintaan);
+            // $templateProcessor->setValue("usulan_pengajuan_persetujuan#{$rowIndex}", $usulan_pengajuan_persetujuan);
+            // $templateProcessor->setValue("sisa_persediaan#{$rowIndex}", $sisa_persediaan);
+            // $templateProcessor->setValue("satuan#{$rowIndex}", $detail->barang->satuan);
+            // $templateProcessor->setValue("keperluan#{$rowIndex}", $permintaan->keperluan);
+            // $templateProcessor->setValue("keterangan#{$rowIndex}", $detail->keterangan);
             $templateProcessor->setValue("no#{$rowIndex}", $rowIndex);
             $templateProcessor->setValue("kode_barang#{$rowIndex}", $detail->barang->kategori->kode_barang);
             $templateProcessor->setValue("barang_nama#{$rowIndex}", $detail->barang->nama_barang);
             $templateProcessor->setValue("spesifikasi_nama_barang#{$rowIndex}", $detail->barang->spesifikasi_nama_barang);
-            $templateProcessor->setValue("stok_awal#{$rowIndex}", $stok_awal);
-            $templateProcessor->setValue("jumlah#{$rowIndex}", $detail->jumlah_permintaan);
-            $templateProcessor->setValue("usulan_pengajuan_persetujuan#{$rowIndex}", $usulan_pengajuan_persetujuan);
-            $templateProcessor->setValue("sisa_persediaan#{$rowIndex}", $sisa_persediaan);
+            $templateProcessor->setValue("stok_awal#{$rowIndex}", $detail->stok_awal);//saldo awal sebelum barang dikurang dengan jumlah permintaan
+            $templateProcessor->setValue("jumlah#{$rowIndex}", $detail->jumlah_permintaan); //jumlah permintaan yang diinputkan oleh user
+            $templateProcessor->setValue("usulan_pengajuan_persetujuan#{$rowIndex}", $detail->jumlah_permintaan); //disamakan dengan jumlah permintaan yang diinputkan oleh user
+            $templateProcessor->setValue("sisa_persediaan#{$rowIndex}", $detail->saldo_akhir);
             $templateProcessor->setValue("satuan#{$rowIndex}", $detail->barang->satuan);
             $templateProcessor->setValue("keperluan#{$rowIndex}", $permintaan->keperluan);
             $templateProcessor->setValue("keterangan#{$rowIndex}", $detail->keterangan);

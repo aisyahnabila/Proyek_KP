@@ -134,8 +134,7 @@ class PermintaanController extends Controller
                             ]);
 
                             // Update jumlah barang di tabel Barang
-                            // $barang->jumlah = $currentStock;
-                            $barang->jumlah = $saldo_akhir;
+                            $barang->jumlah = $currentStock;
                             $barang->save();
                         }
                     }

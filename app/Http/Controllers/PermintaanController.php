@@ -50,7 +50,7 @@ class PermintaanController extends Controller
         // Cek duplikasi berdasarkan unit_kerja, nama_pemohon, dan tanggal_permintaan
         $duplicate = Permintaan::where('id_unitkerja', $validatedData['unit_kerja'])
             ->where('nama_pemohon', $validatedData['nama_pemohon'])
-            ->whereDate('tanggal_permintaan', now()->subSeconds(30))
+            ->whereDate('tanggal_permintaan', now()->subSeconds(20))
             ->first();
 
         if ($duplicate) {
@@ -104,28 +104,39 @@ class PermintaanController extends Controller
 
             foreach ($cartItems as $item) {
                 if (isset($item['id']) && isset($item['jumlahDiKeranjang'])) {
-                    $detailBarang = new DetailPermintaan();
-                    $detailBarang->id_permintaan = $permintaanID; // Gunakan id yang baru disimpan
-                    $detailBarang->id_barang = $item['id']; // Ambil id barang dari setiap item
-                    $detailBarang->jumlah_permintaan = $item['jumlahDiKeranjang']; // Sesuaikan dengan struktur data Anda
-                    $detailBarang->save();
 
-                    // Catat log aktivitas jumlah keluar
+                    // Temukan barang berdasarkan ID
                     $barang = Barang::find($item['id']);
                     if ($barang) {
-                        $currentStock = $barang->jumlah - $item['jumlahDiKeranjang']; // Kurangi stok dengan jumlahDiKeranjang
+                        // Hitung stok awal dan saldo akhir
+                        $stok_awal = $barang->jumlah;
+                        $saldo_akhir = $stok_awal - $item['jumlahDiKeranjang'];
 
-                        LogActivity::create([
-                            'id_barang' => $item['id'],
-                            'timestamp' => now(),
-                            'jumlah_masuk' => 0,
-                            'jumlah_keluar' => $item['jumlahDiKeranjang'], // Ambil jumlah dari jumlahDiKeranjang
-                            'sisa' => $currentStock,
-                        ]);
+                        $detailBarang = new DetailPermintaan();
+                        $detailBarang->id_permintaan = $permintaanID; // Gunakan id yang baru disimpan
+                        $detailBarang->id_barang = $item['id']; // Ambil id barang dari setiap item
+                        $detailBarang->jumlah_permintaan = $item['jumlahDiKeranjang']; // Sesuaikan dengan struktur data Anda
+                        $detailBarang->stok_awal = $stok_awal;
+                        $detailBarang->saldo_akhir = $saldo_akhir;
+                        $detailBarang->save();
 
-                        // Update jumlah barang di tabel Barang
-                        $barang->jumlah = $currentStock;
-                        $barang->save();
+                        // Catat log aktivitas jumlah keluar
+                        $barang = Barang::find($item['id']);
+                        if ($barang) {
+                            $currentStock = $barang->jumlah - $item['jumlahDiKeranjang']; // Kurangi stok dengan jumlahDiKeranjang
+
+                            LogActivity::create([
+                                'id_barang' => $item['id'],
+                                'timestamp' => now(),
+                                'jumlah_masuk' => 0,
+                                'jumlah_keluar' => $item['jumlahDiKeranjang'], // Ambil jumlah dari jumlahDiKeranjang
+                                'sisa' => $currentStock,
+                            ]);
+
+                            // Update jumlah barang di tabel Barang
+                            $barang->jumlah = $currentStock;
+                            $barang->save();
+                        }
                     }
                 }
             }

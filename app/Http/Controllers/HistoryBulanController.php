@@ -127,7 +127,8 @@ class HistoryBulanController extends Controller
             $templateProcessor->setValue("spesifikasi_nama_barang#{$index}", $detail->barang->spesifikasi_nama_barang);
             $templateProcessor->setValue("total_permintaan#{$index}", $detail->jumlah_permintaan);
             $templateProcessor->setValue("stok_awal#{$index}", $stok_awal);
-            $templateProcessor->setValue("jumlah#{$index}", $detail->barang->jumlah);
+            // $templateProcessor->setValue("jumlah#{$index}", $detail->barang->jumlah);
+            $templateProcessor->setValue("jumlah#{$index}", $sisa_persediaan);
             $templateProcessor->setValue("usulan_pengajuan_persetujuan#{$index}", $usulan_pengajuan_persetujuan);
             $templateProcessor->setValue("satuan#{$index}", $detail->barang->satuan);
             $templateProcessor->setValue("keperluan#{$index}", $detail->permintaan->keperluan);

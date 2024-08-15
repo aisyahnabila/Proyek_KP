@@ -41,7 +41,7 @@
                 </div>
                 <div>
                     <button type="submit"
-                        class="flex items-center justify-center font-semibold focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-yellow-900">
+                        class="flex items-center justify-center focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-yellow-900">
                         Filter
                     </button>
                 </div>

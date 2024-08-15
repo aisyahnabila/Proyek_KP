@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+body {
+    font-family: "Poppins", sans-serif;
+}
+
+.bg-base {
+    background-color: #38B6FF;
+}
+
+.bg-hover {
+    background-color: #FAAE1D;
+}
+
+.black-800{
+    background-color: #212529;
+}
+
+.bg-gradient {
+    background: rgb(255,255,255);
+    background: linear-gradient(45deg, rgba(255,255,255,1) 0%, rgba(56,182,255,1) 75%);
+}
+/* login styling */
+.bg-blue-pv {
+    background-color: #38B6FF;
+}
+
+#flash-message {
+    margin-bottom: 20px;
+    /* Memberikan jarak di bawah pesan flash */
+}
+
+.close-flash-message {
+    cursor: pointer;
+}

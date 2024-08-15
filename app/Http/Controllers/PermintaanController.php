@@ -42,10 +42,14 @@ class PermintaanController extends Controller
             'nama_pemohon' => 'required|string|max:255',
             'keperluan' => 'required|string',
             'evidence' => 'nullable|file|mimes:jpeg,png,pdf|max:5240', // 5MB = 5240KB
+            'tanggal_permintaan' => 'nullable|date|before_or_equal:today', // Validasi tanggal opsional
         ], [
             'evidence.max' => 'File evidence tidak boleh lebih dari 5MB.',
             'required' => 'Masukkan data :attribute',
         ]);
+
+        // Cek apakah tanggal_permintaan diisi
+        $tanggalPermintaan = $request->input('tanggal_permintaan') ?? now();
 
         // Cek duplikasi berdasarkan unit_kerja, nama_pemohon, dan tanggal_permintaan
         $duplicate = Permintaan::where('id_unitkerja', $validatedData['unit_kerja'])
@@ -82,7 +86,7 @@ class PermintaanController extends Controller
         // Simpan data permintaan barang ke dalam database
         $permintaan = Permintaan::create([
             'kode_permintaan' => $nextCode,
-            'tanggal_permintaan' => now(),
+            'tanggal_permintaan' => $tanggalPermintaan,
             'id_unitkerja' => $validatedData['unit_kerja'],
             'nama_pemohon' => $validatedData['nama_pemohon'],
             'keperluan' => $validatedData['keperluan'],

@@ -42,21 +42,12 @@ class PermintaanController extends Controller
             'nama_pemohon' => 'required|string|max:255',
             'keperluan' => 'required|string',
             'evidence' => 'nullable|file|mimes:jpeg,png,pdf|max:5240', // 5MB = 5240KB
-<<<<<<< HEAD
-=======
             'tanggal_permintaan' => 'nullable|date|before_or_equal:today', // Validasi tanggal opsional
->>>>>>> 94c9f7ef75db53ef6dff63cf4b8e6bdf805dbcd0
         ], [
             'evidence.max' => 'File evidence tidak boleh lebih dari 5MB.',
             'required' => 'Masukkan data :attribute',
         ]);
 
-<<<<<<< HEAD
-        // Cek duplikasi berdasarkan unit_kerja, nama_pemohon, dan tanggal_permintaan
-        $duplicate = Permintaan::where('id_unitkerja', $validatedData['unit_kerja'])
-            ->where('nama_pemohon', $validatedData['nama_pemohon'])
-            ->whereDate('tanggal_permintaan', now()->subSeconds(30))
-=======
         // Cek apakah tanggal_permintaan diisi
         $tanggalPermintaan = $request->input('tanggal_permintaan') ?? now();
 
@@ -64,7 +55,6 @@ class PermintaanController extends Controller
         $duplicate = Permintaan::where('id_unitkerja', $validatedData['unit_kerja'])
             ->where('nama_pemohon', $validatedData['nama_pemohon'])
             ->whereDate('tanggal_permintaan', now()->subSeconds(20))
->>>>>>> 94c9f7ef75db53ef6dff63cf4b8e6bdf805dbcd0
             ->first();
 
         if ($duplicate) {
@@ -96,11 +86,7 @@ class PermintaanController extends Controller
         // Simpan data permintaan barang ke dalam database
         $permintaan = Permintaan::create([
             'kode_permintaan' => $nextCode,
-<<<<<<< HEAD
-            'tanggal_permintaan' => now(),
-=======
             'tanggal_permintaan' => $tanggalPermintaan,
->>>>>>> 94c9f7ef75db53ef6dff63cf4b8e6bdf805dbcd0
             'id_unitkerja' => $validatedData['unit_kerja'],
             'nama_pemohon' => $validatedData['nama_pemohon'],
             'keperluan' => $validatedData['keperluan'],
@@ -122,30 +108,6 @@ class PermintaanController extends Controller
 
             foreach ($cartItems as $item) {
                 if (isset($item['id']) && isset($item['jumlahDiKeranjang'])) {
-<<<<<<< HEAD
-                    $detailBarang = new DetailPermintaan();
-                    $detailBarang->id_permintaan = $permintaanID; // Gunakan id yang baru disimpan
-                    $detailBarang->id_barang = $item['id']; // Ambil id barang dari setiap item
-                    $detailBarang->jumlah_permintaan = $item['jumlahDiKeranjang']; // Sesuaikan dengan struktur data Anda
-                    $detailBarang->save();
-
-                    // Catat log aktivitas jumlah keluar
-                    $barang = Barang::find($item['id']);
-                    if ($barang) {
-                        $currentStock = $barang->jumlah - $item['jumlahDiKeranjang']; // Kurangi stok dengan jumlahDiKeranjang
-
-                        LogActivity::create([
-                            'id_barang' => $item['id'],
-                            'timestamp' => now(),
-                            'jumlah_masuk' => 0,
-                            'jumlah_keluar' => $item['jumlahDiKeranjang'], // Ambil jumlah dari jumlahDiKeranjang
-                            'sisa' => $currentStock,
-                        ]);
-
-                        // Update jumlah barang di tabel Barang
-                        $barang->jumlah = $currentStock;
-                        $barang->save();
-=======
 
                     // Temukan barang berdasarkan ID
                     $barang = Barang::find($item['id']);
@@ -179,7 +141,6 @@ class PermintaanController extends Controller
                             $barang->jumlah = $currentStock;
                             $barang->save();
                         }
->>>>>>> 94c9f7ef75db53ef6dff63cf4b8e6bdf805dbcd0
                     }
                 }
             }

@@ -72,7 +72,11 @@ Route::middleware(['auth'])->group(function () {
         // Route::get('/{history}/edit', [HistoryPermintaanController::class, 'edit'])->name('historypermintaan.edit');
         // Route::put('/{history}', [HistoryPermintaanController::class, 'update'])->name('historypermintaan.update');
         // Route::delete('/{history}', [HistoryPermintaanController::class, 'destroy'])->name('historypermintaan.destroy');
+<<<<<<< HEAD
         Route::get('/export-word/{id}', [HistoryPermintaanController::class, 'exportWord'])->name('historypermintaan.exportWord');
+=======
+        Route::get('/export-word/{id}/{type}', [HistoryPermintaanController::class, 'exportWord'])->name('historypermintaan.exportWord');
+>>>>>>> 94c9f7ef75db53ef6dff63cf4b8e6bdf805dbcd0
     });
 
     // routes untuk history per bulan

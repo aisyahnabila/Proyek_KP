@@ -6,7 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Careventory's Web</title>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 94c9f7ef75db53ef6dff63cf4b8e6bdf805dbcd0
     {{-- UI and Font --}}
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.4.1/dist/flowbite.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">

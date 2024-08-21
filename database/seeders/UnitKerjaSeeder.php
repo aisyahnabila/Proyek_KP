@@ -61,4 +61,8 @@ class UnitKerjaSeeder extends Seeder
             ['nama_unit_kerja' => 'UPT. RSBRW PASURUAN', 'created_at' => now(), 'updated_at' => now()],
         ]);
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 94c9f7ef75db53ef6dff63cf4b8e6bdf805dbcd0

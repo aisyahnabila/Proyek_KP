@@ -11,5 +11,13 @@
     },
     "dependencies": {
         "tailwindcss": "^3.4.7"
+<<<<<<< HEAD
     }
 }
+=======
+    },
+    "engines": {
+        "node": "18.x"
+    }
+}
+>>>>>>> 94c9f7ef75db53ef6dff63cf4b8e6bdf805dbcd0

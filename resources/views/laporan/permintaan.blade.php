@@ -142,11 +142,28 @@
                                                 <!-- Modal footer -->
                                                 <div
                                                     class="flex justify-end items-center p-3 md:p-3 border-t border-gray-200 rounded-b dark:border-gray-600">
+<<<<<<< HEAD
 
                                                     <a href="{{ route('historypermintaan.exportWord', $permintaan->id_permintaan) }}"
                                                         class="flex text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                                         <i class="fa-regular fa-file-word mt-1 mr-2"></i>
                                                         Export to Word
+=======
+                                                    <a href="{{ route('historypermintaan.exportWord', ['id' => $permintaan->id_permintaan, 'type' => 'nota_permintaan']) }}"
+                                                        class="flex text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mr-2">
+                                                        <i class="fa-regular fa-file-word mt-1 mr-2"></i>
+                                                        Export Nota
+                                                    </a>
+                                                    <a href="{{ route('historypermintaan.exportWord', ['id' => $permintaan->id_permintaan, 'type' => 'penyaluran']) }}"
+                                                        class="flex text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mr-2">
+                                                        <i class="fa-regular fa-file-word mt-1 mr-2"></i>
+                                                        Export Penyaluran
+                                                    </a>
+                                                    <a href="{{ route('historypermintaan.exportWord', ['id' => $permintaan->id_permintaan, 'type' => 'spb']) }}"
+                                                        class="flex text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                        <i class="fa-regular fa-file-word mt-1 mr-2"></i>
+                                                        Export SPB
+>>>>>>> 94c9f7ef75db53ef6dff63cf4b8e6bdf805dbcd0
                                                     </a>
                                                 </div>
                                             </div>

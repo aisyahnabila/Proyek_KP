@@ -16,3 +16,8 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+<<<<<<< HEAD
+=======
+
+.vercel
+>>>>>>> 94c9f7ef75db53ef6dff63cf4b8e6bdf805dbcd0

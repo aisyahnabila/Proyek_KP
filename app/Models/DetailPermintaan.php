@@ -18,7 +18,13 @@ class DetailPermintaan extends Model
         'id_barang',
         'id_permintaan',
         'jumlah_permintaan',
+<<<<<<< HEAD
         'keterangan'
+=======
+        'keterangan',
+        'stok_awal',
+        'saldo_akhir'
+>>>>>>> 94c9f7ef75db53ef6dff63cf4b8e6bdf805dbcd0
     ];
 
     // Relasi dengan Barang

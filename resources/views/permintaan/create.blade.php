@@ -11,6 +11,15 @@
             <div class="md:flex md:space-x-4">
                 <!-- Sebelah Kiri -->
                 <div class="w-full md:w-1/2">
+                    {{-- Tanggal Permintaan --}}
+                    <div class="mb-4">
+                        <label for="nama-pemohon"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanggal
+                            Permintaan (Opsional)</label>
+                        <input type="date" id="tanggal_permintaan" name="tanggal_permintaan" class="form-control"
+                            value="{{ old('tanggal_permintaan', \Carbon\Carbon::now()->format('Y-m-d')) }}">
+                    </div>
+
                     <!-- Kategori Barang -->
                     <div class="mb-4">
                         <label for="unit_kerja" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Unit
@@ -131,6 +140,15 @@
     </div>
 
     <script>
+        // setting default value sesuai hari
+        document.addEventListener('DOMContentLoaded', function() {
+            var dateInput = document.getElementById('tanggal_permintaan');
+            if (!dateInput.value) {
+                var today = new Date().toISOString().split('T')[0];
+                dateInput.value = today;
+            }
+        });
+
         document.addEventListener("DOMContentLoaded", function() {
             const cartItemsTable = document.getElementById('cart-items-table');
             const cartItemsInput = document.getElementById('cart-items-input');

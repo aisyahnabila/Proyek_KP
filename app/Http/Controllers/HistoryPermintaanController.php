@@ -44,8 +44,8 @@ class HistoryPermintaanController extends Controller
 
         // Set value dari placeholder di template
         $templateProcessor->setValue('tanggal_permintaan', $formattedDate);
-        $templateProcessor->setValue('unit_kerja', $permintaan->unitKerja->nama_unit_kerja);
-        $templateProcessor->setValue('nama_pemohon', $permintaan->nama_pemohon);
+        $templateProcessor->setValue('unit_kerja', htmlspecialchars($permintaan->unitKerja->nama_unit_kerja, ENT_QUOTES, 'UTF-8'));
+        $templateProcessor->setValue('nama_pemohon', htmlspecialchars($permintaan->nama_pemohon, ENT_QUOTES, 'UTF-8'));
 
         // Set value untuk detail permintaan (tabel)
         $templateProcessor->cloneRow('no', $permintaan->detailPermintaan->count());
@@ -53,16 +53,16 @@ class HistoryPermintaanController extends Controller
         foreach ($permintaan->detailPermintaan as $index => $detail) {
             $rowIndex = $index + 1;
             $templateProcessor->setValue("no#{$rowIndex}", $rowIndex);
-            $templateProcessor->setValue("kode_barang#{$rowIndex}", $detail->barang->kategori->kode_barang);
-            $templateProcessor->setValue("barang_nama#{$rowIndex}", $detail->barang->nama_barang);
-            $templateProcessor->setValue("spesifikasi_nama_barang#{$rowIndex}", $detail->barang->spesifikasi_nama_barang);
-            $templateProcessor->setValue("stok_awal#{$rowIndex}", $detail->stok_awal);//saldo awal sebelum barang dikurang dengan jumlah permintaan
-            $templateProcessor->setValue("jumlah#{$rowIndex}", $detail->jumlah_permintaan); //jumlah permintaan yang diinputkan oleh user
-            $templateProcessor->setValue("usulan_pengajuan_persetujuan#{$rowIndex}", $detail->jumlah_permintaan); //disamakan dengan jumlah permintaan yang diinputkan oleh user
+            $templateProcessor->setValue("kode_barang#{$rowIndex}", htmlspecialchars($detail->barang->kategori->kode_barang, ENT_QUOTES, 'UTF-8'));
+            $templateProcessor->setValue("barang_nama#{$rowIndex}", htmlspecialchars($detail->barang->nama_barang, ENT_QUOTES, 'UTF-8'));
+            $templateProcessor->setValue("spesifikasi_nama_barang#{$rowIndex}", htmlspecialchars($detail->barang->spesifikasi_nama_barang, ENT_QUOTES, 'UTF-8'));
+            $templateProcessor->setValue("stok_awal#{$rowIndex}", $detail->stok_awal);
+            $templateProcessor->setValue("jumlah#{$rowIndex}", $detail->jumlah_permintaan);
+            $templateProcessor->setValue("usulan_pengajuan_persetujuan#{$rowIndex}", $detail->jumlah_permintaan);
             $templateProcessor->setValue("sisa_persediaan#{$rowIndex}", $detail->saldo_akhir);
-            $templateProcessor->setValue("satuan#{$rowIndex}", $detail->barang->satuan);
-            $templateProcessor->setValue("keperluan#{$rowIndex}", $permintaan->keperluan);
-            $templateProcessor->setValue("keterangan#{$rowIndex}", $detail->keterangan);
+            $templateProcessor->setValue("satuan#{$rowIndex}", htmlspecialchars($detail->barang->satuan, ENT_QUOTES, 'UTF-8'));
+            $templateProcessor->setValue("keperluan#{$rowIndex}", htmlspecialchars($permintaan->keperluan, ENT_QUOTES, 'UTF-8'));
+            $templateProcessor->setValue("keterangan#{$rowIndex}", htmlspecialchars($detail->keterangan, ENT_QUOTES, 'UTF-8'));
         }
 
         // Save file baru

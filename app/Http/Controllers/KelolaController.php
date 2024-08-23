@@ -42,8 +42,8 @@ class KelolaController extends Controller
     {
         $request->validate([
             'id_kategori' => 'required|exists:kategori,id_kategori',
-            'nama_barang' => 'required',
-            'spesifikasi_nama_barang' => 'required',
+            'nama_barang' => 'required|string|max:255',
+            'spesifikasi_nama_barang' => 'required|string|max:255',
             'jumlah' => 'required|integer',
             'satuan' => 'required',
         ], [

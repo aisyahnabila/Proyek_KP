@@ -65,5 +65,12 @@ Berikut adalah struktur direktori utama dalam proyek ini:
 - `routes/`: Berisi file konfigurasi rute untuk aplikasi.
 - `database/migrations/`: Berisi file-file migrasi database.
 
-## Kontak
-Jika Anda memiliki pertanyaan atau umpan balik tentang proyek ini, silakan hubungi saya melalui [email@example.com](mailto:email@example.com).
+aidarifdatul## Kontributor
+Terima kasih kepada semua kontributor yang telah membantu dalam pengembangan proyek ini:
+
+| [![aidarifdatul](https://avatars.githubusercontent.com/u/117977490?v=4)](https://github.com/aidarifdatul) | [![rzqthya](https://avatars.githubusercontent.com/u/111686681?v=4)](https://github.com/rzqthya) | [![aisyahnabila](https://avatars.githubusercontent.com/u/94779721?v=4)](https://github.com/aisyahnabila) |
+|:--:|:--:|:--:|
+| [aidarifdatul](https://github.com/aidarifdatul) | [rzqthya](https://github.com/rzqthya) | [aisyahnabila](https://github.com/aisyahnabila) |
+| Sistem Analis| Front-End Developer | Back-End Developer |
+
+

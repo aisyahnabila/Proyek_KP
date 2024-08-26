@@ -1,4 +1,4 @@
-# Website LOGISTIK BARANG PAKAI HABIS
+# Website LOGISTIK
 Aplikasi manajemen logistik untuk Dinas Sosial X, yang dirancang khusus untuk bagian pengelolaan Barang Pakai Habis.
 
 ## Deskripsi
